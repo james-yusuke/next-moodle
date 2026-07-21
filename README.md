@@ -43,5 +43,3 @@ bun run test:e2e
 bun run react:doctor
 bun audit
 ```
-
-実ChromeのLighthouse監査は、Mock Moodleまたは更新操作が許可された専用テスト環境を起動し、専用テストアカウントを`LIGHTHOUSE_USER`と`LIGHTHOUSE_PASSWORD`へ一時設定して`bun run audit:lighthouse`を実行します。監査レポートは`.omo/evidence/lighthouse/`へ保存されます。
