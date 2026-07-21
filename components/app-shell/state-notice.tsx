@@ -8,7 +8,7 @@ type StateNoticeProps = Readonly<{
   siteUrl: string;
 }>;
 
-export function StateNotice({ reason, retryHref, siteUrl }: StateNoticeProps) {
+export function StateNotice({ reason, retryHref }: StateNoticeProps) {
   switch (reason) {
     case "auth_expired":
       return (
@@ -23,21 +23,21 @@ export function StateNotice({ reason, retryHref, siteUrl }: StateNoticeProps) {
     case "permission":
       return (
         <Notice
-          action={<a className="ui-app-action-link" href={siteUrl} rel="noreferrer" target="_blank">Moodleを開く</a>}
+          action={<Link className="ui-app-action-link" href={retryHref}>もう一度確認</Link>}
           title="この情報を表示する権限がありません"
           tone="warning"
         >
-          <p>コース管理者に権限を確認するか、Moodleで直接確認してください。</p>
+          <p>受講登録または活動の公開条件をMoodle管理者へ確認してください。</p>
         </Notice>
       );
     case "capability":
       return (
         <Notice
-          action={<a className="ui-app-action-link" href={siteUrl} rel="noreferrer" target="_blank">Moodleを開く</a>}
+          action={<Link className="ui-app-action-link" href="/diagnostics">接続診断を確認</Link>}
           title="必要なMoodle機能を利用できません"
           tone="info"
         >
-          <p>この画面に必要なWebサービスが有効ではありません。Moodleでは引き続き確認できます。</p>
+          <p>この画面に必要なWebサービスまたは補助アダプターが有効ではありません。接続診断の不足項目をMoodle管理者へ共有してください。</p>
         </Notice>
       );
     case "outage":

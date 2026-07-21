@@ -13,6 +13,7 @@ import type { CalendarPageData } from "@/lib/moodle/queries/calendar";
 import { moveMonth, type MonthCursor } from "@/lib/moodle/queries/calendar-model";
 import "./calendar.css";
 import { CalendarExportButton } from "./calendar-export-button";
+import { CalendarEventCreator, CalendarEventDelete } from "./calendar-event-actions";
 
 const WEEKDAYS = ["日", "月", "火", "水", "木", "金", "土"] as const;
 
@@ -63,6 +64,7 @@ function AgendaView({ data, dateFormat, timeFormat }: Readonly<{
                 </time>
                 <strong>{event.name}</strong>
                 {event.status === "late" ? <Badge tone="error">期限超過</Badge> : <Badge tone="info">予定</Badge>}
+                {event.editable ? <CalendarEventDelete eventId={event.id} /> : null}
               </li>
             ))}
           </ul>
@@ -102,11 +104,11 @@ function MonthView({ data, monthFormat, timeFormat }: Readonly<{
         {WEEKDAYS.map((weekday) => <span key={weekday}>{weekday}</span>)}
       </div>
       <ol aria-label={`${data.cursor.year}年${data.cursor.month}月`} className="ui-calendar-month__grid">
-        {data.cells.map((cell, index) => (
+        {data.cells.map((cell) => (
           <li
             aria-hidden={cell.day === null}
             className={cell.day === null ? "ui-calendar-day ui-calendar-day--placeholder" : "ui-calendar-day"}
-            key={cell.dateKey ?? `placeholder-${index}`}
+            key={cell.key}
           >
             {cell.day === null || cell.dateKey === null ? null : (
               <>
@@ -129,7 +131,8 @@ function MonthView({ data, monthFormat, timeFormat }: Readonly<{
   );
 }
 
-export function CalendarView({ config, data }: Readonly<{
+export function CalendarView({ canManage, config, data }: Readonly<{
+  canManage: boolean;
   config: AppRuntimeConfig;
   data: CalendarPageData;
 }>) {
@@ -153,6 +156,7 @@ export function CalendarView({ config, data }: Readonly<{
           <p>すべての日時は{config.timeZone}で表示しています。</p>
         </div>
         <div className="ui-calendar-header__actions">
+          {canManage ? <CalendarEventCreator /> : null}
           <CalendarExportButton events={exportEvents} />
           <CalendarTabs data={data} />
         </div>

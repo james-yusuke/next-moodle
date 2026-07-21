@@ -39,9 +39,12 @@ export async function fetchAssignmentDetail(
     );
     return projectAssignmentDetail({
       assignment,
-      availableFunctions: context.session.site.availableFunctions,
+      canFinalize:
+        context.session.manifest.features.assignmentsFinalize === "available",
+      canSave:
+        context.session.manifest.features.assignmentsSubmit === "available",
       course,
-      fileUpload: context.session.capabilities.fileUpload,
+      fileUpload: context.session.manifest.fileAccess.upload,
       now: context.now,
       siteUrl: context.session.site.siteUrl,
       submission: submission.data,

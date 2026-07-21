@@ -2,6 +2,7 @@ import type { MoodleCalendarEvent } from "@/lib/moodle/server";
 import { dateKeyInTimeZone } from "@/lib/date-time";
 
 export type CalendarEventItem = {
+  readonly editable: boolean;
   readonly id: number;
   readonly name: string;
   readonly startsAt: number;
@@ -22,6 +23,7 @@ export type MonthCell = {
   readonly dateKey: string | null;
   readonly day: number | null;
   readonly events: readonly CalendarEventItem[];
+  readonly key: string;
 };
 
 function projectEvent(
@@ -29,6 +31,7 @@ function projectEvent(
   nowSeconds: number,
 ): CalendarEventItem {
   return {
+    editable: event.eventtype === "user",
     id: event.id,
     name: event.name,
     startsAt: event.timestart,
@@ -79,16 +82,17 @@ export function buildMonthGrid(
   const grouped = new Map(
     groupAgendaEvents(events, nowSeconds, timeZone).map((group) => [group.dateKey, group.events]),
   );
-  const cells: MonthCell[] = Array.from({ length: firstWeekday }, () => ({
+  const cells: MonthCell[] = Array.from({ length: firstWeekday }, (_, offset) => ({
     dateKey: null,
     day: null,
     events: [],
+    key: `${cursor.year}-${cursor.month}-leading-${offset}`,
   }));
   for (let day = 1; day <= dayCount; day += 1) {
     const dateKey = `${cursor.year.toString().padStart(4, "0")}-${cursor.month
       .toString()
       .padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-    cells.push({ dateKey, day, events: grouped.get(dateKey) ?? [] });
+    cells.push({ dateKey, day, events: grouped.get(dateKey) ?? [], key: dateKey });
   }
   return cells;
 }

@@ -1,7 +1,7 @@
 export type CommandItem = {
   readonly href: string;
   readonly keywords: readonly string[];
-  readonly kind: "course" | "screen";
+  readonly kind: "activity" | "course" | "message" | "screen";
   readonly label: string;
 };
 

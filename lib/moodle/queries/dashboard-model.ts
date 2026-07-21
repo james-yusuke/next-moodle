@@ -66,7 +66,7 @@ export function projectDashboard(
   const courseNames = new Map(courses.map((course) => [course.id, course.fullname]));
   const events = input.events
     .flatMap((event): readonly DashboardEvent[] => {
-      if (event.courseid === undefined) {
+      if (event.courseid === undefined || event.courseid === 0) {
         return [];
       }
       const courseName = courseNames.get(event.courseid);

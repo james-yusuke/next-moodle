@@ -5,7 +5,12 @@ export const MOODLE_FUNCTIONS = {
   timelineCourses: "core_course_get_enrolled_courses_by_timeline_classification",
   enrolledCourses: "core_enrol_get_users_courses",
   courseContents: "core_course_get_contents",
+  recentCourses: "core_course_get_recent_courses",
+  recentItems: "core_course_get_recent_items",
+  setFavouriteCourses: "core_course_set_favourite_courses",
+  viewCourse: "core_course_view_course",
   activityCompletion: "core_completion_get_activities_completion_status",
+  updateActivityCompletion: "core_completion_update_activity_completion_status_manually",
   assignments: "mod_assign_get_assignments",
   assignmentStatus: "mod_assign_get_submission_status",
   saveAssignment: "mod_assign_save_submission",
@@ -13,35 +18,107 @@ export const MOODLE_FUNCTIONS = {
   actionEvents: "core_calendar_get_action_events_by_timesort",
   calendarMonthly: "core_calendar_get_calendar_monthly_view",
   calendarUpcoming: "core_calendar_get_calendar_upcoming_view",
+  calendarEvents: "core_calendar_get_calendar_events",
+  createCalendarEvents: "core_calendar_create_calendar_events",
+  deleteCalendarEvents: "core_calendar_delete_calendar_events",
+  updateCalendarEvent: "core_calendar_update_event_start_day",
   notifications: "message_popup_get_popup_notifications",
   unreadNotificationCount: "message_popup_get_unread_popup_notification_count",
   markNotificationRead: "core_message_mark_notification_read",
+  conversations: "core_message_get_conversations",
+  conversation: "core_message_get_conversation",
+  conversationBetweenUsers: "core_message_get_conversation_between_users",
+  sendMessages: "core_message_send_instant_messages",
+  sendConversationMessages: "core_message_send_messages_to_conversation",
+  markConversationRead: "core_message_mark_all_conversation_messages_as_read",
+  contacts: "core_message_get_user_contacts",
+  createContacts: "core_message_create_contacts",
+  deleteContacts: "core_message_delete_contacts",
+  messagePreferences: "core_message_get_user_message_preferences",
+  grades: "gradereport_user_get_grade_items",
+  participants: "core_enrol_get_enrolled_users",
+  userProfiles: "core_user_get_course_user_profiles",
+  usersByField: "core_user_get_users_by_field",
+  privateFiles: "core_user_get_private_files_info",
+  files: "core_files_get_files",
+  badges: "core_badges_get_user_badges",
+  plans: "core_competency_list_user_plans",
+  quizzes: "mod_quiz_get_quizzes_by_courses",
+  quizAttempts: "mod_quiz_get_user_attempts",
+  startQuizAttempt: "mod_quiz_start_attempt",
+  quizAttemptData: "mod_quiz_get_attempt_data",
+  saveQuizAttempt: "mod_quiz_save_attempt",
+  processQuizAttempt: "mod_quiz_process_attempt",
+  quizAttemptReview: "mod_quiz_get_attempt_review",
+  forums: "mod_forum_get_forums_by_courses",
+  forumDiscussions: "mod_forum_get_forum_discussions",
+  forumDiscussionPosts: "mod_forum_get_discussion_posts",
+  addForumDiscussion: "mod_forum_add_discussion",
+  addForumPost: "mod_forum_add_discussion_post",
+  updateForumPost: "mod_forum_update_discussion_post",
+  setForumSubscription: "mod_forum_set_subscription_state",
+  markForumRead: "mod_forum_view_forum_discussion",
+  choices: "mod_choice_get_choices_by_courses",
+  choiceOptions: "mod_choice_get_choice_options",
+  submitChoice: "mod_choice_submit_choice_response",
+  feedbacks: "mod_feedback_get_feedbacks_by_courses",
+  feedbackItems: "mod_feedback_get_items",
+  launchFeedback: "mod_feedback_launch_feedback",
+  feedbackPageItems: "mod_feedback_get_page_items",
+  submitFeedback: "mod_feedback_process_page",
+  lessons: "mod_lesson_get_lessons_by_courses",
+  launchLessonAttempt: "mod_lesson_launch_attempt",
+  lessonPage: "mod_lesson_get_page_data",
+  submitLessonAnswer: "mod_lesson_process_page",
+  finishLessonAttempt: "mod_lesson_finish_attempt",
+  glossaries: "mod_glossary_get_glossaries_by_courses",
+  glossaryEntries: "mod_glossary_get_entries_by_letter",
+  addGlossaryEntry: "mod_glossary_add_entry",
+  wikis: "mod_wiki_get_wikis_by_courses",
+  wikiPages: "mod_wiki_get_subwiki_pages",
+  wikiPageForEditing: "mod_wiki_get_page_for_editing",
+  saveWikiPage: "mod_wiki_edit_page",
+  databases: "mod_data_get_databases_by_courses",
+  databaseAccess: "mod_data_get_data_access_information",
+  databaseFields: "mod_data_get_fields",
+  databaseEntries: "mod_data_get_entries",
+  addDatabaseEntry: "mod_data_add_entry",
+  workshops: "mod_workshop_get_workshops_by_courses",
+  workshopAccess: "mod_workshop_get_workshop_access_information",
+  workshopPlan: "mod_workshop_get_user_plan",
+  workshopSubmissions: "mod_workshop_get_submissions",
+  addWorkshopSubmission: "mod_workshop_add_submission",
+  updateWorkshopSubmission: "mod_workshop_update_submission",
+  scorms: "mod_scorm_get_scorms_by_courses",
+  scormAttempt: "mod_scorm_get_scorm_attempt_count",
+  saveScormTracks: "mod_scorm_insert_scorm_tracks",
+  h5pActivities: "mod_h5pactivity_get_h5pactivities_by_courses",
+  h5pState: "mod_h5pactivity_get_attempts",
+  ltis: "mod_lti_get_ltis_by_courses",
+  ltiLaunchData: "mod_lti_get_tool_launch_data",
+  bigBlueButtons: "mod_bigbluebuttonbn_get_bigbluebuttonbns_by_courses",
+  bigBlueButtonJoin: "mod_bigbluebuttonbn_get_join_url",
+  books: "mod_book_get_books_by_courses",
+  resources: "mod_resource_get_resources_by_courses",
+  folders: "mod_folder_get_folders_by_courses",
+  imscps: "mod_imscp_get_imscps_by_courses",
+  pages: "mod_page_get_pages_by_courses",
+  urls: "mod_url_get_urls_by_courses",
+  adapterManifest: "local_nextmoodle_get_manifest",
+  adapterBranding: "local_nextmoodle_get_branding",
+  activityAdapter: "local_nextmoodle_get_activity_adapter",
+  executeActivityAction: "local_nextmoodle_execute_activity_action",
+  createRuntimeTicket: "local_nextmoodle_create_runtime_ticket",
 } as const;
 
-export const MOODLE_KNOWN_FUNCTION_NAMES = [
-  MOODLE_FUNCTIONS.siteInfo,
-  MOODLE_FUNCTIONS.timelineCourses,
-  MOODLE_FUNCTIONS.enrolledCourses,
-  MOODLE_FUNCTIONS.courseContents,
-  MOODLE_FUNCTIONS.activityCompletion,
-  MOODLE_FUNCTIONS.assignments,
-  MOODLE_FUNCTIONS.assignmentStatus,
-  MOODLE_FUNCTIONS.saveAssignment,
-  MOODLE_FUNCTIONS.submitAssignment,
-  MOODLE_FUNCTIONS.actionEvents,
-  MOODLE_FUNCTIONS.calendarMonthly,
-  MOODLE_FUNCTIONS.calendarUpcoming,
-  MOODLE_FUNCTIONS.notifications,
-  MOODLE_FUNCTIONS.unreadNotificationCount,
-  MOODLE_FUNCTIONS.markNotificationRead,
-] as const;
+export type MoodleKnownFunctionName =
+  (typeof MOODLE_FUNCTIONS)[keyof typeof MOODLE_FUNCTIONS];
+
+export const MOODLE_KNOWN_FUNCTION_NAMES = Object.values(MOODLE_FUNCTIONS);
 
 export const MoodleKnownFunctionNameSchema = z.enum(
   MOODLE_KNOWN_FUNCTION_NAMES,
 );
-export type MoodleKnownFunctionName = z.infer<
-  typeof MoodleKnownFunctionNameSchema
->;
 
 export const MoodleFunctionNameSchema = z
   .string()
@@ -50,61 +127,49 @@ export const MoodleFunctionNameSchema = z
   .regex(/^[a-z][a-z0-9_]+$/);
 export type MoodleFunctionName = z.infer<typeof MoodleFunctionNameSchema>;
 
-const READ_FUNCTIONS: ReadonlySet<string> = new Set([
-  MOODLE_FUNCTIONS.siteInfo,
-  MOODLE_FUNCTIONS.timelineCourses,
-  MOODLE_FUNCTIONS.enrolledCourses,
-  MOODLE_FUNCTIONS.courseContents,
-  MOODLE_FUNCTIONS.activityCompletion,
-  MOODLE_FUNCTIONS.assignments,
-  MOODLE_FUNCTIONS.assignmentStatus,
-  MOODLE_FUNCTIONS.actionEvents,
-  MOODLE_FUNCTIONS.calendarMonthly,
-  MOODLE_FUNCTIONS.calendarUpcoming,
-  MOODLE_FUNCTIONS.notifications,
-  MOODLE_FUNCTIONS.unreadNotificationCount,
+const MUTATION_FUNCTIONS: ReadonlySet<string> = new Set([
+  MOODLE_FUNCTIONS.setFavouriteCourses,
+  MOODLE_FUNCTIONS.updateActivityCompletion,
+  MOODLE_FUNCTIONS.saveAssignment,
+  MOODLE_FUNCTIONS.submitAssignment,
+  MOODLE_FUNCTIONS.createCalendarEvents,
+  MOODLE_FUNCTIONS.deleteCalendarEvents,
+  MOODLE_FUNCTIONS.updateCalendarEvent,
+  MOODLE_FUNCTIONS.markNotificationRead,
+  MOODLE_FUNCTIONS.sendMessages,
+  MOODLE_FUNCTIONS.sendConversationMessages,
+  MOODLE_FUNCTIONS.markConversationRead,
+  MOODLE_FUNCTIONS.createContacts,
+  MOODLE_FUNCTIONS.deleteContacts,
+  MOODLE_FUNCTIONS.startQuizAttempt,
+  MOODLE_FUNCTIONS.saveQuizAttempt,
+  MOODLE_FUNCTIONS.processQuizAttempt,
+  MOODLE_FUNCTIONS.addForumDiscussion,
+  MOODLE_FUNCTIONS.addForumPost,
+  MOODLE_FUNCTIONS.updateForumPost,
+  MOODLE_FUNCTIONS.setForumSubscription,
+  MOODLE_FUNCTIONS.markForumRead,
+  MOODLE_FUNCTIONS.submitChoice,
+  MOODLE_FUNCTIONS.launchFeedback,
+  MOODLE_FUNCTIONS.submitFeedback,
+  MOODLE_FUNCTIONS.launchLessonAttempt,
+  MOODLE_FUNCTIONS.submitLessonAnswer,
+  MOODLE_FUNCTIONS.finishLessonAttempt,
+  MOODLE_FUNCTIONS.addGlossaryEntry,
+  MOODLE_FUNCTIONS.saveWikiPage,
+  MOODLE_FUNCTIONS.addDatabaseEntry,
+  MOODLE_FUNCTIONS.addWorkshopSubmission,
+  MOODLE_FUNCTIONS.updateWorkshopSubmission,
+  MOODLE_FUNCTIONS.saveScormTracks,
+  MOODLE_FUNCTIONS.bigBlueButtonJoin,
+  MOODLE_FUNCTIONS.executeActivityAction,
+  MOODLE_FUNCTIONS.createRuntimeTicket,
 ]);
 
+const KNOWN_FUNCTIONS: ReadonlySet<string> = new Set(
+  MOODLE_KNOWN_FUNCTION_NAMES,
+);
+
 export function isReadFunction(functionName: string): boolean {
-  return READ_FUNCTIONS.has(functionName);
-}
-
-export const MoodleCapabilitiesSchema = z.object({
-  dashboard: z.boolean(),
-  courses: z.boolean(),
-  assignments: z.boolean(),
-  calendar: z.boolean(),
-  notifications: z.boolean(),
-  fileUpload: z.boolean(),
-});
-export type MoodleCapabilities = Readonly<
-  z.infer<typeof MoodleCapabilitiesSchema>
->;
-
-export function deriveCapabilities(
-  names: readonly MoodleKnownFunctionName[],
-  uploadFiles: boolean,
-): MoodleCapabilities {
-  const available: ReadonlySet<string> = new Set(names);
-  const has = (name: MoodleKnownFunctionName): boolean => available.has(name);
-
-  return {
-    dashboard:
-      has(MOODLE_FUNCTIONS.timelineCourses) &&
-      has(MOODLE_FUNCTIONS.actionEvents) &&
-      has(MOODLE_FUNCTIONS.unreadNotificationCount),
-    courses:
-      has(MOODLE_FUNCTIONS.enrolledCourses) &&
-      has(MOODLE_FUNCTIONS.courseContents),
-    assignments:
-      has(MOODLE_FUNCTIONS.assignments) &&
-      has(MOODLE_FUNCTIONS.assignmentStatus),
-    calendar:
-      has(MOODLE_FUNCTIONS.calendarMonthly) &&
-      has(MOODLE_FUNCTIONS.calendarUpcoming),
-    notifications:
-      has(MOODLE_FUNCTIONS.notifications) &&
-      has(MOODLE_FUNCTIONS.unreadNotificationCount),
-    fileUpload: uploadFiles && has(MOODLE_FUNCTIONS.saveAssignment),
-  };
+  return KNOWN_FUNCTIONS.has(functionName) && !MUTATION_FUNCTIONS.has(functionName);
 }

@@ -7,31 +7,32 @@
 :root {
   color-scheme: dark;
 
-  --surface-canvas: light-dark(#e9edf5, #07090f);
-  --surface-primary: light-dark(#f3f5fa, #0d111a);
-  --surface-secondary: light-dark(#edf1f7, #101522);
-  --surface-elevated: light-dark(#f8f9fc, #141a27);
-  --surface-inset: light-dark(#e2e7f0, #090c13);
-  --text-primary: light-dark(#161b26, #f3f5fa);
-  --text-secondary: light-dark(#51586a, #a9afbf);
-  --text-tertiary: light-dark(#626a7d, #747b8e);
-  --text-disabled: light-dark(#9aa0ad, #5d6474);
-  --border-subtle: light-dark(#e2e5ed, rgb(255 255 255 / 5.5%));
-  --border-default: light-dark(#d3d8e3, rgb(255 255 255 / 9%));
-  --border-strong: light-dark(#b8c0cf, rgb(255 255 255 / 16%));
-  --accent-soft: light-dark(#eef0ff, #1d203d);
-  --accent-400: light-dark(#6675e8, #9ba5ff);
-  --accent-500: light-dark(#5564d9, #7c89ff);
-  --accent-600: light-dark(#4652c4, #5d68d8);
-  --accent-contrast: #ffffff;
-  --status-success: light-dark(#19764b, #45c486);
-  --status-success-soft: light-dark(#e8f6ef, #112b22);
-  --status-warning: light-dark(#9a5b13, #e6a451);
-  --status-warning-soft: light-dark(#fff4e5, #302315);
-  --status-error: light-dark(#b4384b, #f06b7b);
-  --status-error-soft: light-dark(#fcecef, #35171e);
-  --status-info: light-dark(#3668b2, #75a7f7);
-  --status-info-soft: light-dark(#eaf2fd, #13243c);
+  --surface-canvas: light-dark(#edebe5, #0b0d10);
+  --surface-primary: light-dark(#f6f3ec, #171a1f);
+  --surface-secondary: light-dark(#e4e1d9, #101318);
+  --surface-elevated: light-dark(#fffdf8, #20252c);
+  --surface-selected: light-dark(#e2e8cf, #29321c);
+  --surface-inset: light-dark(#e7e3da, #111419);
+  --text-primary: light-dark(#17191c, #f4f1e8);
+  --text-secondary: light-dark(#626871, #a7adb6);
+  --text-tertiary: light-dark(#7c817f, #7f8791);
+  --text-disabled: light-dark(#9a9d98, #5f6670);
+  --border-subtle: light-dark(rgb(23 25 28 / 8%), rgb(244 241 232 / 7%));
+  --border-default: light-dark(rgb(23 25 28 / 15%), rgb(244 241 232 / 13%));
+  --border-strong: light-dark(rgb(23 25 28 / 27%), rgb(244 241 232 / 24%));
+  --accent-soft: var(--surface-selected);
+  --accent-400: light-dark(#3e5710, #daff7a);
+  --accent-500: light-dark(#526f18, #c8f169);
+  --accent-600: light-dark(#3e5710, #a6cf43);
+  --accent-contrast: light-dark(#fbfff1, #11140a);
+  --status-success: light-dark(#1d6b4c, #52c792);
+  --status-success-soft: light-dark(#dcebe4, #123226);
+  --status-warning: light-dark(#805a12, #efb94f);
+  --status-warning-soft: light-dark(#f1e7cf, #35270e);
+  --status-error: light-dark(#a13c4a, #f07882);
+  --status-error-soft: light-dark(#f2dfe2, #39171d);
+  --status-info: light-dark(#335f9f, #78a9f6);
+  --status-info-soft: light-dark(#dde7f5, #15283f);
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -44,34 +45,31 @@
   --space-12: 3rem;
   --space-16: 4rem;
 
-  --shape-control: 0.5rem;
-  --shape-card: 0.75rem;
-  --shape-panel: 1.125rem;
+  --shape-control: 0.25rem;
+  --shape-card: 0.5rem;
+  --shape-panel: 0.875rem;
 
-  --font-size-display: clamp(2rem, 4vw, 3rem);
-  --font-size-h1: 2rem;
-  --font-size-h2: 1.5rem;
-  --font-size-h3: 1.125rem;
-  --font-size-body-lg: 1.0625rem;
-  --font-size-body: 1rem;
+  --font-size-display: 1.875rem;
+  --font-size-h1: clamp(1.5rem, 2.2vw, 1.875rem);
+  --font-size-h2: 1.25rem;
+  --font-size-h3: 1.0625rem;
+  --font-size-body-lg: 1rem;
+  --font-size-body: 0.9375rem;
   --font-size-body-sm: 0.875rem;
   --font-size-label: 0.8125rem;
   --font-size-caption: 0.75rem;
   --motion-instant: 100ms cubic-bezier(0.2, 0, 0, 1);
-  --motion-fast: 140ms cubic-bezier(0.2, 0, 0, 1);
+  --motion-fast: 150ms cubic-bezier(0.2, 0, 0, 1);
   --motion-standard: 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
 
-  --shadow-control:
-    inset 0 1px 0 rgb(255 255 255 / 8%),
-    inset 0 -1px 0 rgb(0 0 0 / 16%),
-    0 0 0 1px var(--border-default);
-  --shadow-surface:
-    inset 0 1px 0 rgb(255 255 255 / 5%),
-    0 0 0 1px var(--border-subtle);
-  --shadow-elevated:
-    inset 0 1px 0 rgb(255 255 255 / 7%),
-    0 0 0 1px var(--border-default),
-    0 1.25rem 3rem rgb(0 0 0 / 16%);
+  --app-list-width: 4.25rem;
+  --app-topbar-height: 3.5rem;
+  --context-pane-width: 18rem;
+  --inspector-width: 20rem;
+
+  --shadow-control: 0 0 0 1px var(--border-default);
+  --shadow-surface: 0 0 0 1px var(--border-subtle);
+  --shadow-elevated: 0 0 0 1px var(--border-default), 0 1rem 2.5rem rgb(7 8 10 / 24%);
   --shadow-focus:
     0 0 0 2px var(--surface-canvas),
     0 0 0 4px var(--accent-400);
@@ -117,14 +115,12 @@ html[data-theme="dark"] {
 
 html {
   min-block-size: 100%;
-  background:
-    radial-gradient(circle at 80% -10%, rgb(124 137 255 / 9%), transparent 34rem),
-    linear-gradient(90deg, transparent 0, rgb(255 255 255 / 1.5%) 1px, transparent 1px) 0 0 / 5rem 5rem,
-    var(--surface-canvas);
+  background: var(--surface-canvas);
   scroll-behavior: smooth;
 }
 
 body {
+  position: relative;
   min-block-size: 100dvh;
   margin: 0;
   background: var(--surface-canvas);

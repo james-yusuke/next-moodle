@@ -36,7 +36,7 @@ export async function POST(
       );
     }
     const session = await requireMoodleSession();
-    if (!session.capabilities.notifications) {
+    if (session.manifest.features.notifications !== "available") {
       throw new MoodleFunctionError();
     }
     const client = await createAuthenticatedMoodleClient();

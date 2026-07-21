@@ -1,10 +1,11 @@
 "use client";
 
-import { Books, MagnifyingGlass } from "@phosphor-icons/react";
+import { Books, MagnifyingGlass, Star } from "@phosphor-icons/react";
+import ky from "ky";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 
-import { Badge, Field, Notice, Surface } from "@/components/ui";
+import { Badge, Field, Notice } from "@/components/ui";
 import type { AppRuntimeConfig } from "@/lib/app-config";
 import {
   filterCourseItems,
@@ -32,15 +33,40 @@ function coursePeriod(course: CourseListItem, format: Intl.DateTimeFormat): stri
   return `${start} から ${end}`;
 }
 
-export function CourseList({ config, courses }: Readonly<{
+function initialFavorites(courses: readonly CourseListItem[]): ReadonlySet<number> {
+  const ids = new Set<number>();
+  for (const course of courses) {
+    if (course.isFavourite) ids.add(course.id);
+  }
+  return ids;
+}
+
+export function CourseList({ canFavorite, config, courses }: Readonly<{
+  canFavorite: boolean;
   config: AppRuntimeConfig;
   courses: readonly CourseListItem[];
 }>) {
   const [query, setQuery] = useState("");
+  const [favorites, setFavorites] = useState<ReadonlySet<number>>(() => initialFavorites(courses));
+  const [pendingFavorite, setPendingFavorite] = useState<number | null>(null);
   const filtered = useMemo(() => filterCourseItems(courses, query), [courses, query]);
   const dateFormat = useMemo(() => new Intl.DateTimeFormat(config.locale, {
     dateStyle: "medium", timeZone: config.timeZone,
   }), [config.locale, config.timeZone]);
+
+  async function toggleFavourite(course: CourseListItem): Promise<void> {
+    if (!canFavorite || pendingFavorite !== null) return;
+    const favourite = !favorites.has(course.id);
+    setPendingFavorite(course.id);
+    const response = await ky.post(`/api/courses/${course.id}/favourite`, { json: { favourite }, retry: 0, throwHttpErrors: false });
+    setPendingFavorite(null);
+    if (!response.ok) return;
+    setFavorites((current) => {
+      const next = new Set(current);
+      if (favourite) next.add(course.id); else next.delete(course.id);
+      return next;
+    });
+  }
 
   if (courses.length === 0) {
     return (
@@ -80,11 +106,11 @@ export function CourseList({ config, courses }: Readonly<{
                 <h2>{copy.label}</h2>
                 <Badge tone={copy.tone}>{group.length}コース</Badge>
               </header>
-              <Surface className="ui-courses-list" variant="inset">
+              <div className="ui-courses-list">
                 <ul>
                   {group.map((course) => (
                     <li key={course.id}>
-                      <Link href={`/courses/${course.id}`}>
+                      <div className="ui-courses-row"><Link href={`/courses/${course.id}`}>
                         <span className="ui-courses-list__icon">
                           <Books aria-hidden size={21} weight="regular" />
                         </span>
@@ -93,11 +119,11 @@ export function CourseList({ config, courses }: Readonly<{
                           <small>{course.shortName}</small>
                         </span>
                         <span className="ui-courses-list__period">{coursePeriod(course, dateFormat)}</span>
-                      </Link>
+                      </Link>{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} className="ui-course-favourite" disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}</div>
                     </li>
                   ))}
                 </ul>
-              </Surface>
+              </div>
             </section>
           );
         })

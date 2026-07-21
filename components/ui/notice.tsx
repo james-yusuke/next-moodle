@@ -19,13 +19,13 @@ type NoticeProps = Readonly<{
 function NoticeIcon({ tone }: Readonly<{ tone: NoticeTone }>) {
   switch (tone) {
     case "info":
-      return <Info aria-hidden size={20} weight="duotone" />;
+      return <Info aria-hidden size={20} weight="regular" />;
     case "success":
-      return <CheckCircle aria-hidden size={20} weight="duotone" />;
+      return <CheckCircle aria-hidden size={20} weight="regular" />;
     case "warning":
-      return <Warning aria-hidden size={20} weight="duotone" />;
+      return <Warning aria-hidden size={20} weight="regular" />;
     case "error":
-      return <XCircle aria-hidden size={20} weight="duotone" />;
+      return <XCircle aria-hidden size={20} weight="regular" />;
   }
 }
 

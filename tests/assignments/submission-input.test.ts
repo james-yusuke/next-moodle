@@ -17,7 +17,7 @@ const BASE_LIMITS = {
 function policy(
   mode: "online_text" | "files" | "mixed",
 ): Extract<NativeSubmissionPolicy, { readonly kind: "enabled" }> {
-  return { kind: "enabled", limits: BASE_LIMITS, mode, supportsFinalize: true };
+  return { groupId: 0, kind: "enabled", isGroupSubmission: false, limits: BASE_LIMITS, mode, requiresStatement: false, supportsFinalize: true };
 }
 
 describe("submission multipart parsing", () => {
@@ -109,5 +109,17 @@ describe("submission multipart parsing", () => {
 
     // Then
     expect(action).toThrow(SubmissionInputError);
+  });
+
+  test("requires explicit agreement before finalizing an assignment with a statement", async () => {
+    const form = new FormData();
+    form.set("acceptSubmissionStatement", "false");
+    form.set("intent", "finalize");
+    form.set("onlineText", "Original work");
+    form.set("onlineTextFormat", "2");
+    const statementPolicy = { ...policy("online_text"), requiresStatement: true };
+    await expect(parseSubmissionFormData(form, statementPolicy)).rejects.toBeInstanceOf(SubmissionInputError);
+    form.set("acceptSubmissionStatement", "true");
+    expect((await parseSubmissionFormData(form, statementPolicy)).acceptSubmissionStatement).toBe(true);
   });
 });

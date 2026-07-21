@@ -76,12 +76,8 @@ function assignmentWith(input: Readonly<{
     siteUrl: SITE_URL,
     now: NOW,
     fileUpload: true,
-    availableFunctions: [
-      "mod_assign_get_assignments",
-      "mod_assign_get_submission_status",
-      "mod_assign_save_submission",
-      "mod_assign_submit_for_grading",
-    ],
+    canFinalize: true,
+    canSave: true,
   });
 }
 
@@ -110,8 +106,6 @@ describe("native assignment policy", () => {
   });
 
   test.each([
-    [{ team: true }, "group_submission"],
-    [{ requiresStatement: true }, "submission_statement"],
     [{ locked: true }, "locked"],
     [{ graded: true }, "graded"],
     [{ status: "submitted" }, "final_state"],
@@ -136,5 +130,14 @@ describe("native assignment policy", () => {
     expect(detail.nativeSubmission).toEqual({ kind: "fallback", reason });
     expect(detail.moodleUrl).toBe(`${SITE_URL}/mod/assign/view.php?id=9101`);
     expect(detail.moodleUrl).not.toContain("token");
+  });
+
+  test("keeps group assignments and submission statements in the native workspace", () => {
+    const detail = assignmentWith({ requiresStatement: true, team: true });
+    expect(detail.nativeSubmission.kind).toBe("enabled");
+    if (detail.nativeSubmission.kind === "enabled") {
+      expect(detail.nativeSubmission.isGroupSubmission).toBe(true);
+      expect(detail.nativeSubmission.requiresStatement).toBe(true);
+    }
   });
 });

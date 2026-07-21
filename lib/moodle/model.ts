@@ -10,16 +10,27 @@ export {
   type MoodleConfig,
 } from "./config";
 export {
-  deriveCapabilities,
   MOODLE_FUNCTIONS,
   MOODLE_KNOWN_FUNCTION_NAMES,
-  MoodleCapabilitiesSchema,
   MoodleFunctionNameSchema,
   MoodleKnownFunctionNameSchema,
-  type MoodleCapabilities,
   type MoodleFunctionName,
   type MoodleKnownFunctionName,
 } from "./functions";
+export {
+  ACTIVITY_MODULE_NAMES,
+  ActivityModuleNameSchema,
+  CAPABILITY_STATES,
+  CapabilityStateSchema,
+  deriveCapabilityManifest,
+  MoodleCapabilityManifestSchema,
+  STUDENT_FEATURE_KEYS,
+  StudentFeatureKeySchema,
+  type ActivityModuleName,
+  type CapabilityState,
+  type MoodleCapabilityManifest,
+  type StudentFeatureKey,
+} from "./capabilities";
 export {
   MoodleAssignmentIdSchema,
   MoodleCalendarEventIdSchema,

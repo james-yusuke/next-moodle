@@ -4,6 +4,7 @@ import { WarningCircle } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button, Notice } from "@/components/ui";
+import type { AppRuntimeConfig } from "@/lib/app-config";
 import {
   NotificationsApiSuccessSchema,
   type NotificationFilter,
@@ -19,6 +20,7 @@ import styles from "./notifications.module.css";
 
 type NotificationsClientProps = Readonly<{
   initialState: NotificationsPageState;
+  runtimeConfig: AppRuntimeConfig;
 }>;
 
 function updateReadState(
@@ -38,7 +40,7 @@ function updateReadState(
   };
 }
 
-export function mergeNotificationData(
+function mergeNotificationData(
   current: NotificationsData,
   next: NotificationsData,
   locallyReadIds: ReadonlySet<number> = new Set<number>(),
@@ -57,6 +59,7 @@ export function mergeNotificationData(
 
 export function NotificationsClient({
   initialState,
+  runtimeConfig,
 }: NotificationsClientProps) {
   const [pageState, setPageState] = useState(initialState);
   const [filter, setFilter] = useState<NotificationFilter>("unread");
@@ -176,18 +179,18 @@ export function NotificationsClient({
   };
 
   return (
-    <main className={styles.page} aria-labelledby="notifications-title">
+    <section className={styles.page} aria-labelledby="notifications-title">
       <header className={styles.header}>
         <div>
           <h1 className={styles.title} id="notifications-title">
-            Notifications
+            通知
           </h1>
           <p className={styles.description}>
-            Keep track of feedback, announcements, and other updates from Moodle.
+            フィードバックやお知らせを、未読順の受信箱で確認します。
           </p>
         </div>
         <div className={styles.controls}>
-          <div className={styles.filterGroup} role="group" aria-label="Notification filters">
+          <div className={styles.filterGroup} role="group" aria-label="通知の絞り込み">
             <Button
               aria-pressed={filter === "unread"}
               className={styles.filterButton}
@@ -195,7 +198,7 @@ export function NotificationsClient({
               onClick={() => setFilter("unread")}
               variant="ghost"
             >
-              Unread
+              未読
             </Button>
             <Button
               aria-pressed={filter === "all"}
@@ -204,28 +207,28 @@ export function NotificationsClient({
               onClick={() => setFilter("all")}
               variant="ghost"
             >
-              All
+              すべて
             </Button>
           </div>
           {pageState.kind === "ready" ? (
             <span className={styles.count} aria-live="polite">
-              {pageState.data.unreadCount} unread
+              未読 {pageState.data.unreadCount}件
             </span>
           ) : null}
         </div>
       </header>
       {pollError ? (
-        <Notice tone="warning" title="Live updates are paused">
-          Moodle did not respond to the latest refresh. Your current list is still available.
+        <Notice tone="warning" title="自動更新を一時停止しました">
+          Moodleから応答がありませんでした。現在の一覧はそのまま確認できます。
         </Notice>
       ) : null}
       {readError ? (
-        <Notice tone="error" title="Notification was not marked as read">
-          Try the action again when Moodle is available. This action is not retried automatically.
+        <Notice tone="error" title="既読にできませんでした">
+          入力内容は失われていません。Moodleへ接続できる状態で、もう一度お試しください。
         </Notice>
       ) : null}
       <div aria-live="polite" className={styles.pollStatus}>
-        <WarningCircle aria-hidden size={15} weight="duotone" /> Live updates every 60 seconds while this page is visible.
+        <WarningCircle aria-hidden size={15} weight="regular" /> この画面を表示中だけ、60秒ごとに更新します。
       </div>
       {pageState.kind === "ready" ? (
         <NotificationList
@@ -233,10 +236,11 @@ export function NotificationsClient({
           filter={filter}
           onMarkRead={(id) => void markRead(id)}
           pendingId={pendingId}
+          runtimeConfig={runtimeConfig}
         />
       ) : (
         <NotificationStatusNotice kind={pageState.kind} />
       )}
-    </main>
+    </section>
   );
 }

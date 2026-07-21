@@ -2,6 +2,11 @@ import type {
   MoodleCourseModule,
   MoodleDashboardCourse,
 } from "@/lib/moodle/server";
+import { ACTIVITY_MODULE_NAMES } from "@/lib/moodle/capability-contract";
+
+const INTERNAL_ACTIVITY_MODULES: ReadonlySet<string> = new Set(
+  ACTIVITY_MODULE_NAMES,
+);
 
 export type CourseClassification = "active" | "future" | "past";
 
@@ -9,6 +14,7 @@ export type CourseListItem = {
   readonly classification: CourseClassification;
   readonly endDate?: number;
   readonly id: number;
+  readonly isFavourite: boolean;
   readonly name: string;
   readonly shortName: string;
   readonly startDate?: number;
@@ -20,10 +26,9 @@ export type CourseModuleWithUrl = MoodleCourseModule & {
 
 export type ActivityDestination =
   | { readonly kind: "internal"; readonly href: string }
-  | { readonly kind: "external"; readonly href: string }
   | {
       readonly kind: "disabled";
-      readonly reason: "hidden" | "url_unavailable";
+      readonly reason: "adapter_required" | "hidden" | "url_unavailable";
     };
 
 export function classifyCourse(
@@ -43,22 +48,20 @@ export function projectCourseList(
   courses: readonly MoodleDashboardCourse[],
   nowSeconds: number,
 ): readonly CourseListItem[] {
-  return courses
-    .filter((course) => course.visible !== 0)
-    .map((course): CourseListItem => {
-      const dates = {
-        ...(course.startdate === undefined ? {} : { startDate: course.startdate }),
-        ...(course.enddate === undefined ? {} : { endDate: course.enddate }),
-      };
-      return {
-        classification: classifyCourse(course, nowSeconds),
-        id: course.id,
-        name: course.fullname,
-        shortName: course.shortname,
-        ...dates,
-      };
-    })
-    .sort((left, right) => {
+  const projected: CourseListItem[] = [];
+  for (const course of courses) {
+    if (course.visible === 0) continue;
+    projected.push({
+      classification: classifyCourse(course, nowSeconds),
+      id: course.id,
+      isFavourite: course.isfavourite,
+      name: course.fullname,
+      shortName: course.shortname,
+      ...(course.startdate === undefined ? {} : { startDate: course.startdate }),
+      ...(course.enddate === undefined ? {} : { endDate: course.enddate }),
+    });
+  }
+  return projected.sort((left, right) => {
       const order: Readonly<Record<CourseClassification, number>> = {
         active: 0,
         future: 1,
@@ -66,7 +69,7 @@ export function projectCourseList(
       };
       return order[left.classification] - order[right.classification] ||
         left.name.localeCompare(right.name, "ja");
-    });
+  });
 }
 
 export function filterCourseItems(
@@ -85,7 +88,7 @@ export function filterCourseItems(
   );
 }
 
-function safeMoodleUrl(url: string, siteUrl: string): string | null {
+export function safeMoodleUrl(url: string, siteUrl: string): string | null {
   try {
     const candidate = new URL(url);
     const site = new URL(siteUrl);
@@ -114,21 +117,19 @@ function safeMoodleUrl(url: string, siteUrl: string): string | null {
   }
 }
 
-export function activityDestination(
-  module: CourseModuleWithUrl,
-  siteUrl: string,
-): ActivityDestination {
-  if (module.visible === 0 || module.uservisible === false) {
+export function activityDestination(courseModule: CourseModuleWithUrl): ActivityDestination {
+  if (courseModule.visible === 0 || courseModule.uservisible === false) {
     return { kind: "disabled", reason: "hidden" };
   }
-  if (module.modname === "assign") {
-    return { kind: "internal", href: `/assignments/${module.id}` };
+  if (courseModule.modname === "assign") {
+    return { kind: "internal", href: `/assignments/${courseModule.id}` };
   }
-  if (module.url === undefined) {
-    return { kind: "disabled", reason: "url_unavailable" };
+  if (INTERNAL_ACTIVITY_MODULES.has(courseModule.modname)) {
+    return { kind: "internal", href: `/activities/${courseModule.id}` };
   }
-  const href = safeMoodleUrl(module.url, siteUrl);
-  return href === null
-    ? { kind: "disabled", reason: "url_unavailable" }
-    : { kind: "external", href };
+  return { kind: "disabled", reason: "adapter_required" };
+}
+
+export function isInlineCourseLabel(courseModule: MoodleCourseModule): boolean {
+  return courseModule.modname === "label";
 }

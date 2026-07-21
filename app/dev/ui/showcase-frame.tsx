@@ -29,9 +29,10 @@ export function ShowcaseSection({
 export function ShowcaseSample({
   children,
   label,
-}: Readonly<{ children: ReactNode; label: string }>) {
+  wide = false,
+}: Readonly<{ children: ReactNode; label: string; wide?: boolean }>) {
   return (
-    <div className={styles.sample}>
+    <div className={styles.sample} data-wide={wide}>
       <span className={styles.sampleLabel}>{label}</span>
       <div className={styles.sampleContent}>{children}</div>
     </div>

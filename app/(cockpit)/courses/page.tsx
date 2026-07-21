@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "コース" };
 export default async function CoursesPage() {
   const session = await requireMoodleSession();
   const config = readAppRuntimeConfig();
-  if (!session.capabilities.courses) {
+  if (session.manifest.features.courses !== "available") {
     return (
       <div className="ui-page-stack">
         <header className="ui-page-header"><h1>コース</h1><p>受講中と今後のコースを確認します。</p></header>
@@ -28,7 +28,7 @@ export default async function CoursesPage() {
         <p>受講中、開始前、終了済みのコースを検索できます。</p>
       </header>
       {result.kind === "ready" ? (
-        <CourseList config={config} courses={result.data} />
+        <CourseList canFavorite={session.manifest.features.favorites === "available"} config={config} courses={result.data} />
       ) : (
         <StateNotice reason={result.reason} retryHref="/courses" siteUrl={session.site.siteUrl} />
       )}

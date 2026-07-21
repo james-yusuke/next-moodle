@@ -3,6 +3,8 @@
 import {
   ArrowRight,
   BookOpen,
+  ChatCircleDots,
+  FileText,
   MagnifyingGlass,
   SquaresFour,
 } from "@phosphor-icons/react";
@@ -28,15 +30,18 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [remoteCommands, setRemoteCommands] = useState<readonly CommandItem[]>([]);
   const dialogRef = useRef<HTMLDialogElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const listId = useId();
   const titleId = useId();
-  const results = useMemo(() => searchCommands(commands, query), [commands, query]);
+  const results = useMemo(() => searchCommands([...commands, ...remoteCommands], query), [commands, query, remoteCommands]);
 
   const openPalette = useCallback(() => {
     setQuery("");
+    setRemoteCommands([]);
     setSelectedIndex(0);
     setOpen(true);
   }, []);
@@ -57,13 +62,55 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLocaleLowerCase("en") === "k") {
+        const trigger = rootRef.current?.querySelector<HTMLButtonElement>(".ui-command-trigger");
+        if (trigger === undefined || trigger === null || trigger.getClientRects().length === 0) return;
         event.preventDefault();
         openPalette();
+      } else if (event.key === "?" && event.target instanceof HTMLElement &&
+        !event.target.matches("input, textarea, select, [contenteditable='true']")) {
+        event.preventDefault();
+        router.push("/shortcuts");
       }
     };
     window.addEventListener("keydown", handleShortcut);
     return () => window.removeEventListener("keydown", handleShortcut);
-  }, [openPalette]);
+  }, [openPalette, router]);
+
+  useEffect(() => {
+    const normalized = query.normalize("NFKC").trim();
+    if (!open || normalized.length < 2) {
+      return;
+    }
+    const controller = new AbortController();
+    const timer = window.setTimeout(async () => {
+      try {
+        const response = await fetch(`/api/search?q=${encodeURIComponent(normalized)}`, {
+          cache: "no-store",
+          credentials: "same-origin",
+          signal: controller.signal,
+        });
+        if (!response.ok) return;
+        const payload: unknown = await response.json();
+        if (typeof payload !== "object" || payload === null || !("results" in payload) || !Array.isArray(payload.results)) return;
+        const parsed = payload.results.flatMap((item): readonly CommandItem[] => {
+          if (typeof item !== "object" || item === null) return [];
+          const record = item as Record<string, unknown>;
+          if (typeof record["href"] !== "string" || typeof record["label"] !== "string" || !Array.isArray(record["keywords"])) return [];
+          if (record["kind"] !== "activity" && record["kind"] !== "message") return [];
+          const keywords = record["keywords"].filter((keyword): keyword is string => typeof keyword === "string");
+          return [{ href: record["href"], keywords, kind: record["kind"], label: record["label"] }];
+        });
+        setRemoteCommands(parsed);
+        setSelectedIndex(0);
+      } catch {
+        return;
+      }
+    }, 250);
+    return () => {
+      window.clearTimeout(timer);
+      controller.abort();
+    };
+  }, [open, query]);
 
   const choose = (command: CommandItem) => {
     setOpen(false);
@@ -71,7 +118,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
   };
 
   return (
-    <>
+    <div className="ui-command-root" ref={rootRef}>
       <Button
         aria-label="移動・検索"
         className="ui-command-trigger"
@@ -87,11 +134,6 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
         aria-modal="true"
         className="ui-command-dialog"
         onCancel={() => setOpen(false)}
-        onClick={(event) => {
-          if (event.target === event.currentTarget) {
-            setOpen(false);
-          }
-        }}
         onClose={() => setOpen(false)}
         ref={dialogRef}
       >
@@ -112,6 +154,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
               id={`${listId}-input`}
               onChange={(event) => {
                 setQuery(event.currentTarget.value);
+                setRemoteCommands([]);
                 setSelectedIndex(0);
               }}
               onKeyDown={(event) => {
@@ -155,11 +198,15 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
               >
                 {command.kind === "course" ? (
                   <BookOpen aria-hidden size={20} weight="regular" />
+                ) : command.kind === "activity" ? (
+                  <FileText aria-hidden size={20} weight="regular" />
+                ) : command.kind === "message" ? (
+                  <ChatCircleDots aria-hidden size={20} weight="regular" />
                 ) : (
                   <SquaresFour aria-hidden size={20} weight="regular" />
                 )}
                 <span>{command.label}</span>
-                <small>{command.kind === "course" ? "コース" : "画面"}</small>
+                <small>{command.kind === "course" ? "コース" : command.kind === "activity" ? "活動" : command.kind === "message" ? "会話" : "画面"}</small>
                 <ArrowRight aria-hidden size={17} weight="regular" />
               </button>
             ))}
@@ -167,6 +214,6 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
           <p className="ui-command-help">上下キーで選択、Enterで移動、Escapeで閉じます。</p>
         </div>
       </dialog>
-    </>
+    </div>
   );
 }

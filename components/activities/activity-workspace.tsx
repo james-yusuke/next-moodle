@@ -1,0 +1,110 @@
+import {
+  ArrowLeft,
+  ArrowSquareOut,
+  CheckCircle,
+  DownloadSimple,
+  File,
+  Info,
+  LockSimple,
+  PuzzlePiece,
+} from "@phosphor-icons/react/dist/ssr";
+import Link from "next/link";
+
+import { InspectorSheet } from "@/components/app-shell/inspector-sheet";
+import { ActionDock, PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
+import { Notice } from "@/components/ui";
+import type { AppRuntimeConfig } from "@/lib/app-config";
+import type { NativeActivityData } from "@/lib/moodle/activities/native";
+import type { ActivityWorkspaceDetail } from "@/lib/moodle/queries/activity";
+import { ChoiceWorkspace } from "./choice-workspace";
+import { CompletionToggle } from "./completion-toggle";
+import { DatabaseWorkspace } from "./database-workspace";
+import { FeedbackWorkspace } from "./feedback-workspace";
+import { ForumWorkspace } from "./forum-workspace";
+import { GlossaryWorkspace } from "./glossary-workspace";
+import { LessonWorkspace } from "./lesson-workspace";
+import { LaunchWorkspace } from "./launch-workspace";
+import { QuizWorkspace } from "./quiz-workspace";
+import { QuestionnaireWorkspace } from "./questionnaire-workspace";
+import { WikiWorkspace } from "./wiki-workspace";
+import { WorkshopWorkspace } from "./workshop-workspace";
+import "./activities.css";
+
+function formatBytes(value: number): string {
+  if (value < 1_024) return `${value} B`;
+  if (value < 1_024 * 1_024) return `${Math.round(value / 1_024)} KB`;
+  return `${(value / (1_024 * 1_024)).toFixed(1)} MB`;
+}
+
+function NativePanel({ cmid, config, native }: Readonly<{ cmid: number; config: AppRuntimeConfig; native: NativeActivityData }>) {
+  if (native.kind === "quiz") return <QuizWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "database") return <DatabaseWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "forum") return <ForumWorkspace cmid={cmid} data={native.data} locale={config.locale} timeZone={config.timeZone} />;
+  if (native.kind === "choice") return <ChoiceWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "feedback") return <FeedbackWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "glossary") return <GlossaryWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "lesson") return <LessonWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "launch") return <LaunchWorkspace cmid={cmid} data={native.data} />;
+  if (native.kind === "workshop") return <WorkshopWorkspace cmid={cmid} data={native.data} locale={config.locale} timeZone={config.timeZone} />;
+  return <WikiWorkspace cmid={cmid} data={native.data} />;
+}
+
+export function ActivityWorkspace({ canUpdateCompletion, config, data, native }: Readonly<{
+  canUpdateCompletion: boolean;
+  config: AppRuntimeConfig;
+  data: ActivityWorkspaceDetail;
+  native: NativeActivityData | null | undefined;
+}>) {
+  const dateFormat = new Intl.DateTimeFormat(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone });
+  const typeLabel = data.adapter.kind === "native" ? data.adapter.adapter.label : data.companion?.activity?.kind === "questionnaire" ? "アンケート" : data.moduleType;
+  const localizedDateLabel = (label: string): string => {
+    const normalized = label.trim().toLowerCase();
+    if (normalized === "closes" || normalized.includes("close")) return "終了";
+    if (normalized === "opens" || normalized.includes("open")) return "開始";
+    if (normalized.includes("due")) return "期限";
+    return label;
+  };
+  const activityDetails = (
+    <div className="ui-activity-details">
+      <div className="ui-activity-state">
+        {data.completion === "complete" ? <CheckCircle aria-hidden size={22} weight="fill" /> : <LockSimple aria-hidden size={22} />}
+        <span><strong>{data.completion === "complete" ? "完了" : data.completion === "none" ? "完了条件なし" : "未完了"}</strong><small>{data.availability === "available" ? "利用可能" : "利用制限あり"}</small></span>
+      </div>
+      <dl>
+        <div><dt>コース</dt><dd>{data.course.name}</dd></div>
+        <div><dt>セクション</dt><dd>{data.section.name}</dd></div>
+        {data.dates.map((date) => <div key={`${date.label}-${date.timestamp}`}><dt>{localizedDateLabel(date.label)}</dt><dd>{dateFormat.format(new Date(date.timestamp * 1_000))}</dd></div>)}
+      </dl>
+      <div className="ui-activity-adapter-state"><PuzzlePiece aria-hidden size={18} /><span>{data.adapter.kind === "native" ? "公式API" : data.companion !== null ? "補助アダプター" : data.adapter.kind === "adapter_required" ? "アダプター待ち" : "API未許可"}</span></div>
+      {canUpdateCompletion && data.completion !== "none" ? <CompletionToggle cmid={data.id} complete={data.completion === "complete"} /> : null}
+      <Link className="ui-app-action-link" href={`/courses/${data.course.id}`}><ArrowLeft aria-hidden size={15} />コース内容へ戻る</Link>
+    </div>
+  );
+
+  return (
+    <PageFrame
+      actions={data.sourceUrl !== null && data.adapter.kind !== "native" && data.companion === null ? <ActionDock><span>この活動はNext.js内で解決されていません</span><Link className="ui-app-action-link" href="/diagnostics">接続診断を確認</Link></ActionDock> : undefined}
+      content={(
+        <div className="ui-activity-document" aria-label="アクティビティ作業面">
+          {data.availability !== "available" ? <Notice title="現在このアクティビティは利用できません" tone="warning"><p>公開条件または受講条件を確認してください。</p></Notice> : null}
+          {data.adapter.kind === "adapter_required" && data.companion === null ? <Notice title="この活動にはアダプターが必要です" tone="warning"><p>型付きの next-moodle 補助アダプターをMoodle管理者に依頼してください。</p></Notice> : null}
+          {data.adapter.kind === "unavailable" ? <Notice title="Moodle APIが許可されていません" tone="warning"><p>この活動に必要な公式Web Service関数をMoodle管理者が許可すると、ここで操作できます。</p></Notice> : null}
+          {data.companion === null ? null : <section className="ui-companion-blocks" aria-label="拡張アダプター">{data.companion.blocks.map((block, index) => {
+            if (block.kind === "text") return <article key={`${block.kind}-${index}`}><h2>{block.heading}</h2><p>{block.text}</p></article>;
+            if (block.kind === "facts") return <dl key={`${block.kind}-${index}`}>{block.items.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>;
+            if (block.kind === "list") return <article key={`${block.kind}-${index}`}><h2>{block.heading}</h2><ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul></article>;
+            if (block.kind === "notice") return <Notice key={`${block.kind}-${index}`} title="アダプターからのお知らせ" tone={block.tone === "danger" ? "error" : block.tone}><p>{block.text}</p></Notice>;
+            return <a className="ui-app-action-link" href={block.url} key={`${block.kind}-${index}`} rel="noopener noreferrer" target="_blank">{block.label}<ArrowSquareOut aria-hidden size={16} /></a>;
+          })}</section>}
+          {data.description === "" ? <p className="ui-activity-empty">説明は登録されていません。</p> : <section className="ui-rich-content" dangerouslySetInnerHTML={{ __html: data.description }} />}
+          {data.companion?.activity?.kind === "questionnaire" ? <QuestionnaireWorkspace cmid={data.id} data={data.companion.activity} /> : null}
+          {native === null ? <Notice title="活動情報を取得できません" tone="warning"><p>コースへ戻って公開状態を確認してください。</p></Notice> : null}
+          {native === undefined || native === null ? null : <NativePanel cmid={data.id} config={config} native={native} />}
+          {data.files.length === 0 ? null : <section className="ui-activity-files" aria-labelledby="activity-files-title"><h2 id="activity-files-title">教材ファイル</h2><ul className="ui-ledger">{data.files.map((file) => <li key={`${file.filename}-${file.filesize}`}><File aria-hidden size={19} /><span><strong>{file.filename}</strong><small>{file.mimetype} · {formatBytes(file.filesize)}</small></span>{file.downloadUrl === null ? <span>取得不可</span> : <a href={file.downloadUrl}><DownloadSimple aria-hidden size={17} />ダウンロード</a>}</li>)}</ul></section>}
+        </div>
+      )}
+      header={<RouteHeader actions={<InspectorSheet description="完了状態、公開日時、API接続" label={<><Info aria-hidden size={17} />活動情報</>} title="活動情報">{activityDetails}</InspectorSheet>} description={`${data.section.name} · ${typeLabel}`} eyebrow={<Link href={`/courses/${data.course.id}`}><ArrowLeft aria-hidden size={15} />{data.course.shortName}</Link>} metadata={`CMID ${data.id}`} title={data.name} />}
+      mode="focus"
+    />
+  );
+}

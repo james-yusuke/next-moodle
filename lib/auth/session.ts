@@ -57,12 +57,13 @@ export function createMoodleSession(
   now = Date.now(),
 ): MoodleSession {
   return MoodleSessionSchema.parse({
+    schemaVersion: 3,
     token: login.token,
     service: login.service,
     userId: login.userId,
     expiresAt: now + SESSION_TTL_SECONDS * 1_000,
     site: login.site,
-    capabilities: login.capabilities,
+    manifest: login.manifest,
   });
 }
 

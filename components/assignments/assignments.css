@@ -2,12 +2,14 @@
 .ui-assignment__grid,
 .ui-assignment-form {
   display: grid;
-  gap: var(--space-6);
+  gap: var(--space-8);
 }
 
 .ui-assignment__header {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-4);
+  padding-block-end: var(--space-6);
+  border-block-end: 1px solid var(--border-default);
 }
 
 .ui-assignment__header > a {
@@ -32,7 +34,8 @@
 
 .ui-assignment__header h1 {
   font-size: var(--font-size-h1);
-  line-height: 1.15;
+  font-weight: 590;
+  line-height: 1.18;
   overflow-wrap: anywhere;
   text-wrap: balance;
 }
@@ -46,7 +49,8 @@
 }
 
 .ui-assignment__grid {
-  grid-template-columns: minmax(0, 1.55fr) minmax(min(18rem, 100%), 0.75fr);
+  grid-template-columns: minmax(0, 1.65fr) minmax(min(18rem, 100%), .65fr);
+  align-items: start;
 }
 
 .ui-assignment__description :is(p, ul, ol) {
@@ -86,7 +90,14 @@
 }
 
 .ui-assignment-form-surface {
-  padding: clamp(var(--space-5), 4vw, var(--space-8));
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.ui-assignment-form-surface > .ui-surface__header {
+  padding-block: var(--space-4);
+  border-block: 1px solid var(--border-default);
 }
 
 .ui-assignment-form__text,
@@ -95,7 +106,7 @@
   gap: var(--space-4);
 }
 
-.ui-assignment-form__text > div,
+.ui-assignment-form__text-heading,
 .ui-file-queue__heading {
   display: flex;
   flex-wrap: wrap;
@@ -117,7 +128,7 @@
   font-size: var(--font-size-h3);
 }
 
-.ui-assignment-form__text > div > span,
+.ui-assignment-form__text-heading > span,
 .ui-assignment-form__text small,
 .ui-file-queue__heading p,
 .ui-file-queue__empty {
@@ -128,8 +139,9 @@
 .ui-editor {
   overflow: clip;
   border-radius: var(--shape-card);
-  background: var(--surface-inset);
-  box-shadow: var(--shadow-control);
+  border: 1px solid var(--border-default);
+  background: var(--surface-elevated);
+  box-shadow: none;
 }
 
 .ui-editor__toolbar {
@@ -137,7 +149,8 @@
   flex-wrap: wrap;
   gap: var(--space-1);
   padding: var(--space-2);
-  box-shadow: inset 0 -1px 0 var(--border-default);
+  border-block-end: 1px solid var(--border-default);
+  background: var(--surface-primary);
 }
 
 .ui-editor__toolbar button,
@@ -159,9 +172,11 @@
 }
 
 .ui-editor .tiptap {
-  min-block-size: 16rem;
-  padding: var(--space-5);
+  min-block-size: 26rem;
+  padding: clamp(var(--space-5), 4vw, var(--space-10));
   color: var(--text-primary);
+  font-size: var(--font-size-body-lg);
+  line-height: 1.75;
   outline: 0;
 }
 
@@ -244,12 +259,20 @@
 }
 
 .ui-assignment-form__actions {
+  position: sticky;
+  z-index: 90;
+  inset-block-end: 0;
   justify-content: flex-end;
-  padding-block-start: var(--space-4);
-  box-shadow: inset 0 1px 0 var(--border-default);
+  padding: var(--space-4);
+  border-block-start: 1px solid var(--border-default);
+  background: color-mix(in srgb, var(--surface-primary) 94%, transparent);
+  backdrop-filter: blur(16px);
 }
 
 .ui-submit-confirmation {
+  position: sticky;
+  z-index: 90;
+  inset-block-end: 0;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto auto;
   gap: var(--space-4);
@@ -265,8 +288,167 @@
   font-size: var(--font-size-body-sm);
 }
 
-@media (max-width: 47.99rem) {
+.ui-submit-statement {
+  grid-column: 2 / -1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  min-block-size: 44px;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.ui-submit-statement input {
+  inline-size: 18px;
+  block-size: 18px;
+  accent-color: var(--accent-500);
+}
+
+.ui-writing-workspace {
+  display: grid;
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.ui-writing-utility { border-block: 1px solid var(--border-default); }
+.ui-writing-utility > summary { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; min-block-size: 3.5rem; align-items: center; gap: var(--space-2); padding-inline: var(--space-3); color: var(--text-secondary); cursor: pointer; font-size: var(--font-size-label); font-weight: 650; list-style: none; }
+.ui-writing-utility > summary::-webkit-details-marker { display: none; }
+.ui-writing-utility > summary:hover { background: var(--surface-elevated); color: var(--text-primary); }
+.ui-writing-utility > summary > svg { color: var(--accent-400); }
+.ui-writing-utility > summary > span { color: var(--text-tertiary); font-size: var(--font-size-caption); font-weight: 500; }
+.ui-writing-utility > .ui-ai-panel { border: 0; border-block-start: 1px solid var(--border-subtle); border-radius: 0; }
+
+.ui-writing-workspace__editor {
+  min-inline-size: 0;
+}
+
+.ui-ai-completion-status {
+  min-block-size: 1.5rem;
+  padding-block-start: var(--space-2);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+}
+
+.ui-ai-completion-status[data-error="true"] { color: var(--status-warning); }
+
+.ui-ai-ghost {
+  color: var(--text-tertiary);
+  opacity: .72;
+  pointer-events: none;
+  white-space: pre-wrap;
+}
+
+.ui-plain-editor {
+  position: relative;
+  min-block-size: 26rem;
+  overflow: clip;
+  border: 1px solid var(--border-default);
+  border-radius: var(--shape-card);
+  background: var(--surface-elevated);
+}
+
+.ui-plain-editor__input,
+.ui-plain-editor__mirror {
+  inline-size: 100%;
+  min-block-size: 26rem;
+  padding: clamp(var(--space-5), 4vw, var(--space-10));
+  border: 0;
+  font-size: var(--font-size-body-lg);
+  line-height: 1.75;
+  overflow-wrap: break-word;
+  tab-size: 2;
+  white-space: pre-wrap;
+}
+
+.ui-plain-editor__mirror {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  color: transparent;
+  pointer-events: none;
+}
+
+.ui-plain-editor__mirror mark {
+  background: transparent;
+  color: var(--text-tertiary);
+  opacity: .72;
+}
+
+.ui-plain-editor__input {
+  position: relative;
+  display: block;
+  resize: vertical;
+  background: transparent;
+  color: var(--text-primary);
+  outline: 0;
+}
+
+.ui-plain-editor:focus-within,
+.ui-editor:focus-within { outline: 2px solid var(--accent-400); outline-offset: 2px; }
+
+.ui-ai-panel {
+  display: grid;
+  gap: var(--space-4);
+  min-inline-size: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--border-default);
+  border-radius: var(--shape-card);
+  background: var(--surface-elevated);
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-sm);
+}
+
+.ui-ai-panel h3,
+.ui-ai-panel p,
+.ui-ai-panel ul { margin: 0; }
+
+.ui-ai-panel__heading {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--text-primary);
+}
+
+.ui-ai-panel__heading > svg { color: var(--accent-500); }
+.ui-ai-panel__heading button {
+  display: grid;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border: 0;
+  border-radius: var(--shape-control);
+  background: transparent;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  place-items: center;
+}
+
+.ui-ai-panel__actions { display: grid; gap: var(--space-2); }
+.ui-ai-result { display: grid; gap: var(--space-4); padding-block-start: var(--space-2); border-block-start: 1px solid var(--border-subtle); }
+.ui-ai-result ul { display: grid; gap: var(--space-2); padding-inline-start: var(--space-5); }
+.ui-ai-result article { display: grid; gap: var(--space-3); padding: var(--space-4); border-inline-start: 2px solid var(--accent-500); background: var(--surface-primary); }
+.ui-ai-result article .ui-button { justify-self: start; }
+
+.ui-assignment-canvas { display: grid; gap: var(--space-8); inline-size: min(100%, 55rem); margin-inline: auto; }
+.ui-assignment__description,
+.ui-assignment-feedback { display: grid; gap: var(--space-4); padding-block-end: var(--space-6); border-block-end: 1px solid var(--border-default); }
+.ui-assignment__description > header,
+.ui-assignment-feedback > header { display: grid; gap: var(--space-1); }
+.ui-assignment__description > header span,
+.ui-assignment-feedback > header span { color: var(--accent-400); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); letter-spacing: .07em; }
+.ui-assignment__description h2,
+.ui-assignment-feedback h2 { margin: 0; font-size: var(--font-size-h2); }
+.ui-assignment-inspector { display: grid; gap: var(--space-5); }
+.ui-assignment-inspector > section { display: grid; gap: var(--space-3); }
+.ui-assignment-inspector h3 { margin: 0; font-size: var(--font-size-h3); }
+
+@media (max-width: 63.99rem) {
   .ui-assignment__grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 47.99rem) {
   .ui-submit-confirmation { grid-template-columns: auto minmax(0, 1fr); }
+  .ui-submit-statement { grid-column: 1 / -1; }
   .ui-submit-confirmation .ui-button { grid-column: 1 / -1; inline-size: 100%; }
 }

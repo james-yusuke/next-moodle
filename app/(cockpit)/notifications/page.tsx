@@ -16,13 +16,14 @@ import { loadNotifications } from "@/lib/moodle/queries/notifications";
 import type { NotificationsPageState } from "@/lib/moodle/queries/notifications-schema";
 
 import { NotificationsClient } from "@/components/notifications/notifications-client";
+import { readAppRuntimeConfig } from "@/lib/app-config";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Notifications",
-  description: "Moodle feedback, announcements, and learner updates.",
+  title: "通知",
+  description: "Moodleから届くフィードバックやお知らせを確認します。",
 };
 
 function stateFromError(error: Error): NotificationsPageState {
@@ -45,10 +46,11 @@ function stateFromError(error: Error): NotificationsPageState {
 }
 
 export default async function NotificationsPage() {
+  const runtimeConfig = readAppRuntimeConfig();
   let initialState: NotificationsPageState;
   try {
     const session = await requireMoodleSession();
-    if (!session.capabilities.notifications) {
+    if (session.manifest.features.notifications !== "available") {
       initialState = { kind: "capability" };
     } else {
       const client = await createAuthenticatedMoodleClient();
@@ -68,5 +70,5 @@ export default async function NotificationsPage() {
       throw error;
     }
   }
-  return <NotificationsClient initialState={initialState} />;
+  return <NotificationsClient initialState={initialState} runtimeConfig={runtimeConfig} />;
 }

@@ -26,6 +26,11 @@ const SAFE_FILE_TYPES: Readonly<Record<string, ReadonlySet<string>>> = {
   "text/markdown": new Set([".md"]),
   "text/plain": new Set([".txt"]),
 };
+const LEGACY_OFFICE_MIMES: ReadonlySet<string> = new Set([
+  "application/msword",
+  "application/vnd.ms-excel",
+  "application/vnd.ms-powerpoint",
+]);
 
 export type SubmissionInputErrorCode =
   | "invalid_multipart"
@@ -48,6 +53,7 @@ export class SubmissionInputError extends Error {
 }
 
 export type SubmissionPayload = Readonly<{
+  acceptSubmissionStatement: boolean;
   intent: "save" | "finalize";
   keptExistingFileKeys: readonly string[];
   newFiles: readonly File[];
@@ -84,12 +90,13 @@ function matchesMoodleType(file: File, accepted: readonly string[]): boolean {
   if (accepted.length === 0 || accepted.includes("*")) return true;
   const extension = extensionFor(file.name);
   const mime = mimeTypeFor(file);
+  const genericDocument = mime.startsWith("text/") || mime.indexOf("document") >= 0 || mime === "application/pdf";
   return accepted.some((entry) => {
     const value = entry.toLowerCase();
     if (value.startsWith(".")) return value === extension;
     if (value.endsWith("/*")) return mime.startsWith(value.slice(0, -1));
     if (value === "document") {
-      return mime.startsWith("text/") || mime.includes("document") || mime === "application/pdf";
+      return genericDocument;
     }
     if (value === "image") return mime.startsWith("image/");
     return value === mime;
@@ -106,13 +113,14 @@ async function hasValidSignature(file: File): Promise<boolean> {
   if (detected === undefined) return false;
   if (detected.mime === mime) return true;
   if (mime.includes("openxmlformats") && detected.mime === "application/zip") return true;
-  if (["application/msword", "application/vnd.ms-excel", "application/vnd.ms-powerpoint"].includes(mime)) {
+  if (LEGACY_OFFICE_MIMES.has(mime)) {
     return detected.mime === "application/x-cfb";
   }
   return false;
 }
 
 type FormValues = Readonly<{
+  acceptSubmissionStatement: boolean;
   intent: "save" | "finalize";
   keptExistingFileKeys: readonly string[];
   newFiles: readonly File[];
@@ -121,7 +129,7 @@ type FormValues = Readonly<{
 }>;
 
 function formValues(form: FormData): FormValues {
-  const allowed = new Set(["intent", "keptExistingFileKeys", "newFiles", "onlineText", "onlineTextFormat"]);
+  const allowed = new Set(["acceptSubmissionStatement", "intent", "keptExistingFileKeys", "newFiles", "onlineText", "onlineTextFormat"]);
   for (const key of form.keys()) {
     if (!allowed.has(key)) throw new SubmissionInputError("invalid_submission");
   }
@@ -134,14 +142,21 @@ function formValues(form: FormData): FormValues {
   const text = TextValueSchema.safeParse(onlineText);
   const format = OnlineTextFormatSchema.safeParse(onlineTextFormat);
   const parsedIntent = IntentSchema.safeParse(intent);
+  const accepted = z.enum(["false", "true"]).transform((value) => value === "true")
+    .safeParse(form.get("acceptSubmissionStatement") ?? "false");
   const keys = z.array(ExistingFileKeySchema).max(100).safeParse(form.getAll("keptExistingFileKeys"));
   const rawFiles = form.getAll("newFiles");
-  const newFiles = rawFiles.filter((value): value is File => value instanceof File)
-    .filter((file) => file.name !== "" || file.size > 0);
-  if (!text.success || !format.success || !parsedIntent.success || !keys.success || newFiles.length !== rawFiles.length) {
+  const newFiles: File[] = [];
+  let invalidFileValue = false;
+  for (const value of rawFiles) {
+    if (!(value instanceof File)) invalidFileValue = true;
+    else if (value.name !== "" || value.size > 0) newFiles.push(value);
+  }
+  if (!accepted.success || !text.success || !format.success || !parsedIntent.success || !keys.success || invalidFileValue) {
     throw new SubmissionInputError("invalid_submission");
   }
   return {
+    acceptSubmissionStatement: accepted.data,
     intent: parsedIntent.data,
     keptExistingFileKeys: keys.data,
     newFiles,
@@ -157,7 +172,8 @@ function assertMode(values: FormValues, policy: EnabledPolicy): void {
     (policy.mode === "online_text" && (!hasText || hasFiles)) ||
     (policy.mode === "files" && (hasText || !hasFiles)) ||
     (policy.mode === "mixed" && !hasText && !hasFiles) ||
-    (values.intent === "finalize" && !policy.supportsFinalize)
+    (values.intent === "finalize" && !policy.supportsFinalize) ||
+    (values.intent === "finalize" && policy.requiresStatement && !values.acceptSubmissionStatement)
   ) {
     throw new SubmissionInputError("invalid_submission");
   }
@@ -177,13 +193,12 @@ export async function validateSubmissionFiles(
     if (extensions?.has(extensionFor(file.name)) !== true) {
       throw new SubmissionInputError("unsupported_file_type");
     }
-    if (!(await hasValidSignature(file))) {
-      throw new SubmissionInputError("file_signature_mismatch");
-    }
     if (!matchesMoodleType(file, policy.limits.acceptedFileTypes)) {
       throw new SubmissionInputError("moodle_file_type_rejected");
     }
   }
+  const signatures = await Promise.all(files.map(hasValidSignature));
+  if (signatures.some((valid) => !valid)) throw new SubmissionInputError("file_signature_mismatch");
   if (files.reduce((total, file) => total + file.size, textBytes) > MAX_SUBMISSION_BYTES) {
     throw new SubmissionInputError("request_too_large");
   }

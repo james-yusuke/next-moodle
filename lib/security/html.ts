@@ -6,6 +6,8 @@ import { moodleFileProxyPath } from "./moodle-file";
 const MoodleHtmlSchema = z.string().max(1_000_000);
 const SanitizedHtmlSchema = z.string().brand("SanitizedMoodleHtml");
 export type SanitizedMoodleHtml = z.infer<typeof SanitizedHtmlSchema>;
+const SanitizedQuizHtmlSchema = z.string().brand("SanitizedQuizHtml");
+export type SanitizedQuizHtml = z.infer<typeof SanitizedQuizHtmlSchema>;
 
 type SanitizeMoodleHtmlOptions = Readonly<{
   siteUrl: string;
@@ -58,6 +60,28 @@ function safeProtectedFile(value: string, siteUrl: string): string | null {
   return resolved === null ? null : moodleFileProxyPath(resolved, siteUrl);
 }
 
+function embeddedContentLink(value: string, siteUrl: string): string | null {
+  const resolved = safeMoodleLink(value, siteUrl);
+  if (resolved === null) return null;
+  const candidate = new URL(resolved);
+  const site = new URL(siteUrl);
+  if (candidate.origin !== site.origin) return resolved;
+  const id = Number(candidate.searchParams.get("id"));
+  if (!Number.isSafeInteger(id) || id <= 0) return null;
+  if (candidate.pathname === "/course/view.php") return `/courses/${id}`;
+  const moduleName = /^\/mod\/([a-z0-9_]+)\/view\.php$/.exec(candidate.pathname)?.[1];
+  if (moduleName === undefined) return null;
+  return moduleName === "assign" ? `/assignments/${id}` : `/activities/${id}`;
+}
+
+function linkAttributes(href: string, title: string | undefined): Record<string, string> {
+  return {
+    href,
+    ...(href.startsWith("/") ? {} : { rel: "noopener noreferrer", target: "_blank" }),
+    ...(title === undefined ? {} : { title }),
+  };
+}
+
 export function sanitizeMoodleHtml(
   value: string,
   options: SanitizeMoodleHtmlOptions,
@@ -80,18 +104,13 @@ export function sanitizeMoodleHtml(
           return { tagName: "span", attribs: {} };
         }
         const protectedHref = safeProtectedFile(rawHref, options.siteUrl);
-        const href = protectedHref ?? safeMoodleLink(rawHref, options.siteUrl);
+        const href = protectedHref ?? embeddedContentLink(rawHref, options.siteUrl);
         if (href === null) {
           return { tagName: "span", attribs: {} };
         }
         return {
           tagName: "a",
-          attribs: {
-            href,
-            rel: "noopener noreferrer",
-            target: "_blank",
-            ...(attributes.title === undefined ? {} : { title: attributes.title }),
-          },
+          attribs: linkAttributes(href, attributes.title),
         };
       },
       img: (_tagName, attributes) => {
@@ -116,4 +135,56 @@ export function sanitizeMoodleHtml(
     },
   });
   return SanitizedHtmlSchema.parse(sanitized);
+}
+
+const QUIZ_CONTROL_TAGS = ["input", "label", "select", "option", "textarea"] as const;
+const QUIZ_INPUT_TYPES = new Set(["checkbox", "hidden", "number", "radio", "text"]);
+
+export function sanitizeQuizQuestionHtml(
+  value: string,
+  options: SanitizeMoodleHtmlOptions,
+): SanitizedQuizHtml {
+  const input = MoodleHtmlSchema.parse(value);
+  const sanitized = sanitizeHtmlLibrary(input, {
+    allowedTags: [...ALLOWED_TAGS, ...QUIZ_CONTROL_TAGS, "div", "span"],
+    allowedAttributes: {
+      "*": ["class"],
+      a: ["href", "title"],
+      img: ["src", "alt", "title", "width", "height"],
+      input: ["checked", "disabled", "id", "max", "maxlength", "min", "name", "step", "type", "value"],
+      label: ["for"],
+      option: ["disabled", "selected", "value"],
+      select: ["disabled", "id", "multiple", "name"],
+      textarea: ["cols", "disabled", "id", "maxlength", "name", "rows"],
+      th: ["colspan", "rowspan", "scope"],
+      td: ["colspan", "rowspan"],
+    },
+    allowedSchemes: ["http", "https", "mailto"],
+    allowProtocolRelative: false,
+    transformTags: {
+      a: (_tagName, attributes) => {
+        const href = attributes.href === undefined
+          ? null
+          : embeddedContentLink(attributes.href, options.siteUrl);
+        return href === null
+          ? { tagName: "span", attribs: {} }
+          : { tagName: "a", attribs: linkAttributes(href, attributes.title) };
+      },
+      img: (_tagName, attributes) => {
+        const src = attributes.src === undefined
+          ? null
+          : safeProtectedFile(attributes.src, options.siteUrl);
+        return src === null
+          ? { tagName: "span", attribs: {} }
+          : { tagName: "img", attribs: { src, alt: attributes.alt ?? "" } };
+      },
+      input: (_tagName, attributes) => {
+        const type = QUIZ_INPUT_TYPES.has(attributes.type ?? "text")
+          ? (attributes.type ?? "text")
+          : "text";
+        return { tagName: "input", attribs: { ...attributes, type } };
+      },
+    },
+  });
+  return SanitizedQuizHtmlSchema.parse(sanitized);
 }

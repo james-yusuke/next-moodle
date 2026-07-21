@@ -72,7 +72,7 @@ describe("Moodle login boundary", () => {
     }
   });
 
-  test("parses safe site info and derives service capabilities", async () => {
+  test("parses safe site info and derives a compact feature manifest", async () => {
     // Given
     const moodle = startWireMoodle((request) => {
       if (request.path === "/login/token.php") {
@@ -105,9 +105,15 @@ describe("Moodle login boundary", () => {
       // Then
       expect(login.site.siteName).toBe("Example Learning Hub");
       expect(login.service).toBe("moodle_mobile_app");
-      expect(login.capabilities.courses).toBe(true);
-      expect(login.capabilities.calendar).toBe(true);
-      expect(login.capabilities.assignments).toBe(false);
+      expect(login.manifest.version).toBe(3);
+      expect(login.manifest.functionHash).toMatch(/^[a-f0-9]{64}$/);
+      expect(login.manifest.functionBits).toMatch(/^[A-Za-z0-9_-]+$/);
+      expect(login.manifest.features.courses).toBe("available");
+      expect(login.manifest.features.calendar).toBe("available");
+      expect(login.manifest.features.assignmentsRead).toBe("unavailable");
+      expect(JSON.stringify(login.manifest)).not.toContain(
+        MOODLE_FUNCTIONS.courseContents,
+      );
       expect(JSON.stringify(login)).not.toContain("Private Student Name");
       expect(moodle.requests).toHaveLength(2);
     } finally {

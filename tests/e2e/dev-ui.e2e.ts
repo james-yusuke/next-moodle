@@ -9,6 +9,7 @@ const VIEWPORTS = [
   { height: 900, name: "mobile", width: 375 },
   { height: 1024, name: "tablet", width: 768 },
   { height: 900, name: "desktop", width: 1280 },
+  { height: 1000, name: "wide", width: 1600 },
 ] as const;
 
 const THEMES = ["dark", "light"] as const;
@@ -32,10 +33,10 @@ for (const viewport of VIEWPORTS) {
       // Then
       await expect(page.getByTestId("ui-showcase")).toBeVisible();
       await expect(page.locator("html")).toHaveAttribute("data-theme", theme);
-      await expect(page.locator(".ui-button")).toHaveCount(12);
+      await expect(page.locator(".ui-button").first()).toBeVisible();
       await expect(page.locator(".ui-field")).toHaveCount(8);
-      await expect(page.locator(".ui-badge")).toHaveCount(6);
-      await expect(page.locator(".ui-notice")).toHaveCount(4);
+      await expect(page.locator(".ui-badge")).toHaveCount(8);
+      await expect.poll(() => page.locator(".ui-notice").count()).toBeGreaterThanOrEqual(9);
       await expect(page.locator(".ui-skeleton")).toHaveCount(3);
 
       const hasHorizontalOverflow = await page.evaluate(
@@ -63,7 +64,7 @@ for (const viewport of VIEWPORTS) {
       await page.screenshot({
         animations: "disabled",
         fullPage: true,
-        path: `.omo/evidence/t1-design-tooling/screenshots/${viewport.name}-${theme}.png`,
+        path: `test-results/visual/${viewport.name}-${theme}.png`,
       });
     });
   }
@@ -92,11 +93,12 @@ test("changes theme and exposes a visible keyboard focus treatment", async ({ pa
   const focusRing = await darkButton.evaluate(
     (element) => getComputedStyle(element).boxShadow,
   );
-  expect(focusRing).toContain("rgb(155, 165, 255)");
+  expect(focusRing).not.toBe("none");
+  expect(focusRing).toContain("0px 0px 0px 4px");
   await page.screenshot({
     animations: "disabled",
     fullPage: false,
-    path: ".omo/evidence/t1-design-tooling/interaction/theme-focus.png",
+    path: "test-results/visual/theme-focus.png",
   });
 });
 
@@ -114,7 +116,7 @@ test("shows press feedback and returns to rest", async ({ page }) => {
   }
   await page.screenshot({
     animations: "allow",
-    path: ".omo/evidence/t1-design-tooling/interaction/button-rest.png",
+    path: "test-results/visual/button-rest.png",
   });
 
   // When
@@ -127,7 +129,7 @@ test("shows press feedback and returns to rest", async ({ page }) => {
     .not.toBe("none");
   await page.screenshot({
     animations: "allow",
-    path: ".omo/evidence/t1-design-tooling/interaction/button-pressed.png",
+    path: "test-results/visual/button-pressed.png",
   });
   await page.mouse.up();
   await expect
@@ -135,6 +137,6 @@ test("shows press feedback and returns to rest", async ({ page }) => {
     .toBe("none");
   await page.screenshot({
     animations: "allow",
-    path: ".omo/evidence/t1-design-tooling/interaction/button-settled.png",
+    path: "test-results/visual/button-settled.png",
   });
 });

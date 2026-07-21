@@ -1,30 +1,27 @@
-import { ArrowSquareOut, CalendarDots, FileText } from "@phosphor-icons/react/dist/ssr";
+import { ArrowLeft, CalendarDots, FileText, Info } from "@phosphor-icons/react/dist/ssr";
 import Link from "next/link";
 
-import type { AssignmentDetail } from "@/lib/moodle/queries/assignments";
+import { InspectorSheet } from "@/components/app-shell/inspector-sheet";
+import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
+import { Badge, Notice } from "@/components/ui";
+import type { AiAvailability } from "@/lib/ai/config";
 import type { AppRuntimeConfig } from "@/lib/app-config";
-import { Badge, Notice, Surface } from "@/components/ui";
 import { dateTimeFormatter } from "@/lib/date-time";
-
+import type { AssignmentDetail } from "@/lib/moodle/queries/assignments";
 import { AssignmentSubmissionForm } from "./assignment-submission-form";
+import { assignmentStatusLabel } from "./status-label";
 
 function dueLabel(data: AssignmentDetail, config: AppRuntimeConfig): string {
   if (data.dueAt === 0) return "期限なし";
-  return dateTimeFormatter(config.locale, {
-    dateStyle: "medium",
-    timeStyle: "short",
-    timeZone: config.timeZone,
-  }).format(new Date(data.dueAt * 1_000));
+  return dateTimeFormatter(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone }).format(new Date(data.dueAt * 1_000));
 }
 
 function fallbackReason(data: AssignmentDetail): string {
   if (data.nativeSubmission.kind === "enabled") return "";
   switch (data.nativeSubmission.reason) {
-    case "group_submission": return "グループ提出はMoodleで行ってください。";
-    case "submission_statement": return "提出同意文が必要なため、Moodleで行ってください。";
     case "locked": return "この提出はロックされています。";
-    case "graded": return "採点済みの提出はMoodleで確認してください。";
-    case "final_state": return "提出済みの課題はMoodleで確認してください。";
+    case "graded": return "採点済みのため提出内容は編集できません。";
+    case "final_state": return "提出済みのため提出内容は編集できません。";
     case "not_open": return "この課題はまだ提出期間外です。";
     case "cutoff_reached": return "提出締切を過ぎています。";
     case "permission": return "この課題への提出権限がありません。";
@@ -33,69 +30,44 @@ function fallbackReason(data: AssignmentDetail): string {
   }
 }
 
-export function AssignmentDetailView({ config, data, draftStorageKey }: Readonly<{
+export function AssignmentDetailView({ aiAvailability, aiConsentStorageKey, config, data, draftStorageKey }: Readonly<{
+  aiAvailability: AiAvailability;
+  aiConsentStorageKey: string;
   config: AppRuntimeConfig;
   data: AssignmentDetail;
   draftStorageKey: string;
 }>) {
   const native = data.nativeSubmission;
-  return (
-    <div className="ui-page-stack ui-assignment">
-      <header className="ui-assignment__header">
-        <Link href={`/courses/${data.assignment.course}`}>コースに戻る</Link>
-        <div>
-          <Badge tone={data.isOverdue ? "error" : "accent"}>{data.courseName}</Badge>
-          <h1>{data.name}</h1>
-          <p><CalendarDots aria-hidden size={18} weight="regular" /> <span className="ui-tabular">{dueLabel(data, config)}</span></p>
-        </div>
-      </header>
-      <div className="ui-assignment__grid">
-        <Surface className="ui-assignment__description" title="課題の説明">
-          <div dangerouslySetInnerHTML={{ __html: data.description }} />
-        </Surface>
-        <Surface eyebrow="提出状況" title={data.status} variant="raised">
-          <dl className="ui-assignment__facts">
-            <div><dt>期限</dt><dd className="ui-tabular">{dueLabel(data, config)}</dd></div>
-            <div><dt>最終更新</dt><dd>{data.updatedAt === 0 ? "未保存" : dateTimeFormatter(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone }).format(new Date(data.updatedAt * 1_000))}</dd></div>
-            <div><dt>状態</dt><dd>{data.isLocked ? "ロック中" : data.isGraded ? "採点済み" : data.isOverdue ? "期限超過" : "提出可能"}</dd></div>
-          </dl>
-          {data.existingFiles.length > 0 ? (
-            <ul className="ui-assignment__files">
-              {data.existingFiles.map((file) => (
-                <li key={`${file.filename}-${file.filesize}`}>
-                  <FileText aria-hidden size={18} weight="regular" />
-                  {file.downloadUrl === undefined ? file.filename : <a href={file.downloadUrl}>{file.filename}</a>}
-                </li>
-              ))}
-            </ul>
-          ) : null}
-        </Surface>
-      </div>
-      {native.kind === "enabled" ? (
-        <AssignmentSubmissionForm
-          cmid={data.cmid}
-          draftStorageKey={draftStorageKey}
-          dueLabel={dueLabel(data, config)}
-          existingFiles={data.existingFiles}
-          initialText={data.existingText}
-          locale={config.locale}
-          policy={native}
-        />
-      ) : (
-        <Notice
-          action={<a className="ui-app-action-link" href={data.moodleUrl} rel="noopener noreferrer" target="_blank">Moodleで提出 <ArrowSquareOut aria-hidden size={17} weight="regular" /></a>}
-          title="この課題はMoodleで提出してください"
-          tone="warning"
-        >
-          <p>{fallbackReason(data)} 新規タブで開くため、Moodle側への再ログインが必要な場合があります。</p>
-        </Notice>
-      )}
-      {data.feedback === null ? null : (
-        <Surface title="フィードバック">
-          {data.feedback.grade === null ? null : <div dangerouslySetInnerHTML={{ __html: data.feedback.grade }} />}
-          {data.feedback.comments.map((comment, index) => <div key={index} dangerouslySetInnerHTML={{ __html: comment }} />)}
-        </Surface>
-      )}
+  const due = dueLabel(data, config);
+  const updated = data.updatedAt === 0 ? "未保存" : dateTimeFormatter(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone }).format(new Date(data.updatedAt * 1_000));
+  const details = (
+    <div className="ui-assignment-inspector">
+      <Badge tone={data.isOverdue ? "error" : "accent"}>{assignmentStatusLabel(data.status)}</Badge>
+      <dl className="ui-assignment__facts">
+        <div><dt>期限</dt><dd className="ui-tabular">{due}</dd></div>
+        <div><dt>最終更新</dt><dd>{updated}</dd></div>
+        <div><dt>状態</dt><dd>{data.isLocked ? "ロック中" : data.isGraded ? "採点済み" : data.isOverdue ? "期限超過" : "提出可能"}</dd></div>
+      </dl>
+      {data.existingFiles.length === 0 ? null : <section><h3>提出済みファイル</h3><ul className="ui-assignment__files">{data.existingFiles.map((file) => <li key={`${file.filename}-${file.filesize}`}><FileText aria-hidden size={18} />{file.downloadUrl === undefined ? file.filename : <a href={file.downloadUrl}>{file.filename}</a>}</li>)}</ul></section>}
     </div>
+  );
+
+  return (
+    <PageFrame
+      content={(
+        <article className="ui-assignment-canvas">
+          <section className="ui-assignment__description" aria-labelledby="assignment-description-title">
+            <header><span>BRIEF</span><h2 id="assignment-description-title">課題の説明</h2></header>
+            <div className="ui-rich-content" dangerouslySetInnerHTML={{ __html: data.description }} />
+          </section>
+          {native.kind === "enabled" ? (
+            <AssignmentSubmissionForm aiAvailability={aiAvailability} aiConsentStorageKey={aiConsentStorageKey} cmid={data.cmid} draftStorageKey={draftStorageKey} dueLabel={due} existingFiles={data.existingFiles} initialText={data.existingText} locale={config.locale} policy={native} />
+          ) : <Notice title="この提出方法は現在利用できません" tone="warning"><p>{fallbackReason(data)} 特殊提出形式の場合は local_nextmoodle アダプターをMoodle管理者へ依頼してください。</p></Notice>}
+          {data.feedback === null ? null : <section className="ui-assignment-feedback"><header><span>REVIEW</span><h2>フィードバック</h2></header>{data.feedback.grade === null ? null : <div dangerouslySetInnerHTML={{ __html: data.feedback.grade }} />}{data.feedback.comments.map((comment, index) => <div key={index} dangerouslySetInnerHTML={{ __html: comment }} />)}</section>}
+        </article>
+      )}
+      header={<RouteHeader actions={<InspectorSheet description="提出状況と保存済みファイル" label={<><Info aria-hidden size={17} />提出情報</>} title="提出情報">{details}</InspectorSheet>} description={<><CalendarDots aria-hidden size={16} /> <span className="ui-tabular">{due}</span></>} eyebrow={<Link href={`/courses/${data.assignment.course}`}><ArrowLeft aria-hidden size={15} />{data.courseName}</Link>} metadata={`CMID ${data.cmid}`} title={data.name} />}
+      mode="focus"
+    />
   );
 }

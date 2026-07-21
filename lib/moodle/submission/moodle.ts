@@ -133,7 +133,7 @@ export async function executeAssignmentSubmission(
       MOODLE_FUNCTIONS.submitAssignment,
       {
         assignmentid: input.assignmentId,
-        acceptsubmissionstatement: false,
+        acceptsubmissionstatement: input.payload.acceptSubmissionStatement,
       },
       MoodleMutationResponseSchema,
     );

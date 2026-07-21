@@ -2,13 +2,15 @@ import { describe, expect, test } from "bun:test";
 import { getIronSession } from "iron-session";
 import type { ResponseCookie } from "next/dist/compiled/@edge-runtime/cookies";
 
-import { createSessionOptions } from "../../lib/auth/session";
 import {
-  MoodleSessionSchema,
-  MoodleTokenSchema,
+  createSessionOptions,
+  parseActiveMoodleSession,
+} from "../../lib/auth/session";
+import {
   MoodleUserIdSchema,
   type MoodleSession,
 } from "../../lib/moodle/model";
+import { createSessionFixture } from "./session-fixture";
 
 type SessionContainer = {
   moodle?: MoodleSession;
@@ -55,28 +57,34 @@ const options = createSessionOptions(
 );
 
 function fixtureSession(token: string, userId: number): MoodleSession {
-  return MoodleSessionSchema.parse({
-    token: MoodleTokenSchema.parse(token),
-    service: "fixture_service",
-    userId: MoodleUserIdSchema.parse(userId),
-    expiresAt: Date.now() + 60_000,
-    site: {
-      siteName: "Example Learning Hub",
-      siteUrl: "https://moodle.example",
-      availableFunctions: [],
-    },
-    capabilities: {
-      dashboard: false,
-      courses: false,
-      assignments: false,
-      calendar: false,
-      notifications: false,
-      fileUpload: false,
-    },
-  });
+  return createSessionFixture({ token, userId });
 }
 
 describe("iron-session Moodle cookie", () => {
+  test("rejects a legacy session without a schema version", () => {
+    // Given
+    const legacySession = fixtureSession("fixture-legacy", 40);
+    const legacyValue = { ...legacySession, schemaVersion: undefined };
+
+    // When
+    const parsed = parseActiveMoodleSession(legacyValue);
+
+    // Then
+    expect(parsed).toBeNull();
+  });
+
+  test("rejects a version two session after the capability bitset migration", () => {
+    // Given
+    const legacySession = fixtureSession("fixture-legacy-v2", 43);
+    const legacyValue = { ...legacySession, schemaVersion: 2 };
+
+    // When
+    const parsed = parseActiveMoodleSession(legacyValue);
+
+    // Then
+    expect(parsed).toBeNull();
+  });
+
   test("encrypts each user's token into an isolated secure cookie", async () => {
     // Given
     const firstStore = new MemoryCookieStore();

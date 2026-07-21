@@ -1,4 +1,3 @@
-import { MOODLE_FUNCTIONS } from "../functions";
 import type {
   MoodleAssignmentWire,
   MoodleSubmissionStatus,
@@ -10,8 +9,6 @@ const MAX_NATIVE_FILE_BYTES = 10 * 1_024 * 1_024;
 
 export type NativeSubmissionMode = "online_text" | "files" | "mixed";
 export type NativeBlockReason =
-  | "group_submission"
-  | "submission_statement"
   | "unsupported_plugin"
   | "locked"
   | "graded"
@@ -31,15 +28,19 @@ export type NativeSubmissionLimits = Readonly<{
 export type NativeSubmissionPolicy =
   | Readonly<{
       kind: "enabled";
+      groupId: number;
+      isGroupSubmission: boolean;
       limits: NativeSubmissionLimits;
       mode: NativeSubmissionMode;
+      requiresStatement: boolean;
       supportsFinalize: boolean;
     }>
   | Readonly<{ kind: "fallback"; reason: NativeBlockReason }>;
 
 type PolicyInput = Readonly<{
   assignment: MoodleAssignmentWire;
-  availableFunctions: readonly string[];
+  canFinalize: boolean;
+  canSave: boolean;
   fileUpload: boolean;
   now: number;
   submission: MoodleSubmissionStatus;
@@ -57,22 +58,25 @@ function enabledValue(value: string | number | boolean): boolean {
 }
 
 function enabledPlugins(input: PolicyInput): readonly string[] {
-  const configured = input.assignment.configs
-    .filter(
-      (config) =>
-        config.subtype.toLowerCase() === "assignsubmission" &&
-        config.name.toLowerCase() === "enabled" &&
-        enabledValue(config.value),
-    )
-    .map((config) => normalizedPlugin(config.plugin));
-  if (configured.length > 0) {
-    return [...new Set(configured)];
+  const configured = new Set<string>();
+  for (const config of input.assignment.configs) {
+    if (
+      config.subtype.toLowerCase() === "assignsubmission" &&
+      config.name.toLowerCase() === "enabled" &&
+      enabledValue(config.value)
+    ) {
+      configured.add(normalizedPlugin(config.plugin));
+    }
   }
-  const observed = (input.submission.lastattempt?.submission?.plugins ?? []).map(
-    (plugin) => normalizedPlugin(plugin.type),
-  );
-  if (observed.length > 0) {
-    return [...new Set(observed)];
+  if (configured.size > 0) {
+    return [...configured];
+  }
+  const observed = new Set<string>();
+  for (const plugin of input.submission.lastattempt?.submission?.plugins ?? []) {
+    observed.add(normalizedPlugin(plugin.type));
+  }
+  if (observed.size > 0) {
+    return [...observed];
   }
   return input.assignment.maxfilesubmissions > 0 ? ["file"] : [];
 }
@@ -148,16 +152,9 @@ export function deriveNativeSubmissionPolicy(
   const lastAttempt = input.submission.lastattempt;
   const state = lastAttempt?.submission?.status.toLowerCase() ?? "new";
   const grading = lastAttempt?.gradingstatus.toLowerCase() ?? "notgraded";
-  const functions = new Set(input.availableFunctions);
   const plugins = new Set(enabledPlugins(input));
   const mode = modeFor(plugins);
 
-  if (input.assignment.teamsubmission) {
-    return { kind: "fallback", reason: "group_submission" };
-  }
-  if (input.assignment.requiresubmissionstatement) {
-    return { kind: "fallback", reason: "submission_statement" };
-  }
   if ([...plugins].some((plugin) => !SUPPORTED_PLUGINS.has(plugin)) || mode === null) {
     return { kind: "fallback", reason: "unsupported_plugin" };
   }
@@ -189,17 +186,19 @@ export function deriveNativeSubmissionPolicy(
     return { kind: "fallback", reason: "permission" };
   }
   if (
-    !functions.has(MOODLE_FUNCTIONS.saveAssignment) ||
+    !input.canSave ||
     (mode !== "online_text" && !input.fileUpload) ||
-    (input.assignment.submissiondrafts &&
-      !functions.has(MOODLE_FUNCTIONS.submitAssignment))
+    (input.assignment.submissiondrafts && !input.canFinalize)
   ) {
     return { kind: "fallback", reason: "capability" };
   }
   return {
     kind: "enabled",
+    groupId: lastAttempt?.submission?.groupid ?? 0,
+    isGroupSubmission: input.assignment.teamsubmission,
     limits: limitsFor(input.assignment),
     mode,
+    requiresStatement: input.assignment.requiresubmissionstatement,
     supportsFinalize: input.assignment.submissiondrafts,
   };
 }

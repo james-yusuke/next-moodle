@@ -1,26 +1,23 @@
 "use client";
 
 import { CheckCircle, FloppyDisk, PaperPlaneTilt } from "@phosphor-icons/react";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
-import { Button, Notice, Surface, Textarea } from "@/components/ui";
+import { Button, Notice, Surface } from "@/components/ui";
+import type { AiAvailability } from "@/lib/ai/config";
+import type { AiTextFormat } from "@/lib/ai/contracts";
 import type { NativeSubmissionPolicy } from "@/lib/moodle/queries/assignment-policy";
 import type { AssignmentFile, AssignmentOnlineText } from "@/lib/moodle/queries/assignments";
 import { SubmissionFileQueue } from "./submission-file-queue";
+import { WritingWorkspace } from "./writing-workspace";
 import {
   APP_MAX_SUBMISSION_BYTES,
   fileIdentity,
   matchesAcceptedType,
   submissionErrorMessage,
 } from "./submission-client-policy";
-
-const RichTextEditor = dynamic(
-  () => import("./rich-text-editor").then((module) => module.RichTextEditor),
-  { ssr: false },
-);
 
 const ResponseSchema = z.discriminatedUnion("ok", [
   z.object({ ok: z.literal(true), result: z.object({ state: z.enum(["draft", "submitted"]) }) }),
@@ -29,6 +26,8 @@ const ResponseSchema = z.discriminatedUnion("ok", [
 
 type EnabledPolicy = Extract<NativeSubmissionPolicy, { readonly kind: "enabled" }>;
 type Props = Readonly<{
+  aiAvailability: AiAvailability;
+  aiConsentStorageKey: string;
   cmid: number;
   draftStorageKey: string;
   dueLabel: string;
@@ -37,6 +36,10 @@ type Props = Readonly<{
   locale: string;
   policy: EnabledPolicy;
 }>;
+
+function aiTextFormat(value: number): AiTextFormat {
+  return value === 0 || value === 1 || value === 2 || value === 4 ? value : 2;
+}
 
 function allowsText(policy: EnabledPolicy): boolean {
   return policy.mode === "online_text" || policy.mode === "mixed";
@@ -56,6 +59,7 @@ export function AssignmentSubmissionForm(props: Props) {
   const [pending, setPending] = useState(false);
   const [converting, setConverting] = useState(false);
   const [confirming, setConfirming] = useState(false);
+  const [statementAccepted, setStatementAccepted] = useState(false);
   const [notice, setNotice] = useState<Readonly<{ tone: "error" | "success"; text: string }> | null>(null);
   const activeFileCount = keptKeys.size + newFiles.length;
   const accept = props.policy.limits.acceptedFileTypes.join(",");
@@ -148,6 +152,7 @@ export function AssignmentSubmissionForm(props: Props) {
     setPending(true);
     setNotice(null);
     const form = new FormData();
+    form.set("acceptSubmissionStatement", String(statementAccepted));
     form.set("intent", intent);
     form.set("onlineText", allowsText(props.policy) ? text : "");
     form.set("onlineTextFormat", String(props.initialText.format));
@@ -183,16 +188,23 @@ export function AssignmentSubmissionForm(props: Props) {
   };
 
   return (
-    <Surface className="ui-assignment-form-surface" eyebrow="Submission desk" title="提出内容を編集" variant="raised">
+    <Surface className="ui-assignment-form-surface" eyebrow="提出ワークスペース" title="提出内容を編集" variant="raised">
       <form className="ui-assignment-form" onSubmit={(event) => event.preventDefault()}>
+        {props.policy.isGroupSubmission ? <Notice title="グループ提出" tone="info"><p>{props.policy.groupId === 0 ? "Moodleで割り当てられたグループの共同提出として保存します。" : `グループID ${props.policy.groupId} の共同提出として保存します。`}</p></Notice> : null}
         {allowsText(props.policy) ? (
           <section className="ui-assignment-form__text">
-            <div><h3>オンラインテキスト</h3><span>{formatLabel}</span></div>
-            {props.initialText.format === 1 ? (
-              <RichTextEditor disabled={pending} initialContent={text} onChange={setText} />
-            ) : (
-              <Textarea disabled={pending} label="本文" maxLength={props.policy.limits.maxOnlineTextBytes} onChange={(event) => setText(event.currentTarget.value)} value={text} />
-            )}
+            <div className="ui-assignment-form__text-heading"><h3>オンラインテキスト</h3><span>{formatLabel}</span></div>
+            <WritingWorkspace
+              aiAvailability={props.aiAvailability}
+              aiConsentStorageKey={props.aiConsentStorageKey}
+              cmid={props.cmid}
+              disabled={pending}
+              format={aiTextFormat(props.initialText.format)}
+              maxLength={props.policy.limits.maxOnlineTextBytes}
+              onChange={setText}
+              submitting={pending}
+              value={text}
+            />
             <small data-invalid={textTooLarge}>{textBytes.toLocaleString(props.locale)} / {props.policy.limits.maxOnlineTextBytes.toLocaleString(props.locale)} bytes · 端末内へ自動保存</small>
           </section>
         ) : null}
@@ -211,8 +223,9 @@ export function AssignmentSubmissionForm(props: Props) {
           <div className="ui-submit-confirmation" role="group" aria-label="提出確定の確認">
             <CheckCircle aria-hidden size={26} weight="regular" />
             <div><h3>この内容で提出を確定しますか？</h3><p>本文 {text.trim() === "" ? "なし" : "あり"} · ファイル {activeFileCount}件 · 締切 {props.dueLabel}</p></div>
+            {props.policy.requiresStatement ? <label className="ui-submit-statement"><input checked={statementAccepted} onChange={(event) => setStatementAccepted(event.currentTarget.checked)} type="checkbox" /><span>この提出物が自分または所属グループの成果物であることに同意します。</span></label> : null}
             <Button disabled={pending || converting} onClick={() => setConfirming(false)} type="button" variant="ghost">戻る</Button>
-            <Button disabled={converting || textTooLarge || !submissionReady} icon={<PaperPlaneTilt aria-hidden size={18} />} loading={pending} onClick={() => void submit("finalize")} type="button" variant="primary">提出を確定</Button>
+            <Button disabled={converting || textTooLarge || !submissionReady || (props.policy.requiresStatement && !statementAccepted)} icon={<PaperPlaneTilt aria-hidden size={18} />} loading={pending} onClick={() => void submit("finalize")} type="button" variant="primary">提出を確定</Button>
           </div>
         ) : (
           <div className="ui-assignment-form__actions">

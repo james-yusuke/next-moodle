@@ -1,30 +1,16 @@
 import { describe, expect, test } from "bun:test";
 
-import { MoodleSessionSchema } from "@/lib/moodle/site";
+import { createSessionFixture } from "@/tests/moodle/session-fixture";
 import {
   MoodleFileProxyError,
   proxyMoodleFile,
 } from "@/lib/security/moodle-file-proxy";
 
 function sessionFor(siteUrl: string) {
-  return MoodleSessionSchema.parse({
+  return createSessionFixture({
+    siteUrl,
     token: "synthetic-file-token",
-    service: "fixture_service",
-    userId: 101,
-    expiresAt: Date.now() + 60_000,
-    site: {
-      siteName: "Wire Moodle",
-      siteUrl,
-      availableFunctions: [],
-    },
-    capabilities: {
-      dashboard: false,
-      courses: false,
-      assignments: true,
-      calendar: false,
-      notifications: false,
-      fileUpload: true,
-    },
+    upload: true,
   });
 }
 

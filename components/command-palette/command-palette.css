@@ -1,3 +1,5 @@
+.ui-command-root { display: contents; }
+
 .ui-command-trigger {
   min-inline-size: min(18rem, 48vw);
   justify-content: space-between;

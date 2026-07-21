@@ -1,0 +1,123 @@
+.ui-conversation-context-title { display: flex; align-items: center; gap: var(--space-2); }
+.ui-messages-new { display: grid; inline-size: 2.75rem; block-size: 2.75rem; margin-inline-start: var(--space-1); border-radius: var(--shape-control); color: var(--accent-400); place-items: center; }
+.ui-messages-new:hover { background: var(--surface-elevated); }
+.ui-conversation-index { display: grid; }
+.ui-conversation-index > a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; min-block-size: 4.5rem; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-block-end: 1px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; }
+.ui-conversation-index > a:hover { background: var(--surface-elevated); }
+.ui-conversation-index > a[aria-current="page"] { box-shadow: inset 2px 0 0 var(--accent-500); background: var(--surface-selected); }
+.ui-conversation-index__mark { display: grid; inline-size: 2.25rem; block-size: 2.25rem; border: 1px solid var(--border-default); border-radius: var(--shape-card); color: var(--accent-400); place-items: center; }
+.ui-conversation-index a > span:nth-child(2) { display: grid; min-inline-size: 0; }
+.ui-conversation-index strong,
+.ui-conversation-index small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-conversation-index small { color: var(--text-tertiary); font-size: var(--font-size-caption); }
+
+.ui-messages-placeholder { display: grid; min-block-size: 22rem; align-content: center; justify-items: center; max-inline-size: 34rem; margin-inline: auto; color: var(--text-tertiary); text-align: center; }
+.ui-messages-placeholder h2 { margin: var(--space-3) 0 0; color: var(--text-primary); font-size: var(--font-size-h2); }
+.ui-messages-placeholder p { max-inline-size: 38ch; margin: var(--space-2) 0; }
+.ui-messages-placeholder .ui-app-action-link { margin-block-start: var(--space-3); }
+
+.ui-message-thread-frame .ui-page-frame__content { display: grid; min-block-size: 0; padding: 0; }
+.ui-message-thread { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-block-size: 0; background: var(--surface-primary); }
+.ui-message-thread > ol { display: grid; align-content: end; gap: var(--space-3); min-block-size: 0; margin: 0; padding: clamp(var(--space-4), 3vw, var(--space-8)); overflow-y: auto; overscroll-behavior: contain; list-style: none; }
+.ui-message-thread > ol li { inline-size: min(36rem, 84%); padding: var(--space-3) var(--space-4); border: 1px solid var(--border-default); border-radius: var(--shape-card); background: var(--surface-elevated); }
+.ui-message-thread > ol li[data-own="true"] { justify-self: end; border-color: color-mix(in srgb, var(--accent-500) 38%, var(--border-default)); background: var(--surface-selected); }
+.ui-message-thread p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ui-message-thread time { display: block; margin-block-start: var(--space-2); color: var(--text-tertiary); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); text-align: end; }
+.ui-message-composer { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-2); padding: var(--space-3); border-block-start: 1px solid var(--border-default); background: var(--surface-secondary); }
+.ui-message-composer textarea { min-block-size: 3.25rem; max-block-size: 9rem; padding: var(--space-2) var(--space-3); resize: vertical; }
+.ui-message-composer > span { grid-column: 1 / -1; min-block-size: 1rem; color: var(--status-error); font-size: var(--font-size-caption); }
+.ui-message-participants { display: grid; gap: var(--space-5); }
+.ui-message-participants ul { display: grid; margin: 0; padding: 0; list-style: none; }
+.ui-message-participants li { min-block-size: 2.75rem; align-content: center; border-block-end: 1px solid var(--border-subtle); }
+
+.ui-teacher-contact { display: grid; grid-template-columns: 18rem minmax(0, 48rem); grid-template-rows: auto auto minmax(0, 1fr); min-block-size: 100%; justify-content: center; background: var(--surface-canvas); }
+.ui-teacher-contact__header { grid-column: 1 / -1; display: flex; align-items: end; justify-content: space-between; gap: var(--space-5); padding: var(--space-6) clamp(var(--space-4), 3vw, var(--space-8)) var(--space-5); border-block-end: 1px solid var(--border-default); }
+.ui-teacher-contact__header > div { display: grid; gap: var(--space-1); }
+.ui-teacher-contact__header span { color: var(--accent-400); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); letter-spacing: .07em; }
+.ui-teacher-contact__header h1,
+.ui-teacher-contact__header p { margin: 0; }
+.ui-teacher-contact__header h1 { font-size: var(--font-size-h1); line-height: 1.1; }
+.ui-teacher-contact__header p { color: var(--text-secondary); font-size: var(--font-size-body-sm); }
+.ui-teacher-contact__header > a { display: inline-flex; min-block-size: 2.75rem; align-items: center; gap: var(--space-2); color: var(--text-secondary); font-size: var(--font-size-label); text-decoration: none; }
+.ui-teacher-steps { display: none; }
+.ui-teacher-recipient-panel { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-block-size: 0; border-inline-end: 1px solid var(--border-default); background: var(--surface-secondary); }
+.ui-teacher-courses,
+.ui-teacher-recipient { min-block-size: 0; }
+.ui-teacher-courses > header,
+.ui-teacher-recipient > header,
+.ui-teacher-compose > header { display: flex; min-block-size: 3.5rem; align-items: center; justify-content: space-between; gap: var(--space-3); padding: var(--space-2) var(--space-4); border-block-end: 1px solid var(--border-default); }
+.ui-teacher-courses h2,
+.ui-teacher-recipient h2,
+.ui-teacher-compose h2,
+.ui-teacher-compose p { margin: 0; }
+.ui-teacher-courses h2,
+.ui-teacher-recipient h2,
+.ui-teacher-compose h2 { font-size: var(--font-size-h3); }
+.ui-teacher-courses header span,
+.ui-teacher-recipient header span,
+.ui-teacher-compose header p { color: var(--text-tertiary); font-size: var(--font-size-caption); }
+.ui-teacher-courses nav { display: grid; max-block-size: 18rem; overflow-y: auto; }
+.ui-teacher-courses button { display: grid; grid-template-columns: auto minmax(0, 1fr); min-block-size: 4rem; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border: 0; border-block-end: 1px solid var(--border-subtle); background: transparent; color: var(--text-primary); cursor: pointer; text-align: start; }
+.ui-teacher-courses button:hover { background: var(--surface-elevated); }
+.ui-teacher-courses button[aria-pressed="true"] { box-shadow: inset 2px 0 0 var(--accent-500); background: var(--surface-selected); }
+.ui-teacher-courses button > span:first-child,
+.ui-teacher-person > span { display: grid; inline-size: 2.5rem; block-size: 2.5rem; border-radius: 50%; background: var(--accent-500); color: var(--accent-contrast); font-weight: 700; place-items: center; }
+.ui-teacher-courses button > span:last-child { display: grid; min-inline-size: 0; }
+.ui-teacher-courses strong,
+.ui-teacher-courses small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ui-teacher-courses small,
+.ui-teacher-person small { color: var(--text-tertiary); font-size: var(--font-size-caption); }
+.ui-teacher-recipient { display: grid; align-content: start; gap: var(--space-4); padding-block-end: var(--space-4); border-block-start: 1px solid var(--border-default); }
+.ui-teacher-recipient > :not(header) { margin-inline: var(--space-4); }
+.ui-teacher-select { display: grid; gap: var(--space-2); color: var(--text-primary); font-size: var(--font-size-label); font-weight: 600; }
+.ui-teacher-select select { inline-size: 100%; min-block-size: 2.75rem; padding-inline: var(--space-3); border: 1px solid var(--border-default); border-radius: var(--shape-control); background: var(--surface-inset); }
+.ui-teacher-person { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--space-3); }
+.ui-teacher-person > div { display: grid; min-inline-size: 0; }
+.ui-teacher-safety { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-2); color: var(--accent-400); }
+.ui-teacher-safety p { margin: 0; color: var(--text-secondary); font-size: var(--font-size-caption); }
+.ui-teacher-compose { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-block-size: 0; background: var(--surface-primary); }
+.ui-teacher-compose > header svg { color: var(--accent-400); }
+.ui-teacher-compose__body { display: grid; align-content: start; gap: var(--space-5); padding: clamp(var(--space-5), 4vw, var(--space-8)); overflow-y: auto; }
+.ui-teacher-compose__error { min-block-size: 1.5rem; margin: 0; color: var(--status-error); font-size: var(--font-size-caption); }
+.ui-teacher-review { display: grid; gap: var(--space-4); padding: var(--space-4); border-inline-start: 2px solid var(--accent-500); background: var(--surface-inset); }
+.ui-teacher-review > header { display: flex; gap: var(--space-3); color: var(--accent-400); }
+.ui-teacher-review h3,
+.ui-teacher-review p,
+.ui-teacher-review dl { margin: 0; }
+.ui-teacher-review h3 { color: var(--text-primary); font-size: var(--font-size-h3); }
+.ui-teacher-review p { color: var(--text-tertiary); font-size: var(--font-size-caption); }
+.ui-teacher-review dl { display: grid; }
+.ui-teacher-review dl > div { display: grid; grid-template-columns: 6rem minmax(0, 1fr); gap: var(--space-3); min-block-size: 2.75rem; align-items: center; border-block-start: 1px solid var(--border-subtle); }
+.ui-teacher-review dt { color: var(--text-tertiary); font-size: var(--font-size-caption); }
+.ui-teacher-review dd { margin: 0; overflow-wrap: anywhere; }
+.ui-teacher-compose__command { display: flex; min-block-size: 4.25rem; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-2) var(--space-4); border-block-start: 1px solid var(--border-default); background: var(--surface-secondary); }
+.ui-teacher-compose__command > span { color: var(--text-tertiary); font-size: var(--font-size-caption); }
+.ui-teacher-compose__command > div { display: flex; gap: var(--space-2); }
+
+@media (max-width: 47.99rem) {
+  .ui-messages-index-frame .ui-page-frame__context { display: block; grid-row: 2; }
+  .ui-messages-index-frame .ui-page-frame__content { display: none; }
+  .ui-message-thread > ol li { inline-size: min(38rem, 92%); }
+  .ui-teacher-contact { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); justify-content: stretch; }
+  .ui-teacher-contact__header { align-items: start; padding: var(--space-4); }
+  .ui-teacher-contact__header p { display: none; }
+  .ui-teacher-contact__header > a { font-size: 0; }
+  .ui-teacher-contact__header > a svg { inline-size: 20px; }
+  .ui-teacher-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block-end: 1px solid var(--border-default); }
+  .ui-teacher-steps button { display: grid; min-block-size: 3.5rem; align-content: center; gap: 1px; border: 0; background: var(--surface-secondary); color: var(--text-tertiary); font-size: .6875rem; cursor: pointer; }
+  .ui-teacher-steps button span { font-family: var(--font-geist-mono), monospace; }
+  .ui-teacher-steps button[aria-current="step"] { box-shadow: inset 0 -2px 0 var(--accent-500); color: var(--text-primary); }
+  .ui-teacher-steps button:disabled { cursor: not-allowed; opacity: .45; }
+  .ui-teacher-recipient-panel { border: 0; }
+  .ui-teacher-contact[data-mobile-step="course"] .ui-teacher-recipient,
+  .ui-teacher-contact[data-mobile-step="course"] .ui-teacher-compose,
+  .ui-teacher-contact[data-mobile-step="recipient"] .ui-teacher-courses,
+  .ui-teacher-contact[data-mobile-step="recipient"] .ui-teacher-compose,
+  .ui-teacher-contact[data-mobile-step="compose"] .ui-teacher-recipient-panel { display: none; }
+  .ui-teacher-contact[data-mobile-step="recipient"] .ui-teacher-recipient { border-block-start: 0; }
+  .ui-teacher-courses nav { max-block-size: none; }
+  .ui-teacher-compose__body { padding: var(--space-4); }
+  .ui-teacher-compose__command { align-items: stretch; flex-direction: column; }
+  .ui-teacher-compose__command > div { display: grid; grid-template-columns: 1fr 1fr; }
+  .ui-teacher-compose__command .ui-button { inline-size: 100%; }
+}

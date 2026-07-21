@@ -1,22 +1,11 @@
-export const MOODLE_FUNCTIONS = [
-  "core_webservice_get_site_info",
-  "core_course_get_enrolled_courses_by_timeline_classification",
-  "core_enrol_get_users_courses",
-  "core_course_get_contents",
-  "core_completion_get_activities_completion_status",
-  "core_calendar_get_action_events_by_timesort",
-  "core_calendar_get_calendar_monthly_view",
-  "core_calendar_get_calendar_upcoming_view",
-  "mod_assign_get_assignments",
-  "mod_assign_get_submission_status",
-  "mod_assign_save_submission",
-  "mod_assign_submit_for_grading",
-  "message_popup_get_popup_notifications",
-  "message_popup_get_unread_popup_notification_count",
-  "core_message_mark_notification_read",
-] as const
+import {
+  MOODLE_KNOWN_FUNCTION_NAMES,
+  type MoodleKnownFunctionName,
+} from "../lib/moodle/functions"
 
-export type MoodleFunction = (typeof MOODLE_FUNCTIONS)[number]
+export const MOODLE_FUNCTIONS = MOODLE_KNOWN_FUNCTION_NAMES
+
+export type MoodleFunction = MoodleKnownFunctionName
 
 export const MOODLE_SCENARIOS = [
   "success",
@@ -60,7 +49,16 @@ export type FixtureModule = {
   readonly name: string
   readonly modname: string
   readonly instance: number
-  readonly url: string
+  readonly url?: string
+  readonly description?: string
+  readonly dates?: readonly Readonly<{ label: string; timestamp: number; dataid?: string }>[]
+  readonly contents?: readonly Readonly<{
+    filename: string
+    fileurl: string
+    filesize: number
+    mimetype: string
+    type: string
+  }>[]
   readonly visible: boolean
   readonly uservisible: boolean
   readonly completion: number
@@ -111,6 +109,12 @@ export type FixtureAssignment = {
   readonly submissionattachments: number
   readonly maxfilesubmissions: number
   readonly maxsubmissionsizebytes: number
+  readonly configs?: readonly Readonly<{
+    plugin: string
+    subtype: string
+    name: string
+    value: string | number | boolean
+  }>[]
 }
 
 export type FixtureSubmission = {
@@ -177,12 +181,90 @@ export type MoodleMockOptions = {
 }
 
 export type MoodleMockState = {
+  readonly completedActivities: Set<string>
+  readonly favouriteCourses: Set<string>
+  readonly createdEvents: Map<FixtureUserKey, readonly FixtureEvent[]>
+  readonly deletedEvents: Set<string>
   readonly tokens: Map<string, FixtureUserKey>
   readonly uploadItems: Map<number, MockUploadItem>
   readonly submissions: Map<string, MockSubmissionState>
   readonly readNotifications: Set<string>
   readonly outageAttempts: Map<string, number>
+  readonly sentMessages: Map<string, readonly MockMessageState[]>
+  readonly quizAttempts: Map<string, MockQuizAttemptState>
+  readonly forumDiscussions: Map<FixtureUserKey, readonly MockForumDiscussionState[]>
+  readonly forumPosts: Map<string, readonly MockForumPostState[]>
+  readonly forumSubscriptions: Set<string>
+  readonly readForumDiscussions: Set<string>
+  readonly choiceResponses: Map<string, readonly number[]>
+  readonly glossaryEntries: Map<FixtureUserKey, readonly MockGlossaryEntryState[]>
+  readonly wikiPages: Map<string, MockWikiPageState>
+  readonly feedbackSubmissions: Map<string, Readonly<Record<string, string>>>
+  readonly lessonSubmissions: Map<string, Readonly<Record<string, string>>>
+  readonly databaseEntries: Map<FixtureUserKey, readonly MockDatabaseEntryState[]>
+  readonly workshopSubmissions: Map<FixtureUserKey, MockWorkshopSubmissionState>
+  nextCalendarEventId: number
   nextDraftItemId: number
+  nextQuizAttemptId: number
+  nextForumDiscussionId: number
+  nextForumPostId: number
+  nextGlossaryEntryId: number
+  nextDatabaseEntryId: number
+  nextWorkshopSubmissionId: number
+}
+
+export type MockDatabaseEntryState = {
+  readonly id: number
+  readonly label: string
+  readonly notes: string
+}
+
+export type MockWorkshopSubmissionState = {
+  readonly content: string
+  readonly id: number
+  readonly title: string
+}
+
+export type MockGlossaryEntryState = {
+  readonly concept: string
+  readonly definition: string
+  readonly id: number
+}
+
+export type MockWikiPageState = {
+  readonly content: string
+  readonly version: number
+}
+
+export type MockMessageState = {
+  readonly id: number
+  readonly text: string
+  readonly timecreated: number
+  readonly useridfrom: number
+}
+
+export type MockQuizAttemptState = {
+  readonly attempt: number
+  readonly id: number
+  readonly quiz: number
+  readonly responses: Readonly<Record<string, string>>
+  readonly state: "finished" | "inprogress"
+  readonly user: FixtureUserKey
+}
+
+export type MockForumDiscussionState = {
+  readonly created: number
+  readonly discussionId: number
+  readonly firstPostId: number
+  readonly message: string
+  readonly subject: string
+}
+
+export type MockForumPostState = {
+  readonly created: number
+  readonly id: number
+  readonly message: string
+  readonly subject: string
 }
 
 export type MockUploadItem = {

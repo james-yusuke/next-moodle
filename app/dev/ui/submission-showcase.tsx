@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import { PDFDocument } from "pdf-lib";
 
 import { PdfThumbnail } from "@/components/pdf-tools/pdf-thumbnail";
-import { RichTextEditor } from "@/components/assignments/rich-text-editor";
 import { SubmissionFileQueue } from "@/components/assignments/submission-file-queue";
+import { WritingWorkspace } from "@/components/assignments/writing-workspace";
 import { Button, Textarea } from "@/components/ui";
 import { ShowcaseSection, ShowcaseSample } from "./showcase-frame";
 import styles from "./showcase.module.css";
@@ -35,8 +35,18 @@ export function SubmissionShowcase() {
         <ShowcaseSample label="Textarea">
           <Textarea defaultValue="Markdownやプレーンテキストを形式のまま編集します。" label="本文" />
         </ShowcaseSample>
-        <ShowcaseSample label="Rich text">
-          <RichTextEditor disabled={false} initialContent={text} onChange={setText} />
+        <ShowcaseSample label="Rich text" wide>
+          <WritingWorkspace
+            aiAvailability={{ enabled: true, provider: "OpenAI" }}
+            aiConsentStorageKey="next-moodle:ai-consent:showcase"
+            cmid={9101}
+            disabled={false}
+            format={1}
+            maxLength={100_000}
+            onChange={setText}
+            submitting={false}
+            value={text}
+          />
         </ShowcaseSample>
       </div>
       <SubmissionFileQueue

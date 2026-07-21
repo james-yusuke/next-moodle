@@ -1,5 +1,12 @@
-import { FilePdf, GearSix, GraduationCap } from "@phosphor-icons/react/dist/ssr";
+"use client";
+
+import {
+  FilePdf,
+  GearSix,
+  GraduationCap,
+} from "@phosphor-icons/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { CommandPalette } from "@/components/command-palette/command-palette";
@@ -7,7 +14,9 @@ import type { CommandItem } from "@/components/command-palette/search";
 import { ThemeControl } from "@/components/ui";
 import type { CommandCourse } from "@/lib/moodle/queries/courses";
 import { LogoutButton } from "./logout-button";
+import { AiPreferenceControl } from "./ai-preference-control";
 import { AppNavigation } from "./navigation";
+import type { WorkspaceMode } from "./workspace-frame";
 import "./app-shell.css";
 import "./page-layout.css";
 
@@ -16,17 +25,44 @@ const SCREEN_COMMANDS = [
   { href: "/courses", keywords: ["class", "授業"], kind: "screen", label: "コース" },
   { href: "/calendar", keywords: ["予定", "締切"], kind: "screen", label: "カレンダー" },
   { href: "/notifications", keywords: ["お知らせ", "未読"], kind: "screen", label: "通知" },
+  { href: "/messages", keywords: ["会話", "連絡"], kind: "screen", label: "メッセージ" },
+  { href: "/grades", keywords: ["評価", "点数"], kind: "screen", label: "成績" },
+  { href: "/people", keywords: ["参加者", "連絡先"], kind: "screen", label: "参加者" },
+  { href: "/files", keywords: ["教材", "保存"], kind: "screen", label: "プライベートファイル" },
+  { href: "/badges", keywords: ["実績"], kind: "screen", label: "バッジ" },
+  { href: "/plans", keywords: ["目標", "コンピテンシー"], kind: "screen", label: "学習プラン" },
+  { href: "/profile", keywords: ["設定", "アカウント"], kind: "screen", label: "その他・プロフィール" },
+  { href: "/shortcuts", keywords: ["keyboard", "操作"], kind: "screen", label: "キーボードショートカット" },
+  { href: "/diagnostics", keywords: ["api", "接続", "設定"], kind: "screen", label: "接続診断" },
   { href: "/tools/pdf", keywords: ["結合", "画像", "変換"], kind: "screen", label: "PDFツール" },
 ] as const satisfies readonly CommandItem[];
 
 type AppShellProps = Readonly<{
   appName: string;
+  aiAvailable: boolean;
+  aiConsentStorageKey: string;
   children: ReactNode;
   courses: readonly CommandCourse[];
   siteName: string;
 }>;
 
-export function AppShell({ appName, children, courses, siteName }: AppShellProps) {
+function resolveWorkspaceMode(pathname: string): WorkspaceMode {
+  if (pathname.startsWith("/messages")) return "conversation";
+  if (pathname.startsWith("/activities/") || pathname.startsWith("/assignments/")) return "focus";
+  if (pathname.startsWith("/courses")) return "browse";
+  return "overview";
+}
+
+export function AppShell({
+  aiAvailable,
+  aiConsentStorageKey,
+  appName,
+  children,
+  courses,
+  siteName,
+}: AppShellProps) {
+  const pathname = usePathname();
+  const workspaceMode = resolveWorkspaceMode(pathname);
   const commands: readonly CommandItem[] = [
     ...SCREEN_COMMANDS,
     ...courses.map((course) => ({
@@ -38,30 +74,44 @@ export function AppShell({ appName, children, courses, siteName }: AppShellProps
   ];
 
   return (
-    <div className="ui-app-shell">
+    <div className="ui-app-shell" data-workspace-mode={workspaceMode}>
       <a className="ui-app-skip" href="#main-content">本文へ移動</a>
-      <aside className="ui-app-rail">
-        <Link className="ui-app-brand" href="/dashboard">
-          <GraduationCap aria-hidden size={28} weight="regular" />
-          <span>{appName}</span>
+      <aside aria-label="主要ナビゲーション" className="ui-app-focus-rail">
+        <Link className="ui-app-brand" href="/dashboard" title={appName}>
+          <span className="ui-app-brand__mark"><GraduationCap aria-hidden size={22} weight="regular" /></span>
+          <span className="ui-sr-only">{appName}</span>
         </Link>
         <AppNavigation />
-        <Link className="ui-app-tool-link" href="/tools/pdf">
-          <FilePdf aria-hidden size={20} weight="regular" />
-          <span>PDFツール</span>
-        </Link>
-        <div className="ui-app-rail__utilities">
-          <p className="ui-app-site" title={siteName}>{siteName}</p>
-          <ThemeControl />
-          <LogoutButton />
-        </div>
+        <footer className="ui-app-focus-rail__footer">
+          <Link className="ui-app-tool-link" href="/tools/pdf" title="PDFツール">
+            <FilePdf aria-hidden size={21} weight="regular" />
+            <span className="ui-sr-only">PDFツール</span>
+          </Link>
+          <details className="ui-app-dock-settings">
+            <summary aria-label="表示とアカウント設定">
+              <GearSix aria-hidden size={21} weight="regular" />
+            </summary>
+            <div className="ui-app-dock-settings__panel">
+              <div><strong>{appName}</strong><p className="ui-app-site" title={siteName}>{siteName}</p></div>
+              <ThemeControl />
+              <AiPreferenceControl available={aiAvailable} consentStorageKey={aiConsentStorageKey} />
+              <LogoutButton />
+            </div>
+          </details>
+        </footer>
       </aside>
       <header className="ui-app-topbar">
-        <Link className="ui-app-brand ui-app-brand--mobile" href="/dashboard">
-          <GraduationCap aria-hidden size={25} weight="regular" />
+        <Link className="ui-app-brand ui-app-brand--mobile" href="/dashboard" title={appName}>
+          <span className="ui-app-brand__mark"><GraduationCap aria-hidden size={20} weight="regular" /></span>
           <span>{appName}</span>
         </Link>
-        <CommandPalette commands={commands} />
+        <div className="ui-app-topbar__identity">
+          <strong>{appName}</strong>
+          <span title={siteName}>{siteName}</span>
+        </div>
+        <div className="ui-app-context-actions">
+          <CommandPalette commands={commands} />
+        </div>
         <details className="ui-app-mobile-settings">
           <summary aria-label="表示とアカウント設定">
             <GearSix aria-hidden size={21} weight="regular" />
@@ -70,6 +120,7 @@ export function AppShell({ appName, children, courses, siteName }: AppShellProps
             <p className="ui-app-site" title={siteName}>{siteName}</p>
             <Link className="ui-app-tool-link" href="/tools/pdf"><FilePdf aria-hidden size={20} /> PDFツール</Link>
             <ThemeControl />
+            <AiPreferenceControl available={aiAvailable} consentStorageKey={aiConsentStorageKey} />
             <LogoutButton />
           </div>
         </details>

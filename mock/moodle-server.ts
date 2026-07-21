@@ -37,6 +37,10 @@ export class MockPortAllocationError extends Error {
 }
 
 const createState = (): MoodleMockState => ({
+  completedActivities: new Set(),
+  favouriteCourses: new Set(),
+  createdEvents: new Map(),
+  deletedEvents: new Set(),
   tokens: new Map([
     [FIXTURE_TOKENS.alice, "alice"],
     [FIXTURE_TOKENS.bob, "bob"],
@@ -45,7 +49,27 @@ const createState = (): MoodleMockState => ({
   submissions: new Map(),
   readNotifications: new Set(),
   outageAttempts: new Map(),
+  sentMessages: new Map(),
+  quizAttempts: new Map(),
+  forumDiscussions: new Map(),
+  forumPosts: new Map(),
+  forumSubscriptions: new Set(),
+  readForumDiscussions: new Set(),
+  choiceResponses: new Map(),
+  glossaryEntries: new Map(),
+  wikiPages: new Map(),
+  feedbackSubmissions: new Map(),
+  lessonSubmissions: new Map(),
+  databaseEntries: new Map(),
+  workshopSubmissions: new Map(),
+  nextCalendarEventId: 9000,
   nextDraftItemId: 7000,
+  nextQuizAttemptId: 8000,
+  nextForumDiscussionId: 8200,
+  nextForumPostId: 8300,
+  nextGlossaryEntryId: 8400,
+  nextDatabaseEntryId: 8500,
+  nextWorkshopSubmissionId: 8600,
 })
 
 export const createMoodleMock = (options: MoodleMockOptions = {}): MoodleMock => {
@@ -97,4 +121,3 @@ export const createMoodleMock = (options: MoodleMockOptions = {}): MoodleMock =>
 
   return { start, stop, state }
 }
-

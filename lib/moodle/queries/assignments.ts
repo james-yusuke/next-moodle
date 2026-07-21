@@ -90,7 +90,8 @@ export type AssignmentDetail = Readonly<{
 
 type AssignmentProjectionInput = Readonly<{
   assignment: MoodleAssignmentWire;
-  availableFunctions: readonly string[];
+  canFinalize: boolean;
+  canSave: boolean;
   course: Readonly<{ readonly fullname: string }>;
   fileUpload: boolean;
   now: number;
@@ -189,11 +190,14 @@ function feedbackFor(
   if (feedback === undefined || Array.isArray(feedback)) {
     return null;
   }
-  const comments = feedback.plugins.flatMap((plugin) =>
-    plugin.editorfields
-      .filter((field) => field.text !== "")
-      .map((field) => sanitizeMoodleHtml(field.text, { siteUrl })),
-  );
+  const comments: SanitizedMoodleHtml[] = [];
+  for (const plugin of feedback.plugins) {
+    for (const field of plugin.editorfields) {
+      if (field.text !== "") {
+        comments.push(sanitizeMoodleHtml(field.text, { siteUrl }));
+      }
+    }
+  }
   const grade =
     feedback.gradefordisplay === undefined
       ? null

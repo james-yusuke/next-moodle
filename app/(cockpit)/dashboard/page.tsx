@@ -12,7 +12,7 @@ export const metadata: Metadata = { title: "ダッシュボード" };
 export default async function DashboardPage() {
   const session = await requireMoodleSession();
   const config = readAppRuntimeConfig();
-  if (!session.capabilities.dashboard) {
+  if (session.manifest.features.dashboard !== "available") {
     return (
       <div className="ui-page-stack">
         <header className="ui-page-header">

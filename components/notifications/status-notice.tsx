@@ -13,32 +13,32 @@ export function NotificationStatusNotice({
   switch (kind) {
     case "capability":
       return (
-        <Notice tone="info" title="Notifications are unavailable">
-          This Moodle site has not enabled the notification service for your account.
+        <Notice tone="info" title="通知機能を利用できません">
+          このMoodleでは、アカウント向けの通知Webサービスが有効になっていません。
         </Notice>
       );
     case "auth":
       return (
-        <Notice tone="warning" title="Your Moodle session has expired">
-          Sign in again to load notifications and keep this page private.
+        <Notice tone="warning" title="Moodleの認証期限が切れました">
+          通知を安全に読み込むため、もう一度ログインしてください。
         </Notice>
       );
     case "permission":
       return (
-        <Notice tone="warning" title="Notifications are restricted">
-          Moodle did not grant permission to read notifications for this account.
+        <Notice tone="warning" title="通知の閲覧が制限されています">
+          このアカウントには通知を読み取る権限がありません。
         </Notice>
       );
     case "outage":
       return (
-        <Notice tone="warning" title="Moodle is temporarily unavailable">
-          Keep this page open and try again when Moodle is reachable.
+        <Notice tone="warning" title="Moodleに一時的に接続できません">
+          少し待ってから、もう一度この画面を開いてください。
         </Notice>
       );
     case "error":
       return (
-        <Notice tone="error" title="Notifications could not be loaded">
-          The response from Moodle was not usable. Please try again later.
+        <Notice tone="error" title="通知を読み込めませんでした">
+          Moodleの応答を安全に解釈できませんでした。時間をおいて再度お試しください。
         </Notice>
       );
     default:

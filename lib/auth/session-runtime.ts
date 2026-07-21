@@ -66,6 +66,5 @@ export async function createAuthenticatedMoodleClient(): Promise<MoodleClient> {
       timeoutMs: 10_000,
     },
     token: session.token,
-    availableFunctions: session.site.availableFunctions,
   });
 }

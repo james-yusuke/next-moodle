@@ -81,13 +81,12 @@ export function safeNotificationHref(
     if (queryEntries.some(([key]) => hasSensitiveQueryKey(key))) {
       return null;
     }
-    const safeSearch = new URLSearchParams();
-    for (const [key, queryValue] of queryEntries) {
-      safeSearch.append(key, queryValue);
-    }
-    candidate.search = safeSearch.toString();
-    candidate.hash = "";
-    return `${candidate.pathname}${candidate.search}`;
+    const id = Number(candidate.searchParams.get("id"));
+    if (!Number.isSafeInteger(id) || id <= 0) return null;
+    if (candidate.pathname === "/course/view.php") return `/courses/${id}`;
+    const moduleName = /^\/mod\/([a-z0-9_]+)\/view\.php$/.exec(candidate.pathname)?.[1];
+    if (moduleName === undefined) return null;
+    return moduleName === "assign" ? `/assignments/${id}` : `/activities/${id}`;
   } catch (error) {
     if (error instanceof TypeError) {
       return null;

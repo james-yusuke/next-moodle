@@ -3,6 +3,7 @@ import { describe, expect, test } from "bun:test";
 import {
   safeMoodleLink,
   sanitizeMoodleHtml,
+  sanitizeQuizQuestionHtml,
 } from "@/lib/security/html";
 
 const SITE_URL = "https://moodle.example.edu";
@@ -44,10 +45,10 @@ describe("assignment HTML sanitizer", () => {
     // Then
     expect(sanitized).toContain("/api/files?url=");
     expect(sanitized).not.toContain("token=");
-    expect(sanitized).toContain('rel="noopener noreferrer"');
+    expect(sanitized).not.toContain('target="_blank"');
   });
 
-  test("rejects dangerous protocols while preserving safe Moodle links", () => {
+  test("rejects dangerous protocols while recognizing safe links", () => {
     // Given
     const safeRelative = "/mod/assign/view.php?id=42";
 
@@ -63,5 +64,39 @@ describe("assignment HTML sanitizer", () => {
     expect(safe).toBe(`${SITE_URL}${safeRelative}`);
     expect(script).toBeNull();
     expect(credentials).toBeNull();
+  });
+
+  test("maps Moodle UI links into the Next workspace and removes unknown Moodle pages", () => {
+    const sanitized = sanitizeMoodleHtml([
+      '<a href="/course/view.php?id=51">course</a>',
+      '<a href="/mod/assign/view.php?id=52">assignment</a>',
+      '<a href="/mod/forum/view.php?id=53">forum</a>',
+      '<a href="/user/profile.php?id=54">legacy profile</a>',
+      '<a href="https://docs.example.invalid/guide">external guide</a>',
+    ].join(""), { siteUrl: SITE_URL });
+
+    expect(sanitized).toContain('href="/courses/51"');
+    expect(sanitized).toContain('href="/assignments/52"');
+    expect(sanitized).toContain('href="/activities/53"');
+    expect(sanitized).not.toContain("user/profile.php");
+    expect(sanitized).toContain('href="https://docs.example.invalid/guide"');
+  });
+
+  test("preserves quiz response controls but strips executable form behavior", () => {
+    const sanitized = sanitizeQuizQuestionHtml([
+      '<form action="https://evil.invalid">',
+      '<input name="q12:1_answer" type="text" value="safe" onfocus="steal()">',
+      '<input name="q12:1_:sequencecheck" type="hidden" value="1">',
+      '<input name="launch" type="submit" formaction="https://evil.invalid">',
+      '<script>steal()</script></form>',
+    ].join(""), { siteUrl: SITE_URL });
+
+    expect(sanitized).toContain('name="q12:1_answer"');
+    expect(sanitized).toContain('name="q12:1_:sequencecheck"');
+    expect(sanitized).not.toContain("<form");
+    expect(sanitized).not.toContain("onfocus");
+    expect(sanitized).not.toContain("formaction");
+    expect(sanitized).not.toContain('type="submit"');
+    expect(sanitized).not.toContain("<script");
   });
 });

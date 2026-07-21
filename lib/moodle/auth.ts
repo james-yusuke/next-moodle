@@ -7,6 +7,7 @@ import {
   MoodleResponseError,
 } from "./errors";
 import { MOODLE_FUNCTIONS } from "./functions";
+import { CompanionManifestSchema } from "./activities/contracts";
 import {
   type MoodleCredentials,
   MoodleTokenSchema,
@@ -69,6 +70,7 @@ export async function requestMoodleToken(
 export async function authenticateWithMoodle(
   config: MoodleConfig,
   credentials: MoodleCredentials,
+  requireCompanion = false,
 ): Promise<MoodleLogin> {
   const token = await requestMoodleToken(config, credentials);
   const client = new MoodleClient({ config, token });
@@ -77,9 +79,20 @@ export async function authenticateWithMoodle(
     {},
     MoodleSiteInfoWireSchema,
   );
+  const availableFunctions = new Set(siteResponse.data.functions.map((entry) => entry.name));
+  const companion = availableFunctions.has(MOODLE_FUNCTIONS.adapterManifest)
+    ? await client.call(MOODLE_FUNCTIONS.adapterManifest, {}, CompanionManifestSchema)
+    : null;
   return {
     service: config.service,
     token,
-    ...toSafeSiteInfo(siteResponse.data, config),
+    ...toSafeSiteInfo(
+      siteResponse.data,
+      config,
+      {
+        companion: companion?.data ?? { adapters: [], contractVersion: 0 },
+        requireCompanion,
+      },
+    ),
   };
 }

@@ -1,6 +1,4 @@
 import { describe, expect, test } from "bun:test";
-import { z } from "zod";
-
 import {
   MoodleCourseModuleSchema,
   MoodleDashboardCourseSchema,
@@ -8,6 +6,7 @@ import {
 import {
   activityDestination,
   classifyCourse,
+  isInlineCourseLabel,
 } from "@/lib/moodle/queries/courses-model";
 
 describe("classifyCourse", () => {
@@ -34,45 +33,64 @@ describe("classifyCourse", () => {
 
 describe("activityDestination", () => {
   test("Given an assignment, When routed, Then it uses the internal assignment screen", () => {
-    const courseModule = MoodleCourseModuleSchema.extend({ url: URL_SCHEMA.optional() }).parse({
+    const courseModule = MoodleCourseModuleSchema.parse({
       id: 9101,
       name: "フィールドノート",
       modname: "assign",
       url: "https://moodle.example/mod/assign/view.php?id=9101",
     });
 
-    const result = activityDestination(courseModule, "https://moodle.example");
+    const result = activityDestination(courseModule);
 
     expect(result).toEqual({ kind: "internal", href: "/assignments/9101" });
   });
 
-  test("Given a non-assignment Moodle URL, When routed, Then it opens the safe external URL", () => {
-    const courseModule = MoodleCourseModuleSchema.extend({ url: URL_SCHEMA.optional() }).parse({
+  test("Given a standard resource, When routed, Then it uses the internal activity workspace", () => {
+    const courseModule = MoodleCourseModuleSchema.parse({
       id: 9201,
       name: "講義資料",
       modname: "resource",
       url: "https://moodle.example/mod/resource/view.php?id=9201",
     });
 
-    const result = activityDestination(courseModule, "https://moodle.example");
+    const result = activityDestination(courseModule);
 
-    expect(result).toEqual({
-      kind: "external",
-      href: "https://moodle.example/mod/resource/view.php?id=9201",
-    });
+    expect(result).toEqual({ kind: "internal", href: "/activities/9201" });
   });
 
-  test("Given no safe URL, When routed, Then the activity is disabled with a reason", () => {
+  test("Given a standard quiz without a Moodle URL, When routed, Then it remains internal", () => {
     const courseModule = MoodleCourseModuleSchema.parse({
       id: 9301,
-      name: "URLなし資料",
-      modname: "resource",
+      name: "理解度チェック",
+      modname: "quiz",
     });
 
-    const result = activityDestination(courseModule, "https://moodle.example");
+    const result = activityDestination(courseModule);
 
-    expect(result).toEqual({ kind: "disabled", reason: "url_unavailable" });
+    expect(result).toEqual({ kind: "internal", href: "/activities/9301" });
+  });
+
+  test("Given an unknown module with a Moodle URL, When routed, Then it never escapes to Moodle UI", () => {
+    const courseModule = MoodleCourseModuleSchema.parse({
+      id: 9401,
+      name: "独自アクティビティ",
+      modname: "localcustom",
+      url: "https://moodle.example/mod/localcustom/view.php?id=9401",
+    });
+
+    const result = activityDestination(courseModule);
+
+    expect(result).toEqual({ kind: "disabled", reason: "adapter_required" });
+  });
+
+  test("Given a label module, When projected, Then it is inline content rather than an activity", () => {
+    const courseModule = MoodleCourseModuleSchema.parse({
+      id: 9501,
+      name: "Before class",
+      modname: "label",
+      description: "<p>Bring a notebook.</p>",
+    });
+
+    expect(isInlineCourseLabel(courseModule)).toBe(true);
   });
 });
-
-const URL_SCHEMA = z.url();

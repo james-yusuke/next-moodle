@@ -1,164 +1,64 @@
 .ui-login-page {
   display: grid;
   min-block-size: 100dvh;
-  background:
-    radial-gradient(circle at 12% 8%, rgb(124 137 255 / 18%), transparent 28rem),
-    var(--surface-canvas);
-}
-
-.ui-login-story,
-.ui-login-panel {
-  min-inline-size: 0;
-  padding: var(--space-8) var(--space-4);
-}
-
-.ui-login-story {
-  position: relative;
-  display: grid;
-  align-content: space-between;
-  gap: var(--space-12);
-  overflow: hidden;
-  background:
-    linear-gradient(rgb(255 255 255 / 2.4%) 1px, transparent 1px) 0 0 / 100% 4rem,
-    linear-gradient(90deg, rgb(255 255 255 / 1.8%) 1px, transparent 1px) 0 0 / 4rem 100%,
-    radial-gradient(circle at 100% 0%, var(--accent-soft), transparent 52%),
-    var(--surface-primary);
-  box-shadow: inset -1px 0 0 var(--border-default);
-}
-
-.ui-login-story::after {
-  position: absolute;
-  inset: var(--space-6);
-  border-radius: var(--shape-panel);
-  box-shadow:
-    inset 0 1px 0 var(--border-default),
-    inset 1px 0 0 var(--border-subtle),
-    0 0 5rem rgb(124 137 255 / 8%);
-  content: "";
-  pointer-events: none;
-}
-
-.ui-login-brand,
-.ui-login-copy,
-.ui-login-story__foot {
-  position: relative;
-  z-index: 1;
-}
-
-.ui-login-brand {
-  display: flex;
-  min-block-size: 2.75rem;
-  align-items: center;
-  gap: var(--space-3);
-  color: var(--text-primary);
-  font-weight: 620;
-}
-
-.ui-login-copy {
-  display: grid;
-  gap: var(--space-5);
-  max-inline-size: 34rem;
-}
-
-.ui-login-copy h1,
-.ui-login-panel h2,
-.ui-login-copy p,
-.ui-login-panel p,
-.ui-login-story__foot {
-  margin: 0;
-}
-
-.ui-login-copy h1 {
-  font-size: clamp(2.75rem, 7vw, 5.75rem);
-  font-weight: 580;
-  letter-spacing: -0.035em;
-  line-height: 1.05;
-  text-wrap: balance;
-}
-
-.ui-login-copy p {
-  color: var(--text-secondary);
-  font-size: var(--font-size-body-lg);
-  text-wrap: pretty;
-}
-
-.ui-login-story__foot {
-  color: var(--text-tertiary);
-  font-size: var(--font-size-caption);
-}
-
-.ui-login-panel {
-  display: grid;
+  padding: var(--space-3);
+  background: var(--surface-canvas);
   place-items: center;
 }
 
-.ui-login-panel__inner {
+.ui-login-workspace {
   display: grid;
-  inline-size: min(100%, 29rem);
-  gap: var(--space-6);
-  padding: clamp(var(--space-5), 4vw, var(--space-8));
-  border-radius: var(--shape-panel);
-  background: color-mix(in srgb, var(--surface-primary) 82%, transparent);
-  box-shadow: inset 0 1px 0 var(--border-default), 0 2rem 6rem rgb(0 0 0 / 18%);
+  inline-size: min(100%, 68rem);
+  min-inline-size: 0;
+  overflow: clip;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--shape-card);
+  background: var(--surface-primary);
 }
 
-.ui-login-panel__header {
+.ui-login-story,
+.ui-login-panel { min-inline-size: 0; padding: var(--space-5); }
+
+.ui-login-story {
   display: grid;
-  gap: var(--space-2);
+  align-content: space-between;
+  gap: var(--space-8);
+  border-block-end: 1px solid var(--border-default);
+  background: var(--surface-secondary);
 }
 
-.ui-login-panel h2 {
-  font-size: var(--font-size-h1);
-  font-weight: 560;
-  letter-spacing: -0.028em;
-  line-height: 1.15;
-}
+.ui-login-brand { display: flex; min-block-size: 2.75rem; align-items: center; gap: var(--space-2); color: var(--text-primary); font-weight: 660; }
+.ui-login-brand svg { color: var(--accent-500); }
+.ui-login-copy { display: grid; gap: var(--space-3); max-inline-size: 32rem; }
+.ui-login-copy h1,
+.ui-login-copy p,
+.ui-login-panel h2,
+.ui-login-panel p,
+.ui-login-ledger { margin: 0; }
+.ui-login-kicker { color: var(--accent-400); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
+.ui-login-copy h1 { font-size: var(--font-size-h1); font-weight: 680; letter-spacing: -.028em; line-height: 1.15; }
+.ui-login-copy > p:last-child { color: var(--text-secondary); font-size: var(--font-size-body); text-wrap: pretty; }
+.ui-login-ledger { display: grid; padding: 0; border-block-end: 1px solid var(--border-subtle); }
+.ui-login-ledger > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-3); padding-block: var(--space-3); border-block-start: 1px solid var(--border-subtle); }
+.ui-login-ledger dt { color: var(--text-tertiary); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); }
+.ui-login-ledger dd { margin: 0; color: var(--text-secondary); font-size: var(--font-size-body-sm); overflow-wrap: anywhere; }
 
+.ui-login-panel { display: grid; align-items: center; background: var(--surface-primary); }
+.ui-login-panel__inner { display: grid; inline-size: min(100%, 25rem); margin-inline: auto; gap: var(--space-5); }
+.ui-login-panel__header { display: grid; gap: var(--space-2); padding-block-end: var(--space-3); border-block-end: 1px solid var(--border-default); }
+.ui-login-panel h2 { font-size: var(--font-size-h2); font-weight: 680; }
 .ui-login-panel__header p,
-.ui-login-security {
-  color: var(--text-secondary);
-  font-size: var(--font-size-body-sm);
-}
-
-.ui-login-form {
-  display: grid;
-  gap: var(--space-5);
-}
-
-.ui-login-form > .ui-button {
-  inline-size: 100%;
-}
-
-.ui-login-security {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  gap: var(--space-3);
-  align-items: start;
-  padding-block-start: var(--space-2);
-}
-
-.ui-login-security p {
-  overflow-wrap: anywhere;
-}
-
-.ui-login-theme {
-  justify-self: end;
-}
+.ui-login-security { color: var(--text-secondary); font-size: var(--font-size-body-sm); }
+.ui-login-form { display: grid; gap: var(--space-4); }
+.ui-login-form > .ui-button { inline-size: 100%; }
+.ui-login-security { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); align-items: start; padding-block-start: var(--space-2); }
+.ui-login-security p { overflow-wrap: anywhere; }
+.ui-login-theme { justify-self: end; }
 
 @media (min-width: 48rem) {
-  .ui-login-page {
-    grid-template-columns: minmax(0, 1.1fr) minmax(25rem, 0.9fr);
-  }
-
+  .ui-login-page { padding: var(--space-5); }
+  .ui-login-workspace { grid-template-columns: minmax(0, .95fr) minmax(24rem, 1.05fr); min-block-size: 38rem; }
   .ui-login-story,
-  .ui-login-panel {
-    padding: var(--space-10);
-  }
-}
-
-@media (min-width: 64rem) {
-  .ui-login-story,
-  .ui-login-panel {
-    padding: var(--space-16);
-  }
+  .ui-login-panel { padding: var(--space-8); }
+  .ui-login-story { border-block-end: 0; border-inline-end: 1px solid var(--border-default); }
 }

@@ -2,10 +2,12 @@ import { describe, expect, test } from "bun:test";
 
 import { restoreExistingFiles } from "@/lib/moodle/submission/existing-files";
 import { SubmissionInputError } from "@/lib/moodle/submission/input";
-import { MoodleSessionSchema } from "@/lib/moodle/site";
+import { createSessionFixture } from "@/tests/moodle/session-fixture";
 
 const policy = {
   kind: "enabled",
+  groupId: 0,
+  isGroupSubmission: false,
   limits: {
     acceptedFileTypes: [".pdf"],
     maxFileBytes: 1_000,
@@ -13,6 +15,7 @@ const policy = {
     maxOnlineTextBytes: 1_000,
   },
   mode: "files",
+  requiresStatement: false,
   supportsFinalize: true,
 } as const;
 
@@ -28,14 +31,7 @@ describe("existing assignment file preservation", () => {
       },
     });
     const baseUrl = server.url.toString().replace(/\/$/, "");
-    const session = MoodleSessionSchema.parse({
-      token: "server-only-token",
-      service: "fixture_service",
-      userId: 101,
-      expiresAt: Date.now() + 60_000,
-      site: { siteName: "Example Learning Hub", siteUrl: baseUrl, availableFunctions: [] },
-      capabilities: { assignments: true, calendar: false, courses: false, dashboard: false, fileUpload: true, notifications: false },
-    });
+    const session = createSessionFixture({ siteUrl: baseUrl, token: "server-only-token", upload: true });
     const key = "a".repeat(43);
     const target = `${baseUrl}/webservice/pluginfile.php/1/mod_assign/submission_files/2/report.pdf`;
     try {
@@ -53,14 +49,7 @@ describe("existing assignment file preservation", () => {
   });
 
   test("rejects a key that is not in the freshly loaded assignment", async () => {
-    const session = MoodleSessionSchema.parse({
-      token: "server-only-token",
-      service: "fixture_service",
-      userId: 101,
-      expiresAt: Date.now() + 60_000,
-      site: { siteName: "Example Learning Hub", siteUrl: "https://moodle.example", availableFunctions: [] },
-      capabilities: { assignments: true, calendar: false, courses: false, dashboard: false, fileUpload: true, notifications: false },
-    });
+    const session = createSessionFixture({ token: "server-only-token", upload: true });
     await expect(restoreExistingFiles({ files: [], keptKeys: ["b".repeat(43)], policy, session }))
       .rejects.toBeInstanceOf(SubmissionInputError);
   });
@@ -76,14 +65,7 @@ describe("existing assignment file preservation", () => {
       },
     });
     const baseUrl = server.url.toString().replace(/\/$/, "");
-    const session = MoodleSessionSchema.parse({
-      token: "server-only-token",
-      service: "fixture_service",
-      userId: 101,
-      expiresAt: Date.now() + 60_000,
-      site: { siteName: "Example Learning Hub", siteUrl: baseUrl, availableFunctions: [] },
-      capabilities: { assignments: true, calendar: false, courses: false, dashboard: false, fileUpload: true, notifications: false },
-    });
+    const session = createSessionFixture({ siteUrl: baseUrl, token: "server-only-token", upload: true });
     const key = "c".repeat(43);
     const target = `${baseUrl}/webservice/pluginfile.php/1/mod_assign/submission_files/2/report.pdf`;
     try {

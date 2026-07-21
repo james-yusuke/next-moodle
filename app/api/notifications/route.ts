@@ -25,7 +25,7 @@ function readFilter(request: Request): NotificationFilter | null {
 export async function GET(request: Request): Promise<Response> {
   try {
     const session = await requireMoodleSession();
-    if (!session.capabilities.notifications) {
+    if (session.manifest.features.notifications !== "available") {
       throw new MoodleFunctionError();
     }
     const filter = readFilter(request);

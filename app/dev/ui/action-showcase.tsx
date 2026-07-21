@@ -19,7 +19,7 @@ export function ActionShowcase() {
         <div>
           <h3 className={styles.groupTitle}>Theme preference</h3>
           <p className={styles.groupDescription}>
-            System is the default; explicit choices persist without a paint flash.
+            Dark is the default; explicit light and system choices persist without a paint flash.
           </p>
         </div>
         <ThemeControl />
@@ -27,7 +27,7 @@ export function ActionShowcase() {
 
       <div className={styles.sampleGrid}>
         <ShowcaseSample label="Default">
-          <Button icon={<FloppyDisk aria-hidden size={17} weight="duotone" />} variant="primary">
+          <Button icon={<FloppyDisk aria-hidden size={17} weight="regular" />} variant="primary">
             Save changes
           </Button>
         </ShowcaseSample>
@@ -57,13 +57,13 @@ export function ActionShowcase() {
           </Button>
         </ShowcaseSample>
         <ShowcaseSample label="Danger">
-          <Button icon={<Trash aria-hidden size={17} weight="duotone" />} variant="danger">
+          <Button icon={<Trash aria-hidden size={17} weight="regular" />} variant="danger">
             Remove draft
           </Button>
         </ShowcaseSample>
         <ShowcaseSample label="Icon button">
           <IconButton
-            icon={<Bell aria-hidden size={19} weight="duotone" />}
+            icon={<Bell aria-hidden size={19} weight="regular" />}
             label="Open notifications"
             variant="secondary"
           />

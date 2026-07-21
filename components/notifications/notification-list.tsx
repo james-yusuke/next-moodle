@@ -1,8 +1,11 @@
 "use client";
 
-import { ArrowSquareOut, Bell, Check } from "@phosphor-icons/react";
+import { ArrowRight, Bell, Check } from "@phosphor-icons/react";
+import Link from "next/link";
 
-import { Badge, Button, Surface } from "@/components/ui";
+import { Badge, Button } from "@/components/ui";
+import type { AppRuntimeConfig } from "@/lib/app-config";
+import { dateTimeFormatter } from "@/lib/date-time";
 import {
   filterNotifications,
   type NotificationFilter,
@@ -18,28 +21,19 @@ type NotificationListProps = Readonly<{
   filter: NotificationFilter;
   onMarkRead: (id: MoodleNotificationId) => void;
   pendingId: MoodleNotificationId | undefined;
+  runtimeConfig: AppRuntimeConfig;
 }>;
-
-const timeFormatter = new Intl.DateTimeFormat("en", {
-  dateStyle: "medium",
-  timeStyle: "short",
-  timeZone: "UTC",
-});
-
-function notificationTime(timestamp: number): string {
-  return timeFormatter.format(new Date(timestamp * 1_000));
-}
 
 function EmptyState({ filter }: Readonly<{ filter: NotificationFilter }>) {
   return (
     <div className={styles.empty} role="status">
       <h2 className={styles.emptyTitle}>
-        {filter === "unread" ? "You are all caught up" : "No notifications yet"}
+        {filter === "unread" ? "未読の通知はありません" : "通知はまだありません"}
       </h2>
       <p className={styles.emptyBody}>
         {filter === "unread"
-          ? "New Moodle updates will appear here while this page is visible."
-          : "Moodle has not sent any notifications for this account."}
+          ? "この画面を開いている間、新しい通知を60秒ごとに確認します。"
+          : "Moodleから通知が届くと、ここに時系列で表示されます。"}
       </p>
     </div>
   );
@@ -49,10 +43,12 @@ function NotificationItem({
   notification,
   onMarkRead,
   pendingId,
+  timeFormatter,
 }: Readonly<{
   notification: NotificationView;
   onMarkRead: (id: MoodleNotificationId) => void;
   pendingId: MoodleNotificationId | undefined;
+  timeFormatter: Intl.DateTimeFormat;
 }>) {
   const isPending = pendingId === notification.id;
   return (
@@ -64,30 +60,28 @@ function NotificationItem({
             className={styles.meta}
             dateTime={new Date(notification.timeCreated * 1_000).toISOString()}
           >
-            {notificationTime(notification.timeCreated)} UTC
+            {timeFormatter.format(new Date(notification.timeCreated * 1_000))}
           </time>
         </div>
         <Badge
           icon={notification.read ? <Check weight="bold" /> : <Bell weight="bold" />}
           tone={notification.read ? "neutral" : "accent"}
         >
-          {notification.read ? "Read" : "Unread"}
+          {notification.read ? "既読" : "未読"}
         </Badge>
       </div>
       <p className={styles.message}>{notification.message}</p>
       <div className={styles.itemActions}>
         {notification.href ? (
-          <a
+          <Link
             className={styles.activity}
             href={notification.href}
-            rel="noopener noreferrer"
-            target="_blank"
           >
-            <ArrowSquareOut aria-hidden size={18} weight="bold" />
-            Open related activity
-          </a>
+            <ArrowRight aria-hidden size={18} weight="bold" />
+            関連する活動を開く
+          </Link>
         ) : (
-          <span className={styles.fallback}>Related activity link unavailable.</span>
+          <span className={styles.fallback}>関連する活動へのリンクはありません。</span>
         )}
         {!notification.read ? (
           <Button
@@ -98,7 +92,7 @@ function NotificationItem({
             size="compact"
             variant="ghost"
           >
-            Mark as read
+            既読にする
           </Button>
         ) : null}
       </div>
@@ -111,23 +105,30 @@ export function NotificationList({
   filter,
   onMarkRead,
   pendingId,
+  runtimeConfig,
 }: NotificationListProps) {
   const visibleNotifications = filterNotifications(data.notifications, filter);
+  const timeFormatter = dateTimeFormatter(runtimeConfig.locale, {
+    dateStyle: "medium",
+    timeStyle: "short",
+    timeZone: runtimeConfig.timeZone,
+  });
   if (visibleNotifications.length === 0) {
     return <EmptyState filter={filter} />;
   }
   return (
-    <Surface variant="base">
-      <ul className={styles.list} aria-label="Moodle notifications">
+    <div className={styles.inbox}>
+      <ul className={styles.list} aria-label="Moodleの通知">
         {visibleNotifications.map((notification) => (
           <NotificationItem
             key={notification.id}
             notification={notification}
             onMarkRead={onMarkRead}
             pendingId={pendingId}
+            timeFormatter={timeFormatter}
           />
         ))}
       </ul>
-    </Surface>
+    </div>
   );
 }

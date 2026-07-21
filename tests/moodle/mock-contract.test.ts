@@ -27,14 +27,12 @@ test("authenticates against the shared official-wire Moodle fixture", async () =
     // Then
     expect(login.userId).toBe(MoodleUserIdSchema.parse(user.userid));
     expect(login.site.siteUrl).toBe(server.url);
-    expect(login.capabilities).toEqual({
-      dashboard: true,
-      courses: true,
-      assignments: true,
-      calendar: true,
-      notifications: true,
-      fileUpload: true,
-    });
+    expect(login.manifest.features.dashboard).toBe("available");
+    expect(login.manifest.features.courses).toBe("available");
+    expect(login.manifest.features.assignmentsRead).toBe("available");
+    expect(login.manifest.features.calendar).toBe("available");
+    expect(login.manifest.features.notifications).toBe("available");
+    expect(login.manifest.fileAccess.upload).toBe(true);
   } finally {
     await mock.stop();
   }

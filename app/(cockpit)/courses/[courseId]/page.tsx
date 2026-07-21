@@ -7,6 +7,7 @@ import { requireMoodleSession } from "@/lib/auth/server";
 import { MoodleCourseIdSchema } from "@/lib/moodle/model";
 import { readCourseDetail } from "@/lib/moodle/queries/courses";
 import { currentUnixSeconds } from "@/lib/moodle/now";
+import { readAppRuntimeConfig } from "@/lib/app-config";
 
 export const metadata: Metadata = { title: "コース詳細" };
 
@@ -14,6 +15,7 @@ type CoursePageProps = Readonly<{ params: Promise<{ courseId: string }> }>;
 
 export default async function CoursePage({ params }: CoursePageProps) {
   const session = await requireMoodleSession();
+  const config = readAppRuntimeConfig();
   const route = await params;
   const parsedCourseId = MoodleCourseIdSchema.safeParse(Number(route.courseId));
   if (!parsedCourseId.success) {
@@ -23,11 +25,12 @@ export default async function CoursePage({ params }: CoursePageProps) {
       </Notice>
     );
   }
-  if (!session.capabilities.courses) {
+  if (session.manifest.features.courses !== "available") {
     return <StateNotice reason="capability" retryHref="/courses" siteUrl={session.site.siteUrl} />;
   }
   const result = await readCourseDetail({
     courseId: parsedCourseId.data,
+    manifest: session.manifest,
     nowSeconds: currentUnixSeconds(),
     siteUrl: session.site.siteUrl,
     userId: session.userId,
@@ -45,5 +48,5 @@ export default async function CoursePage({ params }: CoursePageProps) {
     <Notice title="コースが見つかりません" tone="warning">
       <p>このアカウントで受講できるコース一覧から選択してください。</p>
     </Notice>
-  ) : <CourseDetail data={result.data} />;
+  ) : <CourseDetail config={config} data={result.data} />;
 }

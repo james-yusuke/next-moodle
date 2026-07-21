@@ -3,9 +3,9 @@ import { describe, expect, test } from "bun:test";
 import { MoodleClient } from "@/lib/moodle/client";
 import type { NativeSubmissionMode, NativeSubmissionPolicy } from "@/lib/moodle/queries/assignment-policy";
 import { MoodleAssignmentIdSchema } from "@/lib/moodle/identifiers";
-import { MoodleSessionSchema } from "@/lib/moodle/site";
 import { parseSubmissionFormData } from "@/lib/moodle/submission/input";
 import { executeAssignmentSubmission } from "@/lib/moodle/submission/moodle";
+import { createSessionFixture } from "@/tests/moodle/session-fixture";
 
 type WireEvent = Readonly<{
   fields: Readonly<Record<string, string>>;
@@ -22,12 +22,13 @@ const LIMITS = {
 function enabledPolicy(
   mode: NativeSubmissionMode,
 ): Extract<NativeSubmissionPolicy, { readonly kind: "enabled" }> {
-  return { kind: "enabled", limits: LIMITS, mode, supportsFinalize: true };
+  return { groupId: 0, kind: "enabled", isGroupSubmission: false, limits: LIMITS, mode, requiresStatement: false, supportsFinalize: true };
 }
 
 async function runWireFlow(
   mode: NativeSubmissionMode,
   finalize: boolean,
+  acceptStatement = false,
 ): Promise<readonly WireEvent[]> {
   const events: WireEvent[] = [];
   const server = Bun.serve({
@@ -71,34 +72,22 @@ async function runWireFlow(
   });
   const baseUrl = server.url.toString().replace(/\/$/, "");
   try {
-    const session = MoodleSessionSchema.parse({
+    const functions = [
+      "mod_assign_get_assignments",
+      "mod_assign_get_submission_status",
+      "mod_assign_save_submission",
+      "mod_assign_submit_for_grading",
+    ] as const;
+    const session = createSessionFixture({
+      functions,
+      siteUrl: baseUrl,
       token: "synthetic-token",
-      service: "fixture_service",
-      userId: 101,
-      expiresAt: Date.now() + 60_000,
-      site: {
-        siteName: "Wire Moodle",
-        siteUrl: baseUrl,
-        availableFunctions: [
-          "mod_assign_get_assignments",
-          "mod_assign_get_submission_status",
-          "mod_assign_save_submission",
-          "mod_assign_submit_for_grading",
-        ],
-      },
-      capabilities: {
-        dashboard: false,
-        courses: false,
-        assignments: true,
-        calendar: false,
-        notifications: false,
-        fileUpload: true,
-      },
+      upload: true,
     });
     const client = new MoodleClient({
       config: { baseUrl, service: "moodle_mobile_app", timeoutMs: 2_000 },
       token: session.token,
-      availableFunctions: session.site.availableFunctions,
+      availableFunctions: functions,
     });
     const form = new FormData();
     if (mode !== "files") {
@@ -108,6 +97,7 @@ async function runWireFlow(
       form.append("newFiles", new File(["notes"], "notes.txt", { type: "text/plain" }));
     }
     form.set("intent", finalize ? "finalize" : "save");
+    form.set("acceptSubmissionStatement", String(acceptStatement));
     form.set("onlineText", mode === "files" ? "" : "Tide pool observation");
     form.set("onlineTextFormat", "2");
     const payload = await parseSubmissionFormData(form, enabledPolicy(mode));
@@ -161,6 +151,11 @@ describe("Moodle assignment mutation wire", () => {
     expect(events[2]?.fields.acceptsubmissionstatement).toBe("0");
   });
 
+  test("passes explicit submission-statement agreement to Moodle", async () => {
+    const events = await runWireFlow("online_text", true, true);
+    expect(events[1]?.fields.acceptsubmissionstatement).toBe("1");
+  });
+
   test("does not retry a failed save mutation", async () => {
     // Given
     let requests = 0;
@@ -173,29 +168,17 @@ describe("Moodle assignment mutation wire", () => {
       },
     });
     const baseUrl = server.url.toString().replace(/\/$/, "");
-    const session = MoodleSessionSchema.parse({
+    const functions = ["mod_assign_save_submission"] as const;
+    const session = createSessionFixture({
+      functions,
+      siteUrl: baseUrl,
       token: "synthetic-token",
-      service: "fixture_service",
-      userId: 101,
-      expiresAt: Date.now() + 60_000,
-      site: {
-        siteName: "Wire Moodle",
-        siteUrl: baseUrl,
-        availableFunctions: ["mod_assign_save_submission"],
-      },
-      capabilities: {
-        dashboard: false,
-        courses: false,
-        assignments: true,
-        calendar: false,
-        notifications: false,
-        fileUpload: true,
-      },
+      upload: true,
     });
     const client = new MoodleClient({
       config: { baseUrl, service: "moodle_mobile_app", timeoutMs: 2_000 },
       token: session.token,
-      availableFunctions: session.site.availableFunctions,
+      availableFunctions: functions,
     });
     const form = new FormData();
     form.set("onlineText", "No retry");

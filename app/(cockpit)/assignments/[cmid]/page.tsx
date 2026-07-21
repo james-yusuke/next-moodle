@@ -1,4 +1,3 @@
-import { ArrowSquareOut } from "@phosphor-icons/react/dist/ssr";
 import { createHash } from "node:crypto";
 import type { Metadata } from "next";
 
@@ -10,6 +9,7 @@ import { MoodleCourseModulePathSchema } from "@/lib/moodle/queries/assignments";
 import { fetchAssignmentDetail } from "@/lib/moodle/queries/assignments.query";
 import { currentUnixSeconds } from "@/lib/moodle/now";
 import { readAppRuntimeConfig } from "@/lib/app-config";
+import { createAiUiContext } from "@/lib/ai/runtime";
 
 export const metadata: Metadata = { title: "課題" };
 
@@ -27,7 +27,7 @@ export default async function AssignmentPage({ params }: AssignmentPageProps) {
       </Notice>
     );
   }
-  if (!session.capabilities.assignments) {
+  if (session.manifest.features.assignmentsRead !== "available") {
     return <StateNotice reason="capability" retryHref={`/assignments/${cmid.data}`} siteUrl={session.site.siteUrl} />;
   }
   const data = await fetchAssignmentDetail(
@@ -37,21 +37,22 @@ export default async function AssignmentPage({ params }: AssignmentPageProps) {
     .catch(() => null);
   if (data === null) {
     return (
-      <Notice
-        action={(
-          <a className="ui-app-action-link" href={session.site.siteUrl} rel="noopener noreferrer" target="_blank">
-            Moodleで開く <ArrowSquareOut aria-hidden size={17} weight="regular" />
-          </a>
-        )}
-        title="課題を読み込めませんでした"
-        tone="error"
-      >
-        <p>接続を確認して再読み込みしてください。Moodle側で再ログインが必要な場合があります。</p>
+      <Notice title="課題を読み込めませんでした" tone="error">
+        <p>接続を確認して再読み込みしてください。繰り返す場合は接続診断の不足APIをMoodle管理者へ共有してください。</p>
       </Notice>
     );
   }
   const draftStorageKey = `next-moodle:draft:${createHash("sha256")
     .update(`${session.site.siteUrl}|${session.userId}|${cmid.data}`)
     .digest("base64url")}`;
-  return <AssignmentDetailView config={config} data={data} draftStorageKey={draftStorageKey} />;
+  const ai = createAiUiContext({ siteUrl: session.site.siteUrl, userId: session.userId });
+  return (
+    <AssignmentDetailView
+      aiAvailability={ai.availability}
+      aiConsentStorageKey={ai.consentStorageKey}
+      config={config}
+      data={data}
+      draftStorageKey={draftStorageKey}
+    />
+  );
 }

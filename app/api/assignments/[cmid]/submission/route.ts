@@ -20,7 +20,6 @@ export async function POST(
           timeoutMs: 10_000,
         },
         token: session.token,
-        availableFunctions: session.site.availableFunctions,
       });
       return { client, session };
     },

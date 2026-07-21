@@ -128,7 +128,7 @@ export async function handleAssignmentSubmissionRequest(
       throw new SubmissionInputError("invalid_submission");
     }
     const context = await dependencies.loadContext();
-    if (!context.session.capabilities.assignments) {
+    if (context.session.manifest.features.assignmentsSubmit !== "available") {
       throw new NativeSubmissionUnavailableError();
     }
     const detail = await fetchAssignmentDetail(

@@ -1,9 +1,10 @@
 "use client";
 
 import {
-  Bell,
   Books,
   CalendarDots,
+  ChatCircleDots,
+  DotsThreeCircle,
   House,
 } from "@phosphor-icons/react";
 import Link from "next/link";
@@ -12,8 +13,9 @@ import { usePathname } from "next/navigation";
 const NAV_ITEMS = [
   { href: "/dashboard", icon: House, label: "ホーム" },
   { href: "/courses", icon: Books, label: "コース" },
-  { href: "/calendar", icon: CalendarDots, label: "カレンダー" },
-  { href: "/notifications", icon: Bell, label: "通知" },
+  { href: "/calendar", icon: CalendarDots, label: "予定" },
+  { href: "/messages", icon: ChatCircleDots, label: "メッセージ" },
+  { href: "/profile", icon: DotsThreeCircle, label: "その他" },
 ] as const;
 
 function isCurrentPath(pathname: string, href: string): boolean {
@@ -37,6 +39,7 @@ export function AppNavigation({ mobile = false }: Readonly<{ mobile?: boolean }>
             className="ui-app-nav__link"
             href={item.href}
             key={item.href}
+            title={mobile ? undefined : item.label}
           >
             <Icon aria-hidden size={21} weight="regular" />
             <span>{item.label}</span>

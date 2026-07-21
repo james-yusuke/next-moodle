@@ -16,10 +16,10 @@ import {
   SESSION_TTL_SECONDS,
 } from "../../lib/auth/session";
 import {
-  MoodleSessionSchema,
   MoodleTokenSchema,
   MoodleUserIdSchema,
 } from "../../lib/moodle/model";
+import { createSessionFixture } from "./session-fixture";
 
 const SESSION_PASSWORD = "fixture-session-password-at-least-32-bytes";
 
@@ -124,24 +124,10 @@ describe("authentication request security", () => {
   test("rejects an expired decrypted session", () => {
     // Given
     const now = 1_800_000_000_000;
-    const expired = MoodleSessionSchema.parse({
-      token: MoodleTokenSchema.parse("fixture-token"),
-      service: "fixture_service",
-      userId: MoodleUserIdSchema.parse(41),
+    const expired = createSessionFixture({
       expiresAt: now - 1,
-      site: {
-        siteName: "Example Learning Hub",
-        siteUrl: "https://moodle.example",
-        availableFunctions: [],
-      },
-      capabilities: {
-        dashboard: false,
-        courses: false,
-        assignments: false,
-        calendar: false,
-        notifications: false,
-        fileUpload: false,
-      },
+      token: MoodleTokenSchema.parse("fixture-token"),
+      userId: MoodleUserIdSchema.parse(41),
     });
 
     // When

@@ -24,19 +24,78 @@ export const MoodleDashboardCourseSchema = z.object({
   visible: MoodleVisibilitySchema.optional(),
   startdate: MoodleTimestampSchema.optional(),
   enddate: MoodleTimestampSchema.optional(),
+  isfavourite: z.union([z.boolean(), z.literal(0), z.literal(1)]).transform(Boolean).optional().default(false),
 });
 export type MoodleDashboardCourse = Readonly<
   z.infer<typeof MoodleDashboardCourseSchema>
 >;
 
-export const MoodleCourseModuleSchema = z.object({
+const MoodleCourseModuleModelSchema = z.object({
+  id: MoodleCourseModuleIdSchema,
+  instance: z.number().int().nonnegative().optional(),
+  name: MoodleTextSchema,
+  modname: z.string().min(1).max(128),
+  integrity: z.enum(["ready", "malformed"]),
+  url: z.url().optional(),
+  visible: MoodleVisibilitySchema.optional(),
+  uservisible: z.boolean().optional(),
+  description: MoodleHtmlSchema.optional(),
+  availabilityinfo: MoodleHtmlSchema.optional(),
+  completion: z.number().int().nonnegative().optional(),
+  completiondata: z.object({
+    state: z.number().int().nonnegative(),
+    timecompleted: MoodleTimestampSchema.optional(),
+    overrideby: z.number().int().nonnegative().optional(),
+  }).optional(),
+  dates: z.array(z.object({
+    label: MoodleTextSchema,
+    timestamp: MoodleTimestampSchema,
+    dataid: z.string().max(128).optional(),
+  })).optional(),
+  contents: z.array(z.object({
+    filename: MoodleTextSchema,
+    filepath: z.string().max(2_048).nullish().transform((value) => value ?? undefined),
+    filesize: z.number().int().nonnegative().optional(),
+    fileurl: z.url().optional(),
+    mimetype: z.string().max(256).optional(),
+    type: z.string().max(128).optional(),
+  })).optional(),
+});
+
+const MoodleBooleanSchema = z.union([
+  z.boolean(),
+  z.literal(0).transform(() => false),
+  z.literal(1).transform(() => true),
+]);
+
+const MoodleCourseModuleWireSchema = MoodleCourseModuleModelSchema
+  .omit({ integrity: true })
+  .extend({
+    availabilityinfo: MoodleHtmlSchema.nullish().transform((value) => value ?? undefined),
+    description: MoodleHtmlSchema.nullish().transform((value) => value ?? undefined),
+    url: z.url().nullish().transform((value) => value ?? undefined),
+    uservisible: MoodleBooleanSchema.nullish().transform((value) => value ?? undefined),
+  })
+  .transform((module) => MoodleCourseModuleModelSchema.parse({
+    ...module,
+    integrity: "ready",
+  }));
+
+const MoodleCourseModuleFallbackSchema = z.object({
   id: MoodleCourseModuleIdSchema,
   name: MoodleTextSchema,
   modname: z.string().min(1).max(128),
-  visible: z.number().int().min(0).max(1).optional(),
-  uservisible: z.boolean().optional(),
-  description: MoodleHtmlSchema.optional(),
-});
+  visible: MoodleVisibilitySchema.optional(),
+  uservisible: MoodleBooleanSchema.nullish().transform((value) => value ?? undefined),
+}).transform((module) => MoodleCourseModuleModelSchema.parse({
+  ...module,
+  integrity: "malformed",
+}));
+
+export const MoodleCourseModuleSchema = z.union([
+  MoodleCourseModuleWireSchema,
+  MoodleCourseModuleFallbackSchema,
+]);
 export type MoodleCourseModule = Readonly<
   z.infer<typeof MoodleCourseModuleSchema>
 >;
@@ -78,7 +137,7 @@ const MoodleCalendarEventWireSchema = z.object({
   normalisedeventtype: z.string().min(1).max(128).optional(),
   timestart: MoodleTimestampSchema,
   timeduration: MoodleTimestampSchema,
-  courseid: MoodleCourseIdSchema.optional(),
+  courseid: z.union([z.literal(0), MoodleCourseIdSchema]).optional(),
   cmid: MoodleCourseModuleIdSchema.optional(),
   modname: z.string().max(128).optional(),
 });

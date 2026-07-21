@@ -37,35 +37,39 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   return (
     <main className="ui-login-page">
-      <section className="ui-login-story" aria-labelledby="login-story-title">
-        <div className="ui-login-brand">
-          <GraduationCap aria-hidden size={29} weight="regular" />
-          <span>{appName}</span>
-        </div>
-        <div className="ui-login-copy">
-          <h1 id="login-story-title">学習の次の一手を、静かに見渡す。</h1>
-          <p>
-            コース、締切、予定をひとつの学習コックピットにまとめます。
-            Moodleの設定やデータは変更しません。
-          </p>
-        </div>
-        <p className="ui-login-story__foot">Midnight Ledger learning cockpit</p>
-      </section>
-      <section className="ui-login-panel" aria-labelledby="login-title">
-        <div className="ui-login-panel__inner">
-          <div className="ui-login-theme"><ThemeControl /></div>
-          <header className="ui-login-panel__header">
-            <h2 id="login-title">Moodleに接続</h2>
-            <p>接続先: <strong>{connectionLabel}</strong><br />Moodleと同じ認証情報を入力してください。</p>
-          </header>
-          {reason === "expired" ? (
-            <Notice title="セッションが終了しました" tone="warning">
-              <p>安全のため、もう一度ログインしてください。</p>
-            </Notice>
-          ) : null}
-          <LoginForm />
-        </div>
-      </section>
+      <div className="ui-login-workspace">
+        <section className="ui-login-story" aria-labelledby="login-story-title">
+          <div className="ui-login-brand">
+            <GraduationCap aria-hidden size={26} weight="regular" />
+            <span>{appName}</span>
+          </div>
+          <div className="ui-login-copy">
+            <p className="ui-login-kicker">Moodle workspace</p>
+            <h1 id="login-story-title">Moodleへ安全に接続</h1>
+            <p>コース、締切、課題提出を読みやすい作業画面にまとめます。Moodle本体のデータ構造は変更しません。</p>
+          </div>
+          <dl className="ui-login-ledger">
+            <div><dt>接続先</dt><dd>{connectionLabel}</dd></div>
+            <div><dt>認証情報</dt><dd>ログイン時だけ使用し、保存しません</dd></div>
+            <div><dt>セッション</dt><dd>暗号化されたHttpOnly Cookieで8時間保護</dd></div>
+          </dl>
+        </section>
+        <section className="ui-login-panel" aria-labelledby="login-title">
+          <div className="ui-login-panel__inner">
+            <div className="ui-login-theme"><ThemeControl /></div>
+            <header className="ui-login-panel__header">
+              <h2 id="login-title">認証情報</h2>
+              <p>Moodleで使用しているユーザー名とパスワードを入力してください。</p>
+            </header>
+            {reason === "expired" ? (
+              <Notice title="セッションが終了しました" tone="warning">
+                <p>安全のため、もう一度ログインしてください。</p>
+              </Notice>
+            ) : null}
+            <LoginForm />
+          </div>
+        </section>
+      </div>
     </main>
   );
 }
