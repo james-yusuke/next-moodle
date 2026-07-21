@@ -44,7 +44,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
     "lighthouse": "^13.4.1",
-    "react-doctor": "^0.8.2",
+    "react-doctor": "^0.8.3",
     "react-grab": "^0.1.48",
     "react-scan": "^0.5.7",
     "tailwindcss": "^4",
