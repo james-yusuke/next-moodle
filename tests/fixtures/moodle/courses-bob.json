@@ -1,0 +1,14 @@
+{
+  "courses": [
+    {
+      "id": 201,
+      "shortname": "HIST-330",
+      "fullname": "Archives and Public Memory",
+      "progress": 84,
+      "completed": false,
+      "visible": true,
+      "viewurl": "https://moodle.synthetic.invalid/course/view.php?id=201"
+    }
+  ],
+  "nextoffset": 0
+}

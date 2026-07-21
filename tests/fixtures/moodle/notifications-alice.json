@@ -1,0 +1,16 @@
+{
+  "notifications": [
+    {
+      "id": 701,
+      "useridfrom": 9001,
+      "subject": "New feedback available",
+      "message": "Your synthetic field notes have feedback.",
+      "contexturl": "https://moodle.synthetic.invalid/mod/assign/view.php?id=9101",
+      "timecreated": 1735687800,
+      "timeread": 0,
+      "component": "mod_assign",
+      "eventtype": "assign_feedback_available"
+    }
+  ],
+  "newestfirst": true
+}

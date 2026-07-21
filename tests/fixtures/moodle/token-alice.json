@@ -1,0 +1,6 @@
+{
+  "token": "mock-token-alice",
+  "privatetoken": "private-alice",
+  "userid": 101,
+  "service": "moodle_mobile_app"
+}

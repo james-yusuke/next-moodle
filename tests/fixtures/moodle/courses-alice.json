@@ -1,0 +1,23 @@
+{
+  "courses": [
+    {
+      "id": 101,
+      "shortname": "BIO-101",
+      "fullname": "Introduction to Marine Biology",
+      "progress": 62,
+      "completed": false,
+      "visible": true,
+      "viewurl": "https://moodle.synthetic.invalid/course/view.php?id=101"
+    },
+    {
+      "id": 102,
+      "shortname": "STAT-210",
+      "fullname": "Applied Statistics Lab",
+      "progress": 18,
+      "completed": false,
+      "visible": true,
+      "viewurl": "https://moodle.synthetic.invalid/course/view.php?id=102"
+    }
+  ],
+  "nextoffset": 0
+}

@@ -1,0 +1,6 @@
+{
+  "token": "mock-token-bob",
+  "privatetoken": "private-bob",
+  "userid": 202,
+  "service": "moodle_mobile_app"
+}

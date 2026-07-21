@@ -1,0 +1,28 @@
+{
+  "sitename": "Synthetic Moodle",
+  "siteurl": "https://moodle.synthetic.invalid",
+  "username": "alice",
+  "firstname": "Aoi",
+  "lastname": "Tanaka",
+  "fullname": "Aoi Tanaka",
+  "lang": "en",
+  "userid": 101,
+  "uploadfiles": true,
+  "functions": [
+    {"name":"core_webservice_get_site_info"},
+    {"name":"core_course_get_enrolled_courses_by_timeline_classification"},
+    {"name":"core_enrol_get_users_courses"},
+    {"name":"core_course_get_contents"},
+    {"name":"core_completion_get_activities_completion_status"},
+    {"name":"core_calendar_get_action_events_by_timesort"},
+    {"name":"core_calendar_get_calendar_monthly_view"},
+    {"name":"core_calendar_get_calendar_upcoming_view"},
+    {"name":"mod_assign_get_assignments"},
+    {"name":"mod_assign_get_submission_status"},
+    {"name":"mod_assign_save_submission"},
+    {"name":"mod_assign_submit_for_grading"},
+    {"name":"message_popup_get_popup_notifications"},
+    {"name":"message_popup_get_unread_popup_notification_count"},
+    {"name":"core_message_mark_notification_read"}
+  ]
+}

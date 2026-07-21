@@ -1,0 +1,197 @@
+.ui-courses-browser,
+.ui-courses-group,
+.ui-course-sections {
+  display: grid;
+  gap: var(--space-6);
+}
+
+.ui-courses-search {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: end;
+  max-inline-size: 36rem;
+}
+
+.ui-courses-search > svg {
+  margin-block-end: var(--space-3);
+  color: var(--text-tertiary);
+}
+
+.ui-courses-group > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.ui-courses-group h2,
+.ui-courses-list ul,
+.ui-course-detail__header h1,
+.ui-course-section ul,
+.ui-course-section__empty {
+  margin: 0;
+}
+
+.ui-courses-group h2 {
+  font-size: var(--font-size-h2);
+  font-weight: 560;
+  letter-spacing: -0.018em;
+}
+
+.ui-courses-list {
+  padding-block: var(--space-2);
+}
+
+.ui-courses-list ul,
+.ui-course-section ul {
+  padding: 0;
+  list-style: none;
+}
+
+.ui-courses-list li + li,
+.ui-course-activity + .ui-course-activity {
+  box-shadow: inset 0 1px 0 var(--border-subtle);
+}
+
+.ui-courses-list a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-4);
+  align-items: center;
+  min-block-size: 2.75rem;
+  padding: var(--space-3);
+  border-radius: var(--shape-control);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.ui-courses-list a:hover {
+  background: var(--accent-soft);
+}
+
+.ui-courses-list__icon,
+.ui-course-activity__icon {
+  display: grid;
+  inline-size: 2.75rem;
+  block-size: 2.75rem;
+  border-radius: var(--shape-control);
+  background: var(--surface-secondary);
+  box-shadow: var(--shadow-control);
+  color: var(--accent-400);
+  place-items: center;
+}
+
+.ui-courses-list__title,
+.ui-course-activity__title {
+  display: grid;
+  min-inline-size: 0;
+}
+
+.ui-courses-list__title strong,
+.ui-course-activity__title strong {
+  overflow-wrap: anywhere;
+}
+
+.ui-courses-list__title small,
+.ui-courses-list__period,
+.ui-course-activity small,
+.ui-course-section__empty {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+}
+
+.ui-courses-list__period {
+  max-inline-size: 18rem;
+  text-align: end;
+}
+
+.ui-course-detail__header {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.ui-course-detail__header > a {
+  min-block-size: 2.75rem;
+  justify-self: start;
+  align-content: center;
+  font-size: var(--font-size-label);
+}
+
+.ui-course-detail__header > div {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.ui-course-detail__header h1 {
+  max-inline-size: 48rem;
+  font-size: var(--font-size-h1);
+  font-weight: 560;
+  letter-spacing: -0.028em;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.ui-course-sections {
+  gap: var(--space-4);
+}
+
+.ui-course-activity {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) minmax(min(14rem, 100%), auto);
+  gap: var(--space-4);
+  align-items: center;
+  padding-block: var(--space-3);
+}
+
+.ui-course-activity__external,
+.ui-course-activity__disabled {
+  display: grid;
+  gap: var(--space-1);
+  justify-items: end;
+}
+
+.ui-course-activity__disabled button {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: 0;
+  border-radius: var(--shape-control);
+  background: var(--surface-inset);
+  box-shadow: var(--shadow-control);
+  color: var(--text-disabled);
+}
+
+.ui-course-activity__external small,
+.ui-course-activity__disabled small {
+  max-inline-size: 28rem;
+  text-align: end;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 47.99rem) {
+  .ui-courses-list a,
+  .ui-course-activity {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .ui-courses-list__period,
+  .ui-course-activity > :last-child {
+    grid-column: 1 / -1;
+    justify-self: start;
+    text-align: start;
+  }
+
+  .ui-course-activity__external,
+  .ui-course-activity__disabled {
+    justify-items: start;
+  }
+
+  .ui-course-activity__external small,
+  .ui-course-activity__disabled small {
+    text-align: start;
+  }
+}

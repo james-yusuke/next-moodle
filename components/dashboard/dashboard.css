@@ -1,0 +1,203 @@
+.ui-dashboard-next {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: var(--space-5);
+  align-items: center;
+  border-radius: var(--shape-panel);
+  padding: clamp(var(--space-5), 4vw, var(--space-10));
+  min-block-size: 15rem;
+}
+
+.ui-dashboard-next__icon {
+  display: grid;
+  inline-size: calc(var(--space-12) + var(--space-2));
+  block-size: calc(var(--space-12) + var(--space-2));
+  border-radius: var(--shape-card);
+  background: var(--accent-soft);
+  color: var(--accent-400);
+  place-items: center;
+}
+
+.ui-dashboard-next__content {
+  display: grid;
+  gap: var(--space-2);
+  min-inline-size: 0;
+}
+
+.ui-dashboard-next__status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+}
+
+.ui-dashboard-next h2,
+.ui-dashboard-next time,
+.ui-dashboard-section h2,
+.ui-dashboard-section__heading span,
+.ui-dashboard-horizon,
+.ui-dashboard-horizon ul,
+.ui-dashboard-course-list,
+.ui-dashboard-empty-copy,
+.ui-dashboard-unread p {
+  margin: 0;
+}
+
+.ui-dashboard-next h2 {
+  color: var(--text-primary);
+  font-size: clamp(1.65rem, 4vw, 2.75rem);
+  font-weight: 560;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.ui-dashboard-next time {
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-sm);
+  font-variant-numeric: tabular-nums;
+}
+
+.ui-dashboard-section {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.ui-dashboard-section__heading,
+.ui-dashboard-section__heading > div {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.ui-dashboard-section__heading {
+  justify-content: space-between;
+}
+
+.ui-dashboard-section__heading h2 {
+  font-size: var(--font-size-h2);
+  font-weight: 560;
+  letter-spacing: -0.018em;
+}
+
+.ui-dashboard-section__heading > span {
+  color: var(--text-tertiary);
+  font-family: var(--font-geist-mono), monospace;
+  font-size: var(--font-size-caption);
+}
+
+.ui-dashboard-horizon {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr));
+  gap: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ui-dashboard-day {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  min-block-size: calc(var(--space-16) * 2);
+  padding: var(--space-3);
+  border-radius: 0;
+  background: transparent;
+  box-shadow: inset 1px 0 0 var(--border-default), inset 0 1px 0 var(--border-subtle);
+}
+
+.ui-dashboard-day > time {
+  color: var(--text-secondary);
+  font-size: var(--font-size-label);
+  font-weight: 560;
+}
+
+.ui-dashboard-day__empty {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+}
+
+.ui-dashboard-day ul,
+.ui-dashboard-course-list {
+  display: grid;
+  gap: var(--space-2);
+  padding: 0;
+  list-style: none;
+}
+
+.ui-dashboard-day li {
+  display: grid;
+  gap: var(--space-1);
+  min-inline-size: 0;
+}
+
+.ui-dashboard-day strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-caption);
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.ui-dashboard-day li span {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+}
+
+.ui-dashboard-course-list li + li {
+  padding-block-start: var(--space-2);
+  box-shadow: inset 0 1px 0 var(--border-subtle);
+}
+
+.ui-dashboard-course-list a {
+  display: grid;
+  gap: var(--space-1);
+  min-block-size: 2.75rem;
+  align-content: center;
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.ui-dashboard-course-list span {
+  overflow-wrap: anywhere;
+}
+
+.ui-dashboard-course-list small,
+.ui-dashboard-empty-copy,
+.ui-dashboard-unread p {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-caption);
+}
+
+.ui-dashboard-unread .ui-surface__body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-3);
+  align-items: center;
+}
+
+.ui-dashboard-unread strong {
+  color: var(--text-primary);
+  font-size: var(--font-size-display);
+  font-weight: 560;
+  line-height: 1;
+}
+
+.ui-dashboard-unread p,
+.ui-dashboard-unread .ui-app-action-link {
+  grid-column: 1 / -1;
+}
+
+.ui-dashboard-unread .ui-app-action-link {
+  justify-self: start;
+}
+
+@media (max-width: 35rem) {
+  .ui-dashboard-next {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .ui-dashboard-next > .ui-app-action-link {
+    grid-column: 1 / -1;
+  }
+}

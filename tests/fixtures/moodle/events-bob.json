@@ -1,0 +1,18 @@
+{
+  "events": [
+    {
+      "id": 401,
+      "name": "Archive reflection due",
+      "eventtype": "due",
+      "courseid": 201,
+      "modname": "assign",
+      "instance": 601,
+      "action": "submit",
+      "url": "https://moodle.synthetic.invalid/mod/assign/view.php?id=9201"
+    }
+  ],
+  "firstid": 401,
+  "lastid": 401,
+  "haslastevents": true,
+  "limit": 20
+}

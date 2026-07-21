@@ -1,0 +1,28 @@
+{
+  "events": [
+    {
+      "id": 301,
+      "name": "Tide pool field notes due",
+      "eventtype": "due",
+      "courseid": 101,
+      "modname": "assign",
+      "instance": 501,
+      "action": "submit",
+      "url": "https://moodle.synthetic.invalid/mod/assign/view.php?id=9101"
+    },
+    {
+      "id": 302,
+      "name": "Statistics lab check-in",
+      "eventtype": "course",
+      "courseid": 102,
+      "modname": "",
+      "instance": 0,
+      "action": "",
+      "url": "https://moodle.synthetic.invalid/course/view.php?id=102"
+    }
+  ],
+  "firstid": 301,
+  "lastid": 302,
+  "haslastevents": true,
+  "limit": 20
+}

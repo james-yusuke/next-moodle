@@ -1,0 +1,16 @@
+{
+  "notifications": [
+    {
+      "id": 801,
+      "useridfrom": 9002,
+      "subject": "Course announcement",
+      "message": "A synthetic archive seminar room changed.",
+      "contexturl": "https://moodle.synthetic.invalid/course/view.php?id=201",
+      "timecreated": 1735686000,
+      "timeread": 0,
+      "component": "moodle",
+      "eventtype": "course_announcement"
+    }
+  ],
+  "newestfirst": true
+}

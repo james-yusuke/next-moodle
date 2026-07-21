@@ -1,0 +1,20 @@
+{
+  "expired_token": {
+    "exception": "moodle_exception",
+    "errorcode": "invalidtoken",
+    "message": "The synthetic token has expired.",
+    "debuginfo": ""
+  },
+  "missing_capability": {
+    "exception": "webservice_access_exception",
+    "errorcode": "accessexception",
+    "message": "The function is not available for this synthetic user.",
+    "debuginfo": ""
+  },
+  "transient_outage": {
+    "status": 503,
+    "retry_after": "1",
+    "errorcode": "servicenotavailable"
+  },
+  "malformed_response": "{\"exception\":\"malformed_fixture\""
+}
