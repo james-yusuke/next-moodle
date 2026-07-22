@@ -30,17 +30,11 @@
 .ui-message-participants ul { display: grid; margin: 0; padding: 0; list-style: none; }
 .ui-message-participants li { min-block-size: 2.75rem; align-content: center; border-block-end: 1px solid var(--border-subtle); }
 
-.ui-teacher-contact { display: grid; grid-template-columns: 18rem minmax(0, 48rem); grid-template-rows: auto auto minmax(0, 1fr); min-block-size: 100%; justify-content: center; background: var(--surface-canvas); }
-.ui-teacher-contact__header { grid-column: 1 / -1; display: flex; align-items: end; justify-content: space-between; gap: var(--space-5); padding: var(--space-6) clamp(var(--space-4), 3vw, var(--space-8)) var(--space-5); border-block-end: 1px solid var(--border-default); }
-.ui-teacher-contact__header > div { display: grid; gap: var(--space-1); }
-.ui-teacher-contact__header span { color: var(--accent-400); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); letter-spacing: .07em; }
-.ui-teacher-contact__header h1,
-.ui-teacher-contact__header p { margin: 0; }
-.ui-teacher-contact__header h1 { font-size: var(--font-size-h1); line-height: 1.1; }
-.ui-teacher-contact__header p { color: var(--text-secondary); font-size: var(--font-size-body-sm); }
-.ui-teacher-contact__header > a { display: inline-flex; min-block-size: 2.75rem; align-items: center; gap: var(--space-2); color: var(--text-secondary); font-size: var(--font-size-label); text-decoration: none; }
+.ui-teacher-contact .ui-page-frame__content { display: grid; min-block-size: 0; padding: 0; }
+.ui-teacher-contact .ui-page-frame__context { background: var(--surface-secondary); }
+.ui-teacher-contact .ui-page-frame__actions { background: var(--surface-secondary); }
 .ui-teacher-steps { display: none; }
-.ui-teacher-recipient-panel { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-block-size: 0; border-inline-end: 1px solid var(--border-default); background: var(--surface-secondary); }
+.ui-teacher-recipient-panel { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; block-size: 100%; min-block-size: 0; background: var(--surface-secondary); }
 .ui-teacher-courses,
 .ui-teacher-recipient { min-block-size: 0; }
 .ui-teacher-courses > header,
@@ -75,7 +69,7 @@
 .ui-teacher-person > div { display: grid; min-inline-size: 0; }
 .ui-teacher-safety { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-2); color: var(--accent-400); }
 .ui-teacher-safety p { margin: 0; color: var(--text-secondary); font-size: var(--font-size-caption); }
-.ui-teacher-compose { display: grid; grid-template-rows: auto minmax(0, 1fr) auto; min-block-size: 0; background: var(--surface-primary); }
+.ui-teacher-compose { display: grid; grid-template-rows: auto minmax(0, 1fr); min-block-size: 0; background: var(--surface-primary); }
 .ui-teacher-compose > header svg { color: var(--accent-400); }
 .ui-teacher-compose__body { display: grid; align-content: start; gap: var(--space-5); padding: clamp(var(--space-5), 4vw, var(--space-8)); overflow-y: auto; }
 .ui-teacher-compose__error { min-block-size: 1.5rem; margin: 0; color: var(--status-error); font-size: var(--font-size-caption); }
@@ -98,23 +92,19 @@
   .ui-messages-index-frame .ui-page-frame__context { display: block; grid-row: 2; }
   .ui-messages-index-frame .ui-page-frame__content { display: none; }
   .ui-message-thread > ol li { inline-size: min(38rem, 92%); }
-  .ui-teacher-contact { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto minmax(0, 1fr); justify-content: stretch; }
-  .ui-teacher-contact__header { align-items: start; padding: var(--space-4); }
-  .ui-teacher-contact__header p { display: none; }
-  .ui-teacher-contact__header > a { font-size: 0; }
-  .ui-teacher-contact__header > a svg { inline-size: 20px; }
+  .ui-teacher-contact > .ui-page-frame__context { display: block; grid-column: 1; grid-row: 2; overflow-y: auto; }
+  .ui-teacher-contact[data-state="compose"] > .ui-page-frame__context,
+  .ui-teacher-contact:not([data-state="compose"]) > .ui-page-frame__content,
+  .ui-teacher-contact:not([data-state="compose"]) > .ui-page-frame__actions { display: none; }
   .ui-teacher-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-block-end: 1px solid var(--border-default); }
   .ui-teacher-steps button { display: grid; min-block-size: 3.5rem; align-content: center; gap: 1px; border: 0; background: var(--surface-secondary); color: var(--text-tertiary); font-size: .6875rem; cursor: pointer; }
   .ui-teacher-steps button span { font-family: var(--font-geist-mono), monospace; }
   .ui-teacher-steps button[aria-current="step"] { box-shadow: inset 0 -2px 0 var(--accent-500); color: var(--text-primary); }
   .ui-teacher-steps button:disabled { cursor: not-allowed; opacity: .45; }
   .ui-teacher-recipient-panel { border: 0; }
-  .ui-teacher-contact[data-mobile-step="course"] .ui-teacher-recipient,
-  .ui-teacher-contact[data-mobile-step="course"] .ui-teacher-compose,
-  .ui-teacher-contact[data-mobile-step="recipient"] .ui-teacher-courses,
-  .ui-teacher-contact[data-mobile-step="recipient"] .ui-teacher-compose,
-  .ui-teacher-contact[data-mobile-step="compose"] .ui-teacher-recipient-panel { display: none; }
-  .ui-teacher-contact[data-mobile-step="recipient"] .ui-teacher-recipient { border-block-start: 0; }
+  .ui-teacher-contact[data-state="course"] .ui-teacher-recipient,
+  .ui-teacher-contact[data-state="recipient"] .ui-teacher-courses { display: none; }
+  .ui-teacher-contact[data-state="recipient"] .ui-teacher-recipient { border-block-start: 0; }
   .ui-teacher-courses nav { max-block-size: none; }
   .ui-teacher-compose__body { padding: var(--space-4); }
   .ui-teacher-compose__command { align-items: stretch; flex-direction: column; }

@@ -63,6 +63,7 @@ for (const viewport of VIEWPORTS) {
 
       await page.screenshot({
         animations: "disabled",
+        caret: "initial",
         fullPage: true,
         path: `test-results/visual/${viewport.name}-${theme}.png`,
       });
@@ -99,6 +100,30 @@ test("changes theme and exposes a visible keyboard focus treatment", async ({ pa
     animations: "disabled",
     fullPage: false,
     path: "test-results/visual/theme-focus.png",
+  });
+});
+
+test.describe("reduced motion", () => {
+  test.use({ contextOptions: { reducedMotion: "reduce" } });
+
+  test("keeps state feedback without directional movement", async ({ page }) => {
+    await page.setViewportSize({ height: 900, width: 1280 });
+    await page.goto("/dev/ui");
+    await hideDevelopmentChrome(page);
+
+    const dock = page.locator(".ui-action-dock").first();
+    const row = page.locator(".ui-data-row").first();
+    await row.hover();
+    const motion = await dock.evaluate((element) => ({
+      animationDuration: getComputedStyle(element).animationDuration,
+    }));
+    expect(motion.animationDuration).toBe("0.001s");
+    await expect.poll(() => row.evaluate((element) => getComputedStyle(element).transform)).toBe("none");
+    await page.screenshot({
+      animations: "allow",
+      caret: "initial",
+      path: "test-results/visual/reduced-motion.png",
+    });
   });
 });
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { StateNotice } from "@/components/app-shell/state-notice";
+import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { TeacherContactForm } from "@/components/messages/teacher-contact-form";
 import { requireMoodleSession } from "@/lib/auth/server";
 import { currentUnixSeconds } from "@/lib/moodle/now";
@@ -13,16 +14,17 @@ export default async function NewTeacherMessagePage({ searchParams }: Readonly<{
 }>) {
   const session = await requireMoodleSession();
   if (session.manifest.features.people !== "available" || session.manifest.operations["message.sendDirect"] !== "available") {
-    return <StateNotice reason="capability" retryHref="/messages/new" siteUrl={session.site.siteUrl} />;
+    return <PageFrame content={<StateNotice reason="capability" retryHref="/messages/new" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="受講コースの担当教員へ個別メッセージを送ります。" eyebrow="新規メッセージ" title="先生へ連絡" />} mode="focus" />;
   }
   const courses = await readCourses(session.userId, currentUnixSeconds());
-  if (courses.kind === "failure") return <StateNotice reason={courses.reason} retryHref="/messages/new" siteUrl={session.site.siteUrl} />;
+  if (courses.kind === "failure") return <PageFrame content={<StateNotice reason={courses.reason} retryHref="/messages/new" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="受講コースの担当教員へ個別メッセージを送ります。" eyebrow="新規メッセージ" title="先生へ連絡" />} mode="focus" />;
   const courseIdParam = (await searchParams).courseId;
   const initialCourseId = typeof courseIdParam === "string" && /^\d+$/.test(courseIdParam)
     ? Number(courseIdParam)
     : null;
-  return <TeacherContactForm
-    courses={courses.data.filter((course) => course.classification === "active").map((course) => ({ id: course.id, name: course.name, shortName: course.shortName }))}
-    initialCourseId={initialCourseId}
-  />;
+  const activeCourses = courses.data.reduce<Array<{ id: number; name: string; shortName: string }>>((result, course) => {
+    if (course.classification === "active") result.push({ id: course.id, name: course.name, shortName: course.shortName });
+    return result;
+  }, []);
+  return <TeacherContactForm courses={activeCourses} initialCourseId={initialCourseId} />;
 }

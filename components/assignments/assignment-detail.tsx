@@ -1,7 +1,7 @@
 import { ArrowLeft, CalendarDots, FileText, Info } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
 
 import { InspectorSheet } from "@/components/app-shell/inspector-sheet";
+import { TransitionLink } from "@/components/app-shell/transitions";
 import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { Badge, Notice } from "@/components/ui";
 import type { AiAvailability } from "@/lib/ai/config";
@@ -66,7 +66,7 @@ export function AssignmentDetailView({ aiAvailability, aiConsentStorageKey, conf
           {data.feedback === null ? null : <section className="ui-assignment-feedback"><header><span>REVIEW</span><h2>フィードバック</h2></header>{data.feedback.grade === null ? null : <div dangerouslySetInnerHTML={{ __html: data.feedback.grade }} />}{data.feedback.comments.map((comment, index) => <div key={index} dangerouslySetInnerHTML={{ __html: comment }} />)}</section>}
         </article>
       )}
-      header={<RouteHeader actions={<InspectorSheet description="提出状況と保存済みファイル" label={<><Info aria-hidden size={17} />提出情報</>} title="提出情報">{details}</InspectorSheet>} description={<><CalendarDots aria-hidden size={16} /> <span className="ui-tabular">{due}</span></>} eyebrow={<Link href={`/courses/${data.assignment.course}`}><ArrowLeft aria-hidden size={15} />{data.courseName}</Link>} metadata={`CMID ${data.cmid}`} title={data.name} />}
+      header={<RouteHeader actions={<InspectorSheet description="提出状況と保存済みファイル" label={<><Info aria-hidden size={17} />提出情報</>} title="提出情報">{details}</InspectorSheet>} description={<><CalendarDots aria-hidden size={16} /> <span className="ui-tabular">{due}</span></>} eyebrow={<TransitionLink href={`/courses/${data.assignment.course}`} intent="return"><ArrowLeft aria-hidden size={15} />{data.courseName}</TransitionLink>} metadata={`CMID ${data.cmid}`} shared={{ identifier: data.cmid, kind: "activity" }} title={data.name} />}
       mode="focus"
     />
   );

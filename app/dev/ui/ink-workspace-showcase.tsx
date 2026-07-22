@@ -21,12 +21,12 @@ const NAV_ITEMS = [
   { icon: DotsThreeCircle, label: "その他", selected: false },
 ] as const;
 
-export function StudioLedgerShowcase() {
+export function EditorialNativeShowcase() {
   return (
     <ShowcaseSection
-      description="68pxのFocus rail、必要時だけ開く文脈パネル、広い学習キャンバス、文章補助の全状態を確認します。"
-      eyebrow="01 / Studio Ledger"
-      title="Focus, context, and action states"
+      description="ラベル付きFocus rail、必要時だけ開く文脈パネル、広い学習キャンバス、文章補助と意味のあるモーションを確認します。"
+      eyebrow="01 / Editorial Native"
+      title="Content, context, and meaningful motion"
     >
       <div className={styles.workspaceGrid}>
         <ShowcaseSample label="Page frame primitives">
@@ -76,6 +76,12 @@ export function StudioLedgerShowcase() {
             <span><i data-state="unavailable" />API未許可</span>
           </div>
         </ShowcaseSample>
+      </div>
+      <div className={styles.motionStrip} aria-label="モーション意図">
+        <span data-motion="drill-in"><strong>前進</strong><small>コース・活動・会話</small></span>
+        <span data-motion="return"><strong>復帰</strong><small>親画面へ戻る</small></span>
+        <span data-motion="switch"><strong>切替</strong><small>ナビ・タブ・絞り込み</small></span>
+        <span data-motion="reveal"><strong>表示</strong><small>読み込み完了</small></span>
       </div>
       <div className={styles.aiStateGrid}>
         <Notice title="送信内容を確認" tone="info"><p>同意前は通信しません。氏名・添付・全文下書きは送信対象外です。</p></Notice>

@@ -5,7 +5,6 @@ import {
   GearSix,
   GraduationCap,
 } from "@phosphor-icons/react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
@@ -16,7 +15,8 @@ import type { CommandCourse } from "@/lib/moodle/queries/courses";
 import { LogoutButton } from "./logout-button";
 import { AiPreferenceControl } from "./ai-preference-control";
 import { AppNavigation } from "./navigation";
-import type { WorkspaceMode } from "./workspace-frame";
+import { TransitionLink, WorkspaceTransition } from "./transitions";
+import type { WorkspaceMode } from "./motion";
 import "./app-shell.css";
 import "./page-layout.css";
 
@@ -77,16 +77,16 @@ export function AppShell({
     <div className="ui-app-shell" data-workspace-mode={workspaceMode}>
       <a className="ui-app-skip" href="#main-content">本文へ移動</a>
       <aside aria-label="主要ナビゲーション" className="ui-app-focus-rail">
-        <Link className="ui-app-brand" href="/dashboard" title={appName}>
+        <TransitionLink className="ui-app-brand" href="/dashboard" intent="switch" title={appName}>
           <span className="ui-app-brand__mark"><GraduationCap aria-hidden size={22} weight="regular" /></span>
-          <span className="ui-sr-only">{appName}</span>
-        </Link>
+          <span>{appName}</span>
+        </TransitionLink>
         <AppNavigation />
         <footer className="ui-app-focus-rail__footer">
-          <Link className="ui-app-tool-link" href="/tools/pdf" title="PDFツール">
+          <TransitionLink className="ui-app-tool-link" href="/tools/pdf" intent="switch" title="PDFツール">
             <FilePdf aria-hidden size={21} weight="regular" />
-            <span className="ui-sr-only">PDFツール</span>
-          </Link>
+            <span>PDF</span>
+          </TransitionLink>
           <details className="ui-app-dock-settings">
             <summary aria-label="表示とアカウント設定">
               <GearSix aria-hidden size={21} weight="regular" />
@@ -101,10 +101,10 @@ export function AppShell({
         </footer>
       </aside>
       <header className="ui-app-topbar">
-        <Link className="ui-app-brand ui-app-brand--mobile" href="/dashboard" title={appName}>
+        <TransitionLink className="ui-app-brand ui-app-brand--mobile" href="/dashboard" intent="switch" title={appName}>
           <span className="ui-app-brand__mark"><GraduationCap aria-hidden size={20} weight="regular" /></span>
           <span>{appName}</span>
-        </Link>
+        </TransitionLink>
         <div className="ui-app-topbar__identity">
           <strong>{appName}</strong>
           <span title={siteName}>{siteName}</span>
@@ -118,7 +118,7 @@ export function AppShell({
           </summary>
           <div className="ui-app-mobile-settings__panel">
             <p className="ui-app-site" title={siteName}>{siteName}</p>
-            <Link className="ui-app-tool-link" href="/tools/pdf"><FilePdf aria-hidden size={20} /> PDFツール</Link>
+            <TransitionLink className="ui-app-tool-link" href="/tools/pdf" intent="switch"><FilePdf aria-hidden size={20} /> PDFツール</TransitionLink>
             <ThemeControl />
             <AiPreferenceControl available={aiAvailable} consentStorageKey={aiConsentStorageKey} />
             <LogoutButton />
@@ -126,7 +126,7 @@ export function AppShell({
         </details>
       </header>
       <main className="ui-app-main" id="main-content" tabIndex={-1}>
-        <div className="ui-app-content">{children}</div>
+        <div className="ui-app-content"><WorkspaceTransition>{children}</WorkspaceTransition></div>
       </main>
       <AppNavigation mobile />
     </div>

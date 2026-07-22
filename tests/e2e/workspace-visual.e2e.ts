@@ -22,7 +22,7 @@ const ROUTES = [
   { heading: "PDFツール", name: "pdf", path: "/tools/pdf" },
 ] as const;
 
-test("captures the responsive Studio Ledger workspace on real routes", async ({ page }) => {
+test("captures the responsive Editorial Native workspace on real routes", async ({ page }) => {
   test.setTimeout(300_000);
   await page.setViewportSize({ height: 900, width: 1280 });
   await page.goto("/login");
@@ -54,6 +54,7 @@ test("captures the responsive Studio Ledger workspace on real routes", async ({ 
         expect(Math.abs(geometry.shellHeight - geometry.viewportHeight)).toBeLessThanOrEqual(1);
         await page.screenshot({
           animations: "disabled",
+          caret: "initial",
           path: `test-results/visual/workspace-${route.name}-${viewport.name}-${theme}.png`,
         });
       }

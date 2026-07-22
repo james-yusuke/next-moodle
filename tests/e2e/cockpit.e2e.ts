@@ -46,7 +46,7 @@ test("context panels persist locally and inspector sheets restore keyboard focus
 
   await page.getByRole("button", { name: "文脈パネルを閉じる" }).click();
   await expect(page.getByRole("button", { name: "文脈パネルを開く" })).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem("next-moodle:studio-ledger:context:course"))).toBe("collapsed");
+  expect(await page.evaluate(() => localStorage.getItem("next-moodle:layout:v2:context:course"))).toBe("collapsed");
   await page.reload();
   await expect(page.getByRole("button", { name: "文脈パネルを開く" })).toBeVisible();
   await page.getByRole("button", { name: "文脈パネルを開く" }).click();
@@ -144,7 +144,7 @@ test("assignment draft, confirmation, client PDF, and ICS stay usable", async ({
   await expect(page.getByText("Review fixture notes")).toHaveCount(0);
 });
 
-test("standard activities remain inside the Studio Ledger workspace", async ({ page }) => {
+test("standard activities remain inside the Editorial Native workspace", async ({ page }) => {
   await signIn(page, "alice", "alice-password");
 
   await page.goto("/activities/9105");

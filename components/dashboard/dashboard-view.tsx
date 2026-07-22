@@ -5,8 +5,9 @@ import {
   ClockCountdown,
   FilePdf,
 } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
 
+import { SharedTransition, TransitionLink } from "@/components/app-shell/transitions";
+import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { Badge, Notice } from "@/components/ui";
 import type { AppRuntimeConfig } from "@/lib/app-config";
 import { calendarDate, dateTimeFormatter } from "@/lib/date-time";
@@ -43,20 +44,12 @@ export function DashboardView({ config, data }: Readonly<{
   const formatDateKey = (value: string) => dayFormat.format(calendarDate(value));
 
   return (
-    <div className="ui-page-stack">
-      <header className="ui-page-header">
-        <div>
-          <h1>学習ワークスペース</h1>
-          <p className="ui-dashboard-eyebrow">TODAY / {config.timeZone}</p>
-        </div>
-        <p>締切、授業、未読を一画面で整理します。</p>
-      </header>
-
-      <div className="ui-dashboard-board">
+    <PageFrame
+      content={<div className="ui-dashboard-board">
         <section className="ui-dashboard-panel ui-dashboard-panel--timeline" aria-labelledby="timeline-title">
           <header className="ui-dashboard-panel__header">
             <div><CalendarDots aria-hidden size={18} /><h2 id="timeline-title">7日予定</h2></div>
-            <Link href="/calendar">すべて表示 <ArrowRight aria-hidden size={15} /></Link>
+            <TransitionLink href="/calendar" intent="switch">すべて表示 <ArrowRight aria-hidden size={15} /></TransitionLink>
           </header>
           <ol className="ui-dashboard-timeline">
             {data.horizon.map((day, index) => (
@@ -93,7 +86,7 @@ export function DashboardView({ config, data }: Readonly<{
               <time dateTime={new Date(data.nextUp.startsAt * 1_000).toISOString()}>
                 {formatTimestamp(data.nextUp.startsAt)}
               </time>
-              <Link className="ui-app-action-link" href="/calendar">予定を確認</Link>
+              <TransitionLink className="ui-app-action-link" href="/calendar" intent="switch">予定を確認</TransitionLink>
             </div>
           )}
         </section>
@@ -101,7 +94,7 @@ export function DashboardView({ config, data }: Readonly<{
         <section className="ui-dashboard-panel ui-dashboard-panel--courses" aria-labelledby="courses-title">
           <header className="ui-dashboard-panel__header">
             <div><h2 id="courses-title">進行中のコース</h2><span>{data.recentCourses.length}</span></div>
-            <Link href="/courses">コース一覧 <ArrowRight aria-hidden size={15} /></Link>
+            <TransitionLink href="/courses" intent="switch">コース一覧 <ArrowRight aria-hidden size={15} /></TransitionLink>
           </header>
           {data.recentCourses.length === 0 ? (
             <p className="ui-dashboard-empty-copy">表示できる受講コースはありません。</p>
@@ -110,7 +103,7 @@ export function DashboardView({ config, data }: Readonly<{
               {data.recentCourses.map((course, index) => (
                 <li key={course.id}>
                   <span className="ui-dashboard-course-index ui-tabular">{String(index + 1).padStart(2, "0")}</span>
-                  <Link href={`/courses/${course.id}`}><strong>{course.name}</strong><small>{course.shortName}</small></Link>
+                  <TransitionLink href={`/courses/${course.id}`} intent="drill-in"><SharedTransition identifier={course.id} kind="course"><strong>{course.name}</strong></SharedTransition><small>{course.shortName}</small></TransitionLink>
                   <ArrowRight aria-hidden size={16} />
                 </li>
               ))}
@@ -121,11 +114,13 @@ export function DashboardView({ config, data }: Readonly<{
         <section className="ui-dashboard-panel ui-dashboard-panel--signals" aria-labelledby="signals-title">
           <header className="ui-dashboard-panel__header"><div><h2 id="signals-title">クイックアクセス</h2></div></header>
           <div className="ui-dashboard-signal-list">
-            <Link href="/notifications"><Bell aria-hidden size={19} /><span><strong className="ui-tabular">{data.unreadCount}</strong><small>未読通知</small></span><ArrowRight aria-hidden size={16} /></Link>
-            <Link href="/tools/pdf"><FilePdf aria-hidden size={19} /><span><strong>PDF</strong><small>端末内ツール</small></span><ArrowRight aria-hidden size={16} /></Link>
+            <TransitionLink href="/notifications" intent="switch"><Bell aria-hidden size={19} /><span><strong className="ui-tabular">{data.unreadCount}</strong><small>未読通知</small></span><ArrowRight aria-hidden size={16} /></TransitionLink>
+            <TransitionLink href="/tools/pdf" intent="switch"><FilePdf aria-hidden size={19} /><span><strong>PDF</strong><small>端末内ツール</small></span><ArrowRight aria-hidden size={16} /></TransitionLink>
           </div>
         </section>
-      </div>
-    </div>
+      </div>}
+      header={<RouteHeader description="締切、授業、未読を一つの流れで整理します。" eyebrow={`TODAY / ${config.timeZone}`} title="学習ワークスペース" />}
+      mode="overview"
+    />
   );
 }

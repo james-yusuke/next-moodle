@@ -1,19 +1,18 @@
 .ui-login-page {
   display: grid;
   min-block-size: 100dvh;
-  padding: var(--space-3);
+  padding: clamp(var(--space-3), 4vw, var(--space-10));
   background: var(--surface-canvas);
   place-items: center;
 }
 
 .ui-login-workspace {
   display: grid;
-  inline-size: min(100%, 68rem);
+  inline-size: min(100%, 64rem);
   min-inline-size: 0;
   overflow: clip;
-  border: 1px solid var(--border-strong);
-  border-radius: var(--shape-card);
   background: var(--surface-primary);
+  box-shadow: 0 1.5rem 4rem rgb(10 8 5 / 16%);
 }
 
 .ui-login-story,
@@ -23,7 +22,7 @@
   display: grid;
   align-content: space-between;
   gap: var(--space-8);
-  border-block-end: 1px solid var(--border-default);
+  border-block-end: 1px solid var(--border-subtle);
   background: var(--surface-secondary);
 }
 
@@ -36,7 +35,7 @@
 .ui-login-panel p,
 .ui-login-ledger { margin: 0; }
 .ui-login-kicker { color: var(--accent-400); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); font-weight: 650; letter-spacing: .08em; text-transform: uppercase; }
-.ui-login-copy h1 { font-size: var(--font-size-h1); font-weight: 680; letter-spacing: -.028em; line-height: 1.15; }
+.ui-login-copy h1 { max-inline-size: 18ch; font-size: clamp(1.75rem, 4vw, 2.5rem); font-weight: 720; letter-spacing: -.045em; line-height: 1.03; }
 .ui-login-copy > p:last-child { color: var(--text-secondary); font-size: var(--font-size-body); text-wrap: pretty; }
 .ui-login-ledger { display: grid; padding: 0; border-block-end: 1px solid var(--border-subtle); }
 .ui-login-ledger > div { display: grid; grid-template-columns: 6.5rem minmax(0, 1fr); gap: var(--space-3); padding-block: var(--space-3); border-block-start: 1px solid var(--border-subtle); }
@@ -45,7 +44,7 @@
 
 .ui-login-panel { display: grid; align-items: center; background: var(--surface-primary); }
 .ui-login-panel__inner { display: grid; inline-size: min(100%, 25rem); margin-inline: auto; gap: var(--space-5); }
-.ui-login-panel__header { display: grid; gap: var(--space-2); padding-block-end: var(--space-3); border-block-end: 1px solid var(--border-default); }
+.ui-login-panel__header { display: grid; gap: var(--space-2); padding-block-end: var(--space-3); }
 .ui-login-panel h2 { font-size: var(--font-size-h2); font-weight: 680; }
 .ui-login-panel__header p,
 .ui-login-security { color: var(--text-secondary); font-size: var(--font-size-body-sm); }
@@ -57,8 +56,8 @@
 
 @media (min-width: 48rem) {
   .ui-login-page { padding: var(--space-5); }
-  .ui-login-workspace { grid-template-columns: minmax(0, .95fr) minmax(24rem, 1.05fr); min-block-size: 38rem; }
+  .ui-login-workspace { grid-template-columns: minmax(0, .9fr) minmax(24rem, 1.1fr); min-block-size: 38rem; }
   .ui-login-story,
   .ui-login-panel { padding: var(--space-8); }
-  .ui-login-story { border-block-end: 0; border-inline-end: 1px solid var(--border-default); }
+  .ui-login-story { margin-block: var(--space-4); border-block-end: 0; border-inline-end: 1px solid var(--border-subtle); }
 }

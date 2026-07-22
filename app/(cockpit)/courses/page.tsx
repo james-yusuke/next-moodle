@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { StateNotice } from "@/components/app-shell/state-notice";
+import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { CourseList } from "@/components/courses/course-list";
 import { requireMoodleSession } from "@/lib/auth/server";
 import { readCourses } from "@/lib/moodle/queries/courses";
@@ -14,24 +15,19 @@ export default async function CoursesPage() {
   const config = readAppRuntimeConfig();
   if (session.manifest.features.courses !== "available") {
     return (
-      <div className="ui-page-stack">
-        <header className="ui-page-header"><h1>コース</h1><p>受講中と今後のコースを確認します。</p></header>
-        <StateNotice reason="capability" retryHref="/courses" siteUrl={session.site.siteUrl} />
-      </div>
+      <PageFrame content={<StateNotice reason="capability" retryHref="/courses" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="受講中と今後のコースを確認します。" eyebrow="コース索引" title="コース" />} mode="overview" />
     );
   }
   const result = await readCourses(session.userId, currentUnixSeconds());
   return (
-    <div className="ui-page-stack">
-      <header className="ui-page-header">
-        <h1>コース</h1>
-        <p>受講中、開始前、終了済みのコースを検索できます。</p>
-      </header>
-      {result.kind === "ready" ? (
+    <PageFrame
+      content={result.kind === "ready" ? (
         <CourseList canFavorite={session.manifest.features.favorites === "available"} config={config} courses={result.data} />
       ) : (
         <StateNotice reason={result.reason} retryHref="/courses" siteUrl={session.site.siteUrl} />
       )}
-    </div>
+      header={<RouteHeader description="状態、期限、進捗を比較しながら、学習するコースを選べます。" eyebrow="コース索引" title="コース" />}
+      mode="overview"
+    />
   );
 }

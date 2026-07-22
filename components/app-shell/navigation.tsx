@@ -7,8 +7,9 @@ import {
   DotsThreeCircle,
   House,
 } from "@phosphor-icons/react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import { TransitionLink } from "./transitions";
 
 const NAV_ITEMS = [
   { href: "/dashboard", icon: House, label: "ホーム" },
@@ -34,16 +35,17 @@ export function AppNavigation({ mobile = false }: Readonly<{ mobile?: boolean }>
         const Icon = item.icon;
         const current = isCurrentPath(pathname, item.href);
         return (
-          <Link
+          <TransitionLink
             aria-current={current ? "page" : undefined}
             className="ui-app-nav__link"
             href={item.href}
+            intent="switch"
             key={item.href}
             title={mobile ? undefined : item.label}
           >
             <Icon aria-hidden size={21} weight="regular" />
             <span>{item.label}</span>
-          </Link>
+          </TransitionLink>
         );
       })}
     </nav>

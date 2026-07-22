@@ -8,12 +8,13 @@ import {
   LockSimple,
   PuzzlePiece,
 } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
 
 import { InspectorSheet } from "@/components/app-shell/inspector-sheet";
+import { TransitionLink } from "@/components/app-shell/transitions";
 import { ActionDock, PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { Notice } from "@/components/ui";
 import type { AppRuntimeConfig } from "@/lib/app-config";
+import { dateTimeFormatter } from "@/lib/date-time";
 import type { NativeActivityData } from "@/lib/moodle/activities/native";
 import type { ActivityWorkspaceDetail } from "@/lib/moodle/queries/activity";
 import { ChoiceWorkspace } from "./choice-workspace";
@@ -36,6 +37,24 @@ function formatBytes(value: number): string {
   return `${(value / (1_024 * 1_024)).toFixed(1)} MB`;
 }
 
+function localizedDateLabel(label: string): string {
+  const normalized = label.trim().toLowerCase();
+  if (normalized === "closes" || normalized.includes("close")) return "終了";
+  if (normalized === "opens" || normalized.includes("open")) return "開始";
+  if (normalized.includes("due")) return "期限";
+  return label;
+}
+
+type CompanionBlock = NonNullable<ActivityWorkspaceDetail["companion"]>["blocks"][number];
+
+function companionBlockKey(block: CompanionBlock): string {
+  if (block.kind === "text") return `${block.kind}:${block.heading}:${block.text}`;
+  if (block.kind === "facts") return `${block.kind}:${block.items.map((item) => `${item.label}:${item.value}`).join("|")}`;
+  if (block.kind === "list") return `${block.kind}:${block.heading}:${block.items.join("|")}`;
+  if (block.kind === "notice") return `${block.kind}:${block.tone}:${block.text}`;
+  return `${block.kind}:${block.url}:${block.label}`;
+}
+
 function NativePanel({ cmid, config, native }: Readonly<{ cmid: number; config: AppRuntimeConfig; native: NativeActivityData }>) {
   if (native.kind === "quiz") return <QuizWorkspace cmid={cmid} data={native.data} />;
   if (native.kind === "database") return <DatabaseWorkspace cmid={cmid} data={native.data} />;
@@ -55,15 +74,8 @@ export function ActivityWorkspace({ canUpdateCompletion, config, data, native }:
   data: ActivityWorkspaceDetail;
   native: NativeActivityData | null | undefined;
 }>) {
-  const dateFormat = new Intl.DateTimeFormat(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone });
+  const dateFormat = dateTimeFormatter(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone });
   const typeLabel = data.adapter.kind === "native" ? data.adapter.adapter.label : data.companion?.activity?.kind === "questionnaire" ? "アンケート" : data.moduleType;
-  const localizedDateLabel = (label: string): string => {
-    const normalized = label.trim().toLowerCase();
-    if (normalized === "closes" || normalized.includes("close")) return "終了";
-    if (normalized === "opens" || normalized.includes("open")) return "開始";
-    if (normalized.includes("due")) return "期限";
-    return label;
-  };
   const activityDetails = (
     <div className="ui-activity-details">
       <div className="ui-activity-state">
@@ -77,24 +89,25 @@ export function ActivityWorkspace({ canUpdateCompletion, config, data, native }:
       </dl>
       <div className="ui-activity-adapter-state"><PuzzlePiece aria-hidden size={18} /><span>{data.adapter.kind === "native" ? "公式API" : data.companion !== null ? "補助アダプター" : data.adapter.kind === "adapter_required" ? "アダプター待ち" : "API未許可"}</span></div>
       {canUpdateCompletion && data.completion !== "none" ? <CompletionToggle cmid={data.id} complete={data.completion === "complete"} /> : null}
-      <Link className="ui-app-action-link" href={`/courses/${data.course.id}`}><ArrowLeft aria-hidden size={15} />コース内容へ戻る</Link>
+      <TransitionLink className="ui-app-action-link" href={`/courses/${data.course.id}`} intent="return"><ArrowLeft aria-hidden size={15} />コース内容へ戻る</TransitionLink>
     </div>
   );
 
   return (
     <PageFrame
-      actions={data.sourceUrl !== null && data.adapter.kind !== "native" && data.companion === null ? <ActionDock><span>この活動はNext.js内で解決されていません</span><Link className="ui-app-action-link" href="/diagnostics">接続診断を確認</Link></ActionDock> : undefined}
+      actions={data.sourceUrl !== null && data.adapter.kind !== "native" && data.companion === null ? <ActionDock><span>この活動はNext.js内で解決されていません</span><TransitionLink className="ui-app-action-link" href="/diagnostics" intent="switch">接続診断を確認</TransitionLink></ActionDock> : undefined}
       content={(
         <div className="ui-activity-document" aria-label="アクティビティ作業面">
           {data.availability !== "available" ? <Notice title="現在このアクティビティは利用できません" tone="warning"><p>公開条件または受講条件を確認してください。</p></Notice> : null}
           {data.adapter.kind === "adapter_required" && data.companion === null ? <Notice title="この活動にはアダプターが必要です" tone="warning"><p>型付きの next-moodle 補助アダプターをMoodle管理者に依頼してください。</p></Notice> : null}
           {data.adapter.kind === "unavailable" ? <Notice title="Moodle APIが許可されていません" tone="warning"><p>この活動に必要な公式Web Service関数をMoodle管理者が許可すると、ここで操作できます。</p></Notice> : null}
-          {data.companion === null ? null : <section className="ui-companion-blocks" aria-label="拡張アダプター">{data.companion.blocks.map((block, index) => {
-            if (block.kind === "text") return <article key={`${block.kind}-${index}`}><h2>{block.heading}</h2><p>{block.text}</p></article>;
-            if (block.kind === "facts") return <dl key={`${block.kind}-${index}`}>{block.items.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>;
-            if (block.kind === "list") return <article key={`${block.kind}-${index}`}><h2>{block.heading}</h2><ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul></article>;
-            if (block.kind === "notice") return <Notice key={`${block.kind}-${index}`} title="アダプターからのお知らせ" tone={block.tone === "danger" ? "error" : block.tone}><p>{block.text}</p></Notice>;
-            return <a className="ui-app-action-link" href={block.url} key={`${block.kind}-${index}`} rel="noopener noreferrer" target="_blank">{block.label}<ArrowSquareOut aria-hidden size={16} /></a>;
+          {data.companion === null ? null : <section className="ui-companion-blocks" aria-label="拡張アダプター">{data.companion.blocks.map((block) => {
+            const key = companionBlockKey(block);
+            if (block.kind === "text") return <article key={key}><h2>{block.heading}</h2><p>{block.text}</p></article>;
+            if (block.kind === "facts") return <dl key={key}>{block.items.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>;
+            if (block.kind === "list") return <article key={key}><h2>{block.heading}</h2><ul>{block.items.map((item) => <li key={item}>{item}</li>)}</ul></article>;
+            if (block.kind === "notice") return <Notice key={key} title="アダプターからのお知らせ" tone={block.tone === "danger" ? "error" : block.tone}><p>{block.text}</p></Notice>;
+            return <a className="ui-app-action-link" href={block.url} key={key} rel="noopener noreferrer" target="_blank">{block.label}<ArrowSquareOut aria-hidden size={16} /></a>;
           })}</section>}
           {data.description === "" ? <p className="ui-activity-empty">説明は登録されていません。</p> : <section className="ui-rich-content" dangerouslySetInnerHTML={{ __html: data.description }} />}
           {data.companion?.activity?.kind === "questionnaire" ? <QuestionnaireWorkspace cmid={data.id} data={data.companion.activity} /> : null}
@@ -103,7 +116,7 @@ export function ActivityWorkspace({ canUpdateCompletion, config, data, native }:
           {data.files.length === 0 ? null : <section className="ui-activity-files" aria-labelledby="activity-files-title"><h2 id="activity-files-title">教材ファイル</h2><ul className="ui-ledger">{data.files.map((file) => <li key={`${file.filename}-${file.filesize}`}><File aria-hidden size={19} /><span><strong>{file.filename}</strong><small>{file.mimetype} · {formatBytes(file.filesize)}</small></span>{file.downloadUrl === null ? <span>取得不可</span> : <a href={file.downloadUrl}><DownloadSimple aria-hidden size={17} />ダウンロード</a>}</li>)}</ul></section>}
         </div>
       )}
-      header={<RouteHeader actions={<InspectorSheet description="完了状態、公開日時、API接続" label={<><Info aria-hidden size={17} />活動情報</>} title="活動情報">{activityDetails}</InspectorSheet>} description={`${data.section.name} · ${typeLabel}`} eyebrow={<Link href={`/courses/${data.course.id}`}><ArrowLeft aria-hidden size={15} />{data.course.shortName}</Link>} metadata={`CMID ${data.id}`} title={data.name} />}
+      header={<RouteHeader actions={<InspectorSheet description="完了状態、公開日時、API接続" label={<><Info aria-hidden size={17} />活動情報</>} title="活動情報">{activityDetails}</InspectorSheet>} description={`${data.section.name} · ${typeLabel}`} eyebrow={<TransitionLink href={`/courses/${data.course.id}`} intent="return"><ArrowLeft aria-hidden size={15} />{data.course.shortName}</TransitionLink>} metadata={`CMID ${data.id}`} shared={{ identifier: data.id, kind: "activity" }} title={data.name} />}
       mode="focus"
     />
   );

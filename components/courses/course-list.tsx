@@ -2,9 +2,9 @@
 
 import { Books, MagnifyingGlass, Star } from "@phosphor-icons/react";
 import ky from "ky";
-import Link from "next/link";
 import { useMemo, useState } from "react";
 
+import { SharedTransition, TransitionLink } from "@/components/app-shell/transitions";
 import { Badge, Field, Notice } from "@/components/ui";
 import type { AppRuntimeConfig } from "@/lib/app-config";
 import {
@@ -110,16 +110,16 @@ export function CourseList({ canFavorite, config, courses }: Readonly<{
                 <ul>
                   {group.map((course) => (
                     <li key={course.id}>
-                      <div className="ui-courses-row"><Link href={`/courses/${course.id}`}>
+                      <div className="ui-courses-row"><TransitionLink href={`/courses/${course.id}`} intent="drill-in">
                         <span className="ui-courses-list__icon">
                           <Books aria-hidden size={21} weight="regular" />
                         </span>
                         <span className="ui-courses-list__title">
-                          <strong>{course.name}</strong>
+                          <SharedTransition identifier={course.id} kind="course"><strong>{course.name}</strong></SharedTransition>
                           <small>{course.shortName}</small>
                         </span>
                         <span className="ui-courses-list__period">{coursePeriod(course, dateFormat)}</span>
-                      </Link>{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} className="ui-course-favourite" disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}</div>
+                      </TransitionLink>{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} className="ui-course-favourite" disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}</div>
                     </li>
                   ))}
                 </ul>

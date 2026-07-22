@@ -4,8 +4,9 @@ import {
   CaretRight,
   ListBullets,
 } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
 
+import { TransitionLink } from "@/components/app-shell/transitions";
+import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { Badge, Notice } from "@/components/ui";
 import { calendarDate, dateTimeFormatter } from "@/lib/date-time";
 import type { AppRuntimeConfig } from "@/lib/app-config";
@@ -24,17 +25,18 @@ function monthHref(cursor: MonthCursor): string {
 function CalendarTabs({ data }: Readonly<{ data: CalendarPageData }>) {
   return (
     <nav aria-label="カレンダー表示" className="ui-calendar-tabs">
-      <Link aria-current={data.view === "agenda" ? "page" : undefined} href="/calendar">
+      <TransitionLink aria-current={data.view === "agenda" ? "page" : undefined} href="/calendar" intent="switch">
         <ListBullets aria-hidden size={18} weight="regular" />
         予定一覧
-      </Link>
-      <Link
+      </TransitionLink>
+      <TransitionLink
         aria-current={data.view === "month" ? "page" : undefined}
         href={monthHref(data.cursor)}
+        intent="switch"
       >
         <CalendarBlank aria-hidden size={18} weight="regular" />
         月表示
-      </Link>
+      </TransitionLink>
     </nav>
   );
 }
@@ -87,13 +89,13 @@ function MonthView({ data, monthFormat, timeFormat }: Readonly<{
   return (
     <div className="ui-calendar-month">
       <div className="ui-calendar-month__toolbar">
-        <Link aria-label="前の月" className="ui-app-action-link" href={monthHref(previous)}>
+        <TransitionLink aria-label="前の月" className="ui-app-action-link" href={monthHref(previous)} intent="switch">
           <CaretLeft aria-hidden size={18} weight="regular" />
-        </Link>
+        </TransitionLink>
         <h2>{monthFormat.format(monthDate)}</h2>
-        <Link aria-label="次の月" className="ui-app-action-link" href={monthHref(next)}>
+        <TransitionLink aria-label="次の月" className="ui-app-action-link" href={monthHref(next)} intent="switch">
           <CaretRight aria-hidden size={18} weight="regular" />
-        </Link>
+        </TransitionLink>
       </div>
       {!hasEvents ? (
         <Notice title="この月の予定はありません" tone="info">
@@ -149,23 +151,23 @@ export function CalendarView({ canManage, config, data }: Readonly<{
     ? data.groups.flatMap((group) => group.events)
     : data.cells.flatMap((cell) => cell.events);
   return (
-    <div className="ui-page-stack">
-      <header className="ui-calendar-header">
-        <div className="ui-page-header">
-          <h1>カレンダー</h1>
-          <p>すべての日時は{config.timeZone}で表示しています。</p>
-        </div>
-        <div className="ui-calendar-header__actions">
-          {canManage ? <CalendarEventCreator /> : null}
-          <CalendarExportButton events={exportEvents} />
-          <CalendarTabs data={data} />
-        </div>
-      </header>
-      {data.view === "agenda" ? (
+    <PageFrame
+      content={data.view === "agenda" ? (
         <AgendaView data={data} dateFormat={dateFormat} timeFormat={timeFormat} />
       ) : (
         <MonthView data={data} monthFormat={monthFormat} timeFormat={timeFormat} />
       )}
-    </div>
+      header={<RouteHeader
+        actions={<div className="ui-calendar-header__actions">
+          {canManage ? <CalendarEventCreator /> : null}
+          <CalendarExportButton events={exportEvents} />
+          <CalendarTabs data={data} />
+        </div>}
+        description={`すべての日時は${config.timeZone}で表示しています。`}
+        eyebrow={data.view === "agenda" ? "予定一覧" : "月の見通し"}
+        title="カレンダー"
+      />}
+      mode="overview"
+    />
   );
 }

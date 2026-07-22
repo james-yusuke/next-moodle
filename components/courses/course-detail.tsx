@@ -8,12 +8,12 @@ import {
   LockSimple,
   WarningCircle,
 } from "@phosphor-icons/react/dist/ssr";
-import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { Badge, Notice } from "@/components/ui";
 import { InspectorSheet } from "@/components/app-shell/inspector-sheet";
 import { ContextPanel } from "@/components/app-shell/context-panel";
+import { SharedTransition, TransitionLink } from "@/components/app-shell/transitions";
 import { PageFrame, RouteHeader, SectionIndex } from "@/components/app-shell/workspace-frame";
 import type { AppRuntimeConfig } from "@/lib/app-config";
 import { dateTimeFormatter } from "@/lib/date-time";
@@ -36,7 +36,7 @@ function ActivityAction({ activity }: Readonly<{ activity: CourseActivity }>): R
   const destination: ActivityDestination = activity.destination;
   switch (destination.kind) {
     case "internal":
-      return <Link className="ui-course-activity__action" href={destination.href}>開く <ArrowRight aria-hidden size={15} /></Link>;
+      return <TransitionLink className="ui-course-activity__action" href={destination.href} intent="drill-in">開く <ArrowRight aria-hidden size={15} /></TransitionLink>;
     case "disabled":
       return <span className="ui-course-activity__locked"><LockSimple aria-hidden size={15} />{destination.reason === "adapter_required" ? "アダプター待ち" : "利用不可"}</span>;
     default:
@@ -74,8 +74,8 @@ export function CourseDetail({ config, data }: Readonly<{
         <div><dt>教材</dt><dd>{activities.length}</dd></div>
         <div><dt>利用制限</dt><dd>{restricted}</dd></div>
       </dl>
-      <Link className="ui-app-action-link" href="/grades">成績を確認</Link>
-      <Link className="ui-app-action-link" href={`/messages/new?courseId=${data.course.id}`}>担当教員へ連絡</Link>
+      <TransitionLink className="ui-app-action-link" href="/grades" intent="switch">成績を確認</TransitionLink>
+      <TransitionLink className="ui-app-action-link" href={`/messages/new?courseId=${data.course.id}`} intent="drill-in">担当教員へ連絡</TransitionLink>
     </div>
   );
 
@@ -117,7 +117,7 @@ export function CourseDetail({ config, data }: Readonly<{
                             <CompletionIcon state={item.completion} />
                             <span className="ui-course-activity__icon"><FileText aria-hidden size={19} /></span>
                             <span className="ui-course-activity__title">
-                              <strong>{item.name}</strong>
+                              <SharedTransition identifier={item.id} kind="activity"><strong>{item.name}</strong></SharedTransition>
                               <small>{item.typeLabel}{item.dueAt === undefined ? "" : ` · ${dateFormat.format(new Date(item.dueAt * 1_000))}`}</small>
                             </span>
                             {item.availability !== "available" ? <Badge tone="warning">利用制限</Badge> : null}
@@ -147,8 +147,9 @@ export function CourseDetail({ config, data }: Readonly<{
       header={(
         <RouteHeader
           actions={<InspectorSheet description="進捗、成績、担当教員への連絡" label={<><Info aria-hidden size={17} />コース情報</>} title="コース情報">{inspector}</InspectorSheet>}
-          eyebrow={<><Link href="/courses">コース</Link><span> / {data.course.shortName}</span></>}
+          eyebrow={<><TransitionLink href="/courses" intent="return">コース</TransitionLink><span> / {data.course.shortName}</span></>}
           metadata={`${activities.length} activities`}
+          shared={{ identifier: data.course.id, kind: "course" }}
           title={data.course.name}
         />
       )}

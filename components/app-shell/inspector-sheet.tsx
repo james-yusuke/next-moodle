@@ -1,7 +1,8 @@
 "use client";
 
 import { X } from "@phosphor-icons/react";
-import { useId, useRef } from "react";
+import { useId, useRef, useState } from "react";
+import type { AnimationEvent } from "react";
 import type { ReactNode } from "react";
 
 type InspectorSheetProps = Readonly<{
@@ -15,9 +16,17 @@ export function InspectorSheet({ children, description, label, title }: Inspecto
   const dialogRef = useRef<HTMLDialogElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
+  const [closing, setClosing] = useState(false);
 
   function close(): void {
-    dialogRef.current?.close();
+    setClosing(true);
+  }
+
+  function finishClose(event: AnimationEvent<HTMLDialogElement>): void {
+    if (closing && event.currentTarget === event.target) {
+      dialogRef.current?.close();
+      setClosing(false);
+    }
   }
 
   return (
@@ -33,6 +42,12 @@ export function InspectorSheet({ children, description, label, title }: Inspecto
       <dialog
         aria-labelledby={titleId}
         className="ui-inspector-sheet"
+        data-closing={closing}
+        onAnimationEnd={finishClose}
+        onCancel={(event) => {
+          event.preventDefault();
+          close();
+        }}
         onClose={() => triggerRef.current?.focus()}
         ref={dialogRef}
       >

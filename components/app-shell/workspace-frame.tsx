@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 
-export const WORKSPACE_MODES = ["overview", "browse", "focus", "conversation"] as const;
-
-export type WorkspaceMode = (typeof WORKSPACE_MODES)[number];
+import type { SharedTransitionKind, WorkspaceMode } from "@/components/app-shell/motion";
+import { SharedTransition } from "@/components/app-shell/transitions";
 
 type PageFrameProps = Readonly<{
   actions?: ReactNode;
@@ -11,6 +10,7 @@ type PageFrameProps = Readonly<{
   context?: ReactNode;
   header: ReactNode;
   mode: WorkspaceMode;
+  state?: string;
   utility?: ReactNode;
 }>;
 
@@ -19,6 +19,10 @@ type RouteHeaderProps = Readonly<{
   description?: ReactNode;
   eyebrow?: ReactNode;
   metadata?: ReactNode;
+  shared?: Readonly<{
+    identifier: string | number;
+    kind: SharedTransitionKind;
+  }>;
   title: ReactNode;
 }>;
 
@@ -37,9 +41,9 @@ type SectionIndexItem = Readonly<{
   state?: ReactNode;
 }>;
 
-export function PageFrame({ actions, className, content, context, header, mode, utility }: PageFrameProps) {
+export function PageFrame({ actions, className, content, context, header, mode, state, utility }: PageFrameProps) {
   return (
-    <div className={["ui-page-frame", className].filter(Boolean).join(" ")} data-mode={mode}>
+    <div className={["ui-page-frame", className].filter(Boolean).join(" ")} data-mode={mode} data-state={state}>
       <div className="ui-page-frame__header">{header}</div>
       {context === undefined ? null : <aside className="ui-page-frame__context">{context}</aside>}
       <section className="ui-page-frame__content">{content}</section>
@@ -49,12 +53,14 @@ export function PageFrame({ actions, className, content, context, header, mode, 
   );
 }
 
-export function RouteHeader({ actions, description, eyebrow, metadata, title }: RouteHeaderProps) {
+export function RouteHeader({ actions, description, eyebrow, metadata, shared, title }: RouteHeaderProps) {
+  const heading = <h1>{title}</h1>;
+
   return (
     <header className="ui-route-header">
       <div className="ui-route-header__copy">
         {eyebrow === undefined ? null : <div className="ui-route-header__eyebrow">{eyebrow}</div>}
-        <h1>{title}</h1>
+        {shared === undefined ? heading : <SharedTransition identifier={shared.identifier} kind={shared.kind}>{heading}</SharedTransition>}
         {description === undefined ? null : <p>{description}</p>}
       </div>
       {metadata === undefined ? null : <div className="ui-route-header__metadata">{metadata}</div>}

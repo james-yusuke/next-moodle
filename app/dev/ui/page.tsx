@@ -5,11 +5,11 @@ import { ActionShowcase } from "./action-showcase";
 import { FeedbackShowcase } from "./feedback-showcase";
 import { FieldShowcase } from "./field-showcase";
 import { SubmissionShowcase } from "./submission-showcase";
-import { StudioLedgerShowcase } from "./ink-workspace-showcase";
+import { EditorialNativeShowcase } from "./ink-workspace-showcase";
 import styles from "./showcase.module.css";
 
 export const metadata: Metadata = {
-  title: "Studio Ledger UI — Development",
+  title: "Editorial Native UI — Development",
   description: "Development-only primitive showcase for next-moodle.",
 };
 
@@ -22,7 +22,7 @@ export default function DevUiPage() {
     <main className={styles.page} data-testid="ui-showcase">
       <header className={styles.hero}>
         <div className={styles.heroCopy}>
-          <span className={styles.eyebrow}>next-moodle / Studio Ledger</span>
+          <span className={styles.eyebrow}>next-moodle / Editorial Native</span>
           <h1 className={styles.title}>
             <span className={styles.titleLine}>見つける、進める、</span>
             <span className={styles.titleLine}>完了する。</span>
@@ -52,14 +52,14 @@ export default function DevUiPage() {
         </dl>
       </header>
 
-      <StudioLedgerShowcase />
+      <EditorialNativeShowcase />
       <ActionShowcase />
       <FieldShowcase />
       <FeedbackShowcase />
       <SubmissionShowcase />
 
       <footer className={styles.footer}>
-        <span>Studio Ledger primitives</span>
+        <span>Editorial Native primitives</span>
         <span className="ui-tabular">Next.js 16 · Tailwind CSS 4</span>
       </footer>
     </main>

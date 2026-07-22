@@ -1,7 +1,9 @@
 "use client";
 
 import { CaretLeft } from "@phosphor-icons/react";
-import { useCallback, useSyncExternalStore, type ReactNode } from "react";
+import { useCallback, useEffect, useSyncExternalStore, type ReactNode } from "react";
+
+import { contextPanelStorageKey, peekContextPanelPreference, readContextPanelPreference, writeContextPanelPreference } from "./layout-preferences";
 
 type ContextPanelProps = Readonly<{
   children: ReactNode;
@@ -10,7 +12,6 @@ type ContextPanelProps = Readonly<{
   title: ReactNode;
 }>;
 
-const STORAGE_PREFIX = "next-moodle:studio-ledger:context:";
 const STORAGE_EVENT = "next-moodle-context-layout";
 
 export function ContextPanel({ children, count, storageKey, title }: ContextPanelProps) {
@@ -23,18 +24,24 @@ export function ContextPanel({ children, count, storageKey, title }: ContextPane
     };
   }, []);
   const getSnapshot = useCallback(
-    () => window.localStorage.getItem(`${STORAGE_PREFIX}${storageKey}`) === "collapsed",
+    () => {
+      return peekContextPanelPreference(window.localStorage, storageKey);
+    },
     [storageKey],
   );
   const collapsed = useSyncExternalStore(subscribe, getSnapshot, () => false);
 
+  useEffect(() => {
+    readContextPanelPreference(window.localStorage, storageKey);
+  }, [storageKey]);
+
   const toggle = () => {
-    window.localStorage.setItem(`${STORAGE_PREFIX}${storageKey}`, collapsed ? "open" : "collapsed");
+    writeContextPanelPreference(window.localStorage, storageKey, !collapsed);
     window.dispatchEvent(new Event(STORAGE_EVENT));
   };
 
   return (
-    <div className="ui-context-panel" data-collapsed={collapsed}>
+    <div className="ui-context-panel" data-collapsed={collapsed} data-storage-key={contextPanelStorageKey(storageKey)}>
       <header className="ui-context-panel__header">
         <div className="ui-context-panel__heading">
           <h2>{title}</h2>
