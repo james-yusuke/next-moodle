@@ -50,7 +50,7 @@
     "react-grab": "^0.1.48",
     "react-scan": "^0.5.7",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^7"
   },
   "ignoreScripts": [
     "sharp",
