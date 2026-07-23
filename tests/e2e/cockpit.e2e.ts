@@ -32,6 +32,9 @@ test("student cockpit reads the mock Moodle core routes without exposing a token
   await expect(page.getByRole("link", { name: /Moodle/ })).toHaveCount(0);
   await page.goto("/assignments/9101");
   await expect(page.getByRole("heading", { name: "Tide pool field notes" })).toBeVisible();
+  await page.goto("/activities/9122");
+  await expect(page).toHaveURL(/\/assignments\/9101$/);
+  await expect(page.getByRole("heading", { name: "Tide pool field notes" })).toBeVisible();
   await page.goto("/calendar");
   await expect(page.getByRole("heading", { name: "カレンダー" })).toBeVisible();
   await page.goto("/notifications");

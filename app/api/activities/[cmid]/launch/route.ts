@@ -31,6 +31,9 @@ export async function POST(request: Request, context: Readonly<{ params: Promise
     const session = await requireMoodleSession();
     const activity = await readActivityWorkspace({ cmid: cmid.data, manifest: session.manifest, siteUrl: session.site.siteUrl, userId: session.userId });
     if (activity.kind !== "ready" || activity.data === null || activity.data.instance === null) return Response.json({ ok: false, error: { code: "permission_denied" } }, { status: 403 });
+    if (activity.data.moduleType === "url") {
+      return Response.json({ ok: false, error: { code: "navigate_to_source" } }, { status: 409 });
+    }
     const client = await createAuthenticatedMoodleClient();
     if ((activity.data.moduleType === "scorm" || activity.data.moduleType === "h5pactivity") &&
       session.manifest.companion.contractVersion === 2) {

@@ -102,7 +102,7 @@ export function ConversationView({ config, conversation, conversations }: Readon
     <PageFrame
       className="ui-message-thread-frame"
       content={(
-        <section aria-label={`${conversation.name}のメッセージ`} className="ui-message-thread">
+        <section aria-label={`${conversation.name}の会話履歴`} className="ui-message-thread">
           <ConversationScrollRegion messageCount={conversation.messages.length}>
             <ol>
               {conversation.messages.map((message) => (

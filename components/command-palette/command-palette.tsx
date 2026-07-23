@@ -7,6 +7,7 @@ import {
   FileText,
   MagnifyingGlass,
   SquaresFour,
+  X,
 } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import {
@@ -139,9 +140,9 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
       >
         <div className="ui-command-panel">
           <h2 className="ui-sr-only" id={titleId}>画面とコースを検索</h2>
-          <label className="ui-command-search" htmlFor={`${listId}-input`}>
+          <div className="ui-command-search">
             <MagnifyingGlass aria-hidden size={20} weight="regular" />
-            <span className="ui-sr-only">検索語</span>
+            <label className="ui-sr-only" htmlFor={`${listId}-input`}>検索語</label>
             <input
               aria-activedescendant={
                 results[selectedIndex] === undefined
@@ -180,8 +181,11 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
               role="combobox"
               value={query}
             />
-            <kbd>Esc</kbd>
-          </label>
+            <span className="ui-command-search__tools">
+              <kbd>Esc</kbd>
+              <button aria-label="検索を閉じる" onClick={() => setOpen(false)} type="button"><X aria-hidden size={18} weight="regular" /></button>
+            </span>
+          </div>
           <div className="ui-command-results" id={listId} role="listbox">
             {results.length === 0 ? (
               <p className="ui-command-empty">一致する画面やコースはありません。</p>

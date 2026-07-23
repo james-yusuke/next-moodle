@@ -1,11 +1,15 @@
 "use client";
 
-import { Play } from "@phosphor-icons/react";
+import { ArrowRight, ArrowSquareOut, Play } from "@phosphor-icons/react";
 import ky from "ky";
+import Link from "next/link";
 import { useState } from "react";
 
-import { Button } from "@/components/ui";
-import type { LaunchActivityData } from "@/lib/moodle/activities/launch-model";
+import { Button, Notice } from "@/components/ui";
+import {
+  assignmentDestinationFromTrustedMoodleUrl,
+  type LaunchActivityData,
+} from "@/lib/moodle/activities/launch-model";
 
 type LaunchResponse =
   | Readonly<{ endpoint: string; kind: "lti"; parameters: readonly Readonly<{ name: string; value: string }>[] }>
@@ -19,6 +23,9 @@ export function LaunchWorkspace({ cmid, data }: Readonly<{
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [runtimeUrl, setRuntimeUrl] = useState("");
+  const assignmentDestination = data.kind === "url"
+    ? assignmentDestinationFromTrustedMoodleUrl(data.sourceUrl)
+    : null;
 
   async function launch(): Promise<void> {
     if (pending) return;
@@ -58,6 +65,26 @@ export function LaunchWorkspace({ cmid, data }: Readonly<{
     document.body.append(form);
     form.submit();
     form.remove();
+  }
+
+  if (data.kind === "url") {
+    return (
+      <section className="ui-launch" aria-labelledby="launch-title">
+        <header><div><span className="ui-kicker">Moodle link</span><h2 id="launch-title">リンク先を開く</h2></div><span>{assignmentDestination === null ? "Moodle内リンク" : "課題"}</span></header>
+        {assignmentDestination !== null ? (
+          <Notice title="提出ページを開きます" tone="info"><p>このURL活動はMoodleの課題を参照しています。アプリ内の提出ワークスペースへ移動します。</p></Notice>
+        ) : data.sourceUrl === null ? (
+          <Notice title="リンク先を安全に取得できません" tone="warning"><p>このURL活動のリンク先は利用できません。Moodleのコース設定を確認してください。</p></Notice>
+        ) : (
+          <Notice title="Moodleのページを開きます" tone="info"><p>この活動はMoodle内のページを参照しています。新しいタブで開きます。</p></Notice>
+        )}
+        {assignmentDestination !== null ? (
+          <Link className="ui-button ui-button--primary ui-button--standard" href={assignmentDestination}><ArrowRight aria-hidden size={17} /><span className="ui-button__label">提出ページへ進む</span></Link>
+        ) : data.sourceUrl === null ? null : (
+          <a className="ui-button ui-button--primary ui-button--standard" href={data.sourceUrl} rel="noopener noreferrer" target="_blank"><ArrowSquareOut aria-hidden size={17} /><span className="ui-button__label">Moodleで開く</span></a>
+        )}
+      </section>
+    );
   }
 
   const externalLaunch = data.kind === "lti" || data.kind === "bigbluebuttonbn";

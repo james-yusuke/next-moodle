@@ -11,6 +11,7 @@ import { readForumActivity } from "@/lib/moodle/activities/forum";
 import { readGlossaryActivity } from "@/lib/moodle/activities/glossary";
 import { readLessonActivity } from "@/lib/moodle/activities/lesson";
 import { readLaunchActivity } from "@/lib/moodle/activities/launch";
+import { assignmentDestinationFromTrustedMoodleUrl } from "@/lib/moodle/activities/launch-model";
 import type { NativeActivityData } from "@/lib/moodle/activities/native";
 import { MoodleResponseError } from "@/lib/moodle/errors";
 import { readQuizActivity } from "@/lib/moodle/activities/quiz";
@@ -52,6 +53,12 @@ export default async function ActivityPage({ params, searchParams }: ActivityPag
   }
   if (result.data.moduleType === "assign") {
     redirect(`/assignments/${cmid.data}`);
+  }
+  if (result.data.moduleType === "url") {
+    const destination = assignmentDestinationFromTrustedMoodleUrl(result.data.sourceUrl);
+    if (destination !== null) {
+      redirect(destination);
+    }
   }
   const query = await searchParams;
   const requestedPage = Number(query.page ?? "0");

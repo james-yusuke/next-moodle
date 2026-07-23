@@ -17,8 +17,11 @@
 }
 
 .ui-command-dialog {
+  position: fixed;
+  inset: 50% auto auto 50%;
   inline-size: min(38rem, calc(100% - var(--space-8)));
   max-block-size: min(42rem, calc(100dvb - var(--space-8)));
+  margin: 0;
   padding: 0;
   overflow: hidden;
   border: 0;
@@ -26,10 +29,12 @@
   background: var(--surface-elevated);
   box-shadow: var(--shadow-elevated);
   color: var(--text-primary);
+  transform: translate(-50%, -50%);
 }
 
 .ui-command-dialog::backdrop {
-  background: color-mix(in srgb, var(--surface-canvas) 72%, transparent);
+  background: color-mix(in srgb, var(--surface-canvas) 80%, transparent);
+  backdrop-filter: blur(3px);
 }
 
 .ui-command-panel {
@@ -59,6 +64,11 @@
   color: var(--text-primary);
   outline: 0;
 }
+
+.ui-command-search__tools { display: inline-flex; align-items: center; gap: var(--space-1); }
+.ui-command-search__tools button { display: grid; inline-size: 2.25rem; block-size: 2.25rem; place-items: center; padding: 0; border: 0; border-radius: var(--shape-control); background: transparent; color: var(--text-secondary); cursor: pointer; }
+.ui-command-search__tools button:hover { background: var(--surface-elevated); color: var(--text-primary); }
+.ui-command-search__tools button:focus-visible { box-shadow: var(--shadow-focus); outline: 0; }
 
 .ui-command-results {
   display: grid;
@@ -120,4 +130,8 @@
   .ui-command-option small {
     display: none;
   }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-command-dialog { transform: translate(-50%, -50%); }
 }

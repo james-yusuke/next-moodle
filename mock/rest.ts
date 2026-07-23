@@ -23,10 +23,25 @@ const coursePayload = (user: FixtureUser): Record<string, unknown> => ({
   nextoffset: 0,
 });
 
+function mockMoodleUrl(value: string | undefined, siteUrl: string): string | undefined {
+  if (value === undefined) return undefined;
+  try {
+    const fixtureUrl = new URL(value);
+    if (fixtureUrl.hostname !== "moodle.synthetic.invalid") return value;
+    const mockUrl = new URL(siteUrl);
+    fixtureUrl.protocol = mockUrl.protocol;
+    fixtureUrl.host = mockUrl.host;
+    return fixtureUrl.toString();
+  } catch {
+    return value;
+  }
+}
+
 const sectionsFor = (
   user: FixtureUser,
   input: MockRequestInput,
   state: MoodleMockState,
+  siteUrl: string,
 ): readonly unknown[] => {
   const requested = numberField(input, "courseid", "courseids[0]");
   const sections = requested === undefined
@@ -36,6 +51,7 @@ const sectionsFor = (
     ...wireSection(section),
     modules: section.modules.map((courseModule) => ({
       ...courseModule,
+      ...(courseModule.url === undefined ? {} : { url: mockMoodleUrl(courseModule.url, siteUrl) }),
       visible: courseModule.visible ? 1 : 0,
       completiondata: state.completedActivities.has(`${user.key}:${courseModule.id}`)
         ? { ...courseModule.completiondata, state: 1, timecompleted: 1_790_000_200 }
@@ -192,7 +208,7 @@ const successPayload = (functionName: MoodleFunction, context: RestContext): unk
       return [];
     }
     case "core_course_get_contents":
-      return sectionsFor(context.user, context.input, context.state);
+      return sectionsFor(context.user, context.input, context.state, context.siteUrl);
     case "core_completion_get_activities_completion_status":
       return completionFor(context.user, context.input);
     case "core_completion_update_activity_completion_status_manually": {
