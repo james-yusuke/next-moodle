@@ -1,7 +1,9 @@
 .ui-button {
   position: relative;
   display: inline-flex;
+  max-inline-size: 100%;
   min-block-size: 2.75rem;
+  min-inline-size: 0;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
@@ -13,6 +15,7 @@
   letter-spacing: 0.005em;
   line-height: 1;
   text-decoration: none;
+  text-align: center;
   transition:
     transform var(--motion-instant),
     opacity var(--motion-fast);
@@ -79,6 +82,7 @@
 
 .ui-button__label {
   min-inline-size: 0;
+  overflow-wrap: anywhere;
 }
 
 .ui-spinner {
@@ -163,5 +167,9 @@
 
   .ui-theme-control__item {
     padding-inline: var(--space-2);
+  }
+
+  .ui-button--standard {
+    padding-inline: var(--space-3);
   }
 }

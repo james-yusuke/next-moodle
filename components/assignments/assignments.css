@@ -64,6 +64,7 @@
 
 .ui-assignment__facts div {
   display: flex;
+  min-inline-size: 0;
   justify-content: space-between;
   gap: var(--space-3);
 }
@@ -449,7 +450,24 @@
 }
 
 @media (max-width: 47.99rem) {
+  .ui-assignment-form__actions { justify-content: stretch; padding: var(--space-3); }
+  .ui-assignment-form__actions .ui-button { flex: 1 1 12rem; }
   .ui-submit-confirmation { grid-template-columns: auto minmax(0, 1fr); }
   .ui-submit-statement { grid-column: 1 / -1; }
   .ui-submit-confirmation .ui-button { grid-column: 1 / -1; inline-size: 100%; }
+}
+
+@media (max-width: 34rem) {
+  .ui-assignment-form { gap: var(--space-6); }
+  .ui-assignment-form__text-heading,
+  .ui-file-queue__heading { align-items: stretch; flex-direction: column; }
+  .ui-file-queue__heading-actions { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .ui-file-queue__heading button { inline-size: 100%; justify-content: center; }
+  .ui-file-queue__list > li { grid-template-columns: auto minmax(0, 1fr); align-items: start; }
+  .ui-file-queue__list > li > button,
+  .ui-file-queue__list > li > .ui-file-queue__actions { grid-column: 2; justify-self: start; }
+  .ui-file-queue__actions { flex-wrap: wrap; }
+  .ui-assignment-form__actions { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .ui-assignment-form__actions .ui-button { inline-size: 100%; }
+  .ui-submit-confirmation { gap: var(--space-3); padding: var(--space-4); }
 }

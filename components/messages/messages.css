@@ -1,8 +1,13 @@
-.ui-conversation-context-title { display: flex; align-items: center; gap: var(--space-2); }
+.ui-conversation-context-title { display: flex; min-inline-size: 0; align-items: center; gap: var(--space-2); }
 .ui-messages-new { display: grid; inline-size: 2.75rem; block-size: 2.75rem; margin-inline-start: var(--space-1); border-radius: var(--shape-control); color: var(--accent-400); place-items: center; }
 .ui-messages-new:hover { background: var(--surface-elevated); }
-.ui-conversation-index { display: grid; }
-.ui-conversation-index > a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; min-block-size: 4.75rem; align-items: center; gap: var(--space-3); padding: var(--space-3); border-block-end: 1px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; transition: background-color var(--motion-feedback), transform var(--motion-feedback); }
+.ui-messages-index-frame .ui-page-frame__context,
+.ui-messages-index-frame .ui-context-panel,
+.ui-messages-index-frame .ui-context-panel__body { min-inline-size: 0; max-inline-size: 100%; }
+.ui-messages-index-frame .ui-page-frame__context,
+.ui-messages-index-frame .ui-context-panel__body { overflow-x: clip; }
+.ui-conversation-index { display: grid; min-inline-size: 0; max-inline-size: 100%; }
+.ui-conversation-index > a { display: grid; min-inline-size: 0; max-inline-size: 100%; grid-template-columns: auto minmax(0, 1fr) auto; min-block-size: 4.75rem; align-items: center; gap: var(--space-3); padding: var(--space-3); border-block-end: 1px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; transition: background-color var(--motion-feedback), transform var(--motion-feedback); }
 .ui-conversation-index > a:hover { background: var(--surface-elevated); transform: translateX(1px); }
 .ui-conversation-index > a[aria-current="page"] { box-shadow: inset 3px 0 0 var(--accent-500); background: var(--surface-selected); }
 .ui-conversation-index__mark { display: grid; inline-size: 2.25rem; block-size: 2.25rem; border: 1px solid var(--border-default); border-radius: var(--shape-card); color: var(--accent-400); place-items: center; }
@@ -32,7 +37,7 @@
 .ui-message-composer__input:hover { border-color: var(--border-strong); }
 .ui-message-composer__input:focus-visible { border-color: var(--accent-400); box-shadow: var(--shadow-focus); }
 .ui-message-composer__input[aria-invalid="true"] { border-color: var(--status-error); }
-.ui-message-composer__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; min-block-size: 2.75rem; align-items: center; gap: var(--space-3); color: var(--text-tertiary); font-size: var(--font-size-caption); }
+.ui-message-composer__footer { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; min-block-size: 2.75rem; min-inline-size: 0; align-items: center; gap: var(--space-3); color: var(--text-tertiary); font-size: var(--font-size-caption); }
 .ui-message-composer__count { font-family: var(--font-geist-mono), monospace; white-space: nowrap; }
 .ui-message-composer__footer .ui-button { min-inline-size: 5.75rem; }
 .ui-message-composer__status { min-block-size: 1.2rem; margin: 0; color: var(--status-error); font-size: var(--font-size-caption); line-height: 1.4; }
@@ -122,6 +127,20 @@
   .ui-teacher-compose__command { align-items: stretch; flex-direction: column; }
   .ui-teacher-compose__command > div { display: grid; grid-template-columns: 1fr 1fr; }
   .ui-teacher-compose__command .ui-button { inline-size: 100%; }
+}
+
+@media (max-width: 34rem) {
+  .ui-message-thread__scroll > ol { padding: var(--space-3); }
+  .ui-message-thread__scroll > ol li { inline-size: 100%; }
+  .ui-message-composer { gap: var(--space-3); padding-inline: var(--space-3); }
+  .ui-message-composer__footer { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .ui-message-composer__footer > span:first-child,
+  .ui-message-composer__count,
+  .ui-message-composer__footer .ui-button { grid-column: 1; }
+  .ui-message-composer__count { justify-self: start; }
+  .ui-message-composer__footer .ui-button { inline-size: 100%; }
+  .ui-teacher-review dl > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); padding-block: var(--space-2); }
+  .ui-teacher-compose__command > div { grid-template-columns: minmax(0, 1fr); }
 }
 
 @media (prefers-reduced-motion: reduce) {

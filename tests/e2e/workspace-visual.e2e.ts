@@ -17,6 +17,7 @@ const ROUTES = [
   { heading: "通知", name: "notifications", path: "/notifications" },
   { heading: "成績", name: "grades", path: "/grades" },
   { heading: "プライベートファイル", name: "files", path: "/files" },
+  { heading: "メッセージ", name: "messages-index", path: "/messages" },
   { heading: "Study group", name: "messages", path: "/messages/1001" },
   { heading: "先生へ連絡", name: "teacher-contact", path: "/messages/new?courseId=101" },
   { heading: "PDFツール", name: "pdf", path: "/tools/pdf" },
@@ -47,10 +48,15 @@ test("captures the responsive Editorial Native workspace on real routes", async 
         await expect(page.locator("main")).toHaveCount(1);
         const geometry = await page.evaluate(() => ({
           horizontalOverflow: document.documentElement.scrollWidth > document.documentElement.clientWidth,
+          mainHorizontalOverflow: (() => {
+            const main = document.querySelector("#main-content");
+            return main === null ? false : main.scrollWidth > main.clientWidth;
+          })(),
           shellHeight: document.querySelector(".ui-app-shell")?.getBoundingClientRect().height ?? 0,
           viewportHeight: window.innerHeight,
         }));
         expect(geometry.horizontalOverflow).toBe(false);
+        expect(geometry.mainHorizontalOverflow).toBe(false);
         expect(Math.abs(geometry.shellHeight - geometry.viewportHeight)).toBeLessThanOrEqual(1);
         await page.screenshot({
           animations: "disabled",

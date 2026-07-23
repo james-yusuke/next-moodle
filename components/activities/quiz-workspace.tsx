@@ -182,7 +182,7 @@ export function QuizWorkspace({ cmid, data }: Readonly<{ cmid: number; data: Qui
       <section className="ui-quiz-start" aria-labelledby="quiz-start-title">
         <div><span className="ui-kicker">Assessment</span><h2 id="quiz-start-title">小テストを開始</h2><p>開始後は回答が自動保存されます。提出前に確認できます。</p></div>
         <dl><div><dt>受験回数</dt><dd>{data.attempts.length}{data.maxAttempts === 0 ? " / 無制限" : ` / ${data.maxAttempts}`}</dd></div><div><dt>制限時間</dt><dd>{data.timeLimit === 0 ? "なし" : `${Math.ceil(data.timeLimit / 60)}分`}</dd></div></dl>
-        {data.hasQuestions && attemptsRemaining ? <Button disabled={pendingAction !== null} onClick={() => void start()}><Play aria-hidden size={17} />{pendingAction === "start" ? "開始中" : "受験を開始"}</Button> : <Notice title="現在は開始できません" tone="warning"><p>設問または受験回数を確認してください。</p></Notice>}
+        {data.hasQuestions && attemptsRemaining ? <Button disabled={pendingAction !== null} icon={<Play aria-hidden size={17} />} onClick={() => void start()}>{pendingAction === "start" ? "開始中" : "受験を開始"}</Button> : <Notice title="現在は開始できません" tone="warning"><p>設問または受験回数を確認してください。</p></Notice>}
         {actionError === null ? null : <Notice title={actionError === "forbidden" ? "アクセスが禁止されています" : "小テストを開始できません"} tone={actionError === "forbidden" ? "warning" : "error"} urgent><p>{actionError === "forbidden" ? "この小テストを開始する権限がありません。" : "Moodleとの通信中に問題が発生しました。時間をおいて再試行してください。"}</p></Notice>}
         {data.attempts.length > 0 ? <ul className="ui-quiz-attempts">{data.attempts.map((attempt) => <li key={attempt.id}><span>第{attempt.attempt}回</span><strong>{attemptLabel(attempt.state)}</strong>{attempt.sumgrades == null ? null : <span>{attempt.sumgrades}点</span>}</li>)}</ul> : null}
       </section>

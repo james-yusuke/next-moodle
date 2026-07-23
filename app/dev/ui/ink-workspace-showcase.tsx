@@ -69,6 +69,19 @@ export function EditorialNativeShowcase() {
             <button type="button">開く</button>
           </div>
         </ShowcaseSample>
+        <ShowcaseSample label="Responsive action hierarchy">
+          <div className={styles.responsiveStack} data-testid="responsive-stack-specimen">
+            <div>
+              <strong>提出内容を確認</strong>
+              <small>本文あり · ファイル2件 · 締切 金曜 17:00</small>
+            </div>
+            <span>保存済み</span>
+            <div>
+              <button type="button">下書きを保存</button>
+              <button type="button">提出を確定</button>
+            </div>
+          </div>
+        </ShowcaseSample>
         <ShowcaseSample label="Capability states">
           <div className={styles.capabilityRows}>
             <span><i data-state="available" />公式API</span>

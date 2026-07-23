@@ -71,6 +71,7 @@
 .ui-app-main {
   min-block-size: 0;
   min-inline-size: 0;
+  overflow-x: clip;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-gutter: stable;
@@ -82,7 +83,7 @@
   min-inline-size: 0;
   min-block-size: 100%;
   margin-inline: auto;
-  padding: var(--space-5) var(--space-4) var(--space-12);
+  padding: var(--space-5) var(--space-4) max(var(--space-12), calc(var(--space-8) + env(safe-area-inset-bottom)));
 }
 
 .ui-app-shell[data-workspace-mode="focus"] .ui-app-content,
@@ -142,6 +143,7 @@
 }
 
 .ui-app-nav--mobile {
+  min-inline-size: 0;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 0;
   padding: var(--space-1) var(--space-1) max(var(--space-1), env(safe-area-inset-bottom));
@@ -156,6 +158,13 @@
   min-block-size: 3.25rem;
   padding: 3px 2px;
   font-size: .6875rem;
+}
+
+.ui-app-nav--mobile .ui-app-nav__link > span {
+  max-inline-size: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .ui-app-nav--mobile .ui-app-nav__link[aria-current="page"] { background: transparent; }
@@ -218,6 +227,8 @@
 
 .ui-app-action-link {
   display: inline-flex;
+  max-inline-size: 100%;
+  min-inline-size: 0;
   min-block-size: 2.75rem;
   align-items: center;
   justify-content: center;
@@ -230,6 +241,7 @@
   font-size: var(--font-size-label);
   font-weight: 680;
   text-decoration: none;
+  text-align: center;
   transition: color var(--motion-fast), border-color var(--motion-fast), transform var(--motion-fast);
 }
 
@@ -276,6 +288,12 @@
   .ui-app-content { padding: var(--space-6) clamp(var(--space-5), 3vw, var(--space-10)) var(--space-12); }
   .ui-app-shell[data-workspace-mode="focus"] .ui-app-content,
   .ui-app-shell[data-workspace-mode="conversation"] .ui-app-content { padding: 0; }
+}
+
+@media (max-width: 23.5rem) {
+  .ui-app-topbar { gap: var(--space-2); padding-inline: var(--space-2); }
+  .ui-app-brand__mark { inline-size: 2.25rem; block-size: 2.25rem; }
+  .ui-app-nav--mobile .ui-app-nav__link { font-size: .625rem; }
 }
 
 @media (min-width: 48rem) and (max-width: 79.99rem) {

@@ -192,6 +192,17 @@
   .filterGroup > button {
     flex: 1 1 8rem;
   }
+
+  .item { padding-inline: var(--space-3); }
+
+  .itemHeader { align-items: stretch; }
+
+  .itemHeader :global(.ui-badge) { justify-self: start; }
+
+  .itemActions { align-items: stretch; flex-direction: column; }
+
+  .activity,
+  .itemActions :global(.ui-button) { inline-size: 100%; justify-content: center; }
 }
 .inbox { border-block: 1px solid var(--border-default); }
 

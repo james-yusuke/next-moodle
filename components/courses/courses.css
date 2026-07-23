@@ -26,10 +26,11 @@
 .ui-courses-list li:nth-child(3) { animation-delay: 20ms; }
 .ui-courses-list li:nth-child(4) { animation-delay: 30ms; }
 .ui-courses-list li:nth-child(n + 5) { animation-delay: 40ms; }
-.ui-courses-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; }
+.ui-courses-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; min-inline-size: 0; align-items: center; }
 .ui-courses-list a {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
+  min-inline-size: 0;
   min-block-size: 4.25rem;
   align-items: center;
   gap: var(--space-3);
@@ -118,12 +119,24 @@
 }
 
 @media (max-width: 35rem) {
+  .ui-courses-search { grid-template-columns: minmax(0, 1fr); }
+  .ui-courses-search > svg { display: none; }
   .ui-courses-list a { grid-template-columns: auto minmax(0, 1fr); }
   .ui-courses-list__period { grid-column: 2; text-align: start; }
   .ui-course-activity__row { grid-template-columns: auto minmax(0, 1fr) auto; }
   .ui-course-activity__icon { display: none; }
   .ui-course-activity__description,
   .ui-course-activity__files { padding-inline: var(--space-4); }
+}
+
+@media (max-width: 28rem) {
+  .ui-course-overview-band { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+  .ui-course-activity__row { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-3); padding: var(--space-3); }
+  .ui-course-activity__row > svg { display: none; }
+  .ui-course-activity__title { grid-column: 1; }
+  .ui-course-activity__action,
+  .ui-course-activity__locked { grid-column: 1 / -1; justify-self: start; }
+  .ui-course-activity__files li { align-items: start; flex-direction: column; padding-block: var(--space-2); }
 }
 
 @keyframes ui-course-row-enter { from { opacity: 0; transform: translateY(.35rem); } }

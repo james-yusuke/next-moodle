@@ -38,6 +38,7 @@ for (const viewport of VIEWPORTS) {
       await expect(page.locator(".ui-badge")).toHaveCount(8);
       await expect.poll(() => page.locator(".ui-notice").count()).toBeGreaterThanOrEqual(9);
       await expect(page.locator(".ui-skeleton")).toHaveCount(3);
+      await expect(page.getByTestId("responsive-stack-specimen")).toBeVisible();
 
       const hasHorizontalOverflow = await page.evaluate(
         () => document.documentElement.scrollWidth > document.documentElement.clientWidth,
@@ -60,6 +61,14 @@ for (const viewport of VIEWPORTS) {
         }),
       );
       expect(undersizedTargets).toEqual([]);
+
+      if (viewport.width === 375) {
+        const stack = page.getByTestId("responsive-stack-specimen");
+        const actionPositions = await stack.locator("button").evaluateAll((buttons) =>
+          buttons.map((button) => button.getBoundingClientRect().top),
+        );
+        expect(actionPositions[1]).toBeGreaterThan(actionPositions[0] ?? 0);
+      }
 
       await page.screenshot({
         animations: "disabled",

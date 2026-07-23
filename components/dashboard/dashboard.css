@@ -32,6 +32,7 @@
 
 .ui-dashboard-panel__header {
   display: flex;
+  min-inline-size: 0;
   min-block-size: 3rem;
   align-items: center;
   justify-content: space-between;
@@ -43,6 +44,7 @@
 .ui-dashboard-panel__header > div,
 .ui-dashboard-panel__header a {
   display: flex;
+  min-inline-size: 0;
   align-items: center;
   gap: var(--space-2);
 }
@@ -130,8 +132,20 @@
 }
 
 @media (max-width: 35rem) {
+  .ui-dashboard-panel__header { align-items: flex-start; flex-direction: column; }
+  .ui-dashboard-panel__header > a { min-block-size: 2.75rem; }
   .ui-dashboard-timeline > li { grid-template-columns: 4.5rem 1px minmax(0, 1fr); padding-inline: var(--space-3); }
   .ui-dashboard-timeline article { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .ui-dashboard-course-list li { grid-template-columns: auto minmax(0, 1fr); }
+  .ui-dashboard-course-list li > svg { grid-column: 2; justify-self: end; grid-row: 1; }
+  .ui-dashboard-signal-list > a { grid-template-columns: auto minmax(0, 1fr); }
+  .ui-dashboard-signal-list > a > svg:last-child { grid-column: 2; justify-self: end; grid-row: 1; }
+}
+
+@media (max-width: 23.5rem) {
+  .ui-dashboard-timeline > li { grid-template-columns: minmax(0, 1fr); gap: var(--space-2); }
+  .ui-dashboard-timeline__rule { display: none; }
+  .ui-dashboard-timeline > li > time { grid-row: 1; }
 }
 
 @keyframes ui-dashboard-enter { from { opacity: 0; transform: translateY(.5rem); } }

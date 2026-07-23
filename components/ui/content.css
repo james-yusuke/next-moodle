@@ -11,6 +11,7 @@
 
 .ui-textarea__input {
   inline-size: 100%;
+  min-inline-size: 0;
   min-block-size: 13rem;
   resize: vertical;
   padding: var(--space-4);
@@ -221,6 +222,7 @@
 
 .ui-surface__actions {
   flex: 0 0 auto;
+  min-inline-size: 0;
 }
 
 .ui-surface__body {
@@ -228,4 +230,20 @@
   font-size: var(--font-size-body-sm);
   line-height: 1.55;
   overflow-wrap: anywhere;
+}
+
+@media (max-width: 34rem) {
+  .ui-surface {
+    padding: var(--space-4);
+  }
+
+  .ui-surface__header {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .ui-surface__actions {
+    display: flex;
+    flex-wrap: wrap;
+  }
 }

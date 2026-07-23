@@ -19,6 +19,7 @@
 .ui-calendar-header__actions {
   display: flex;
   flex-wrap: wrap;
+  min-inline-size: 0;
   gap: var(--space-2);
   align-items: center;
 }
@@ -210,6 +211,17 @@
 
   .ui-calendar-header__actions { inline-size: 100%; }
 
+  .ui-calendar-header__actions > .ui-calendar-tabs {
+    flex: 1 0 100%;
+    order: -1;
+  }
+
+  .ui-calendar-header__actions > .ui-button,
+  .ui-calendar-header__actions > .ui-calendar-create { flex: 1 1 auto; }
+
+  .ui-calendar-create > summary,
+  .ui-calendar-header__actions > .ui-button { inline-size: 100%; justify-content: center; }
+
   .ui-calendar-agenda section {
     grid-template-columns: minmax(0, 1fr);
     gap: var(--space-2);
@@ -235,4 +247,17 @@
   .ui-calendar-day--placeholder {
     display: none;
   }
+}
+
+@media (max-width: 34rem) {
+  .ui-calendar-agenda > section > ul > li { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2) var(--space-3); padding: var(--space-3); }
+  .ui-calendar-agenda > section > ul > li > time { grid-column: 1; }
+  .ui-calendar-agenda > section > ul > li > strong { grid-column: 1 / -1; }
+  .ui-calendar-agenda .ui-badge { grid-column: 1; grid-row: 3; }
+  .ui-calendar-delete { grid-column: 2; grid-row: 1; }
+  .ui-calendar-month__toolbar { gap: var(--space-2); }
+  .ui-calendar-month__toolbar h2 { font-size: var(--font-size-body); }
+  .ui-calendar-month__toolbar .ui-app-action-link { min-inline-size: 2.75rem; padding-inline: var(--space-2); }
+  .ui-calendar-month__grid { grid-template-columns: minmax(0, 1fr); }
+  .ui-calendar-day { min-block-size: auto; }
 }

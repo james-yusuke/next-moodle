@@ -277,6 +277,17 @@
   .ui-forum-grid { grid-template-columns: minmax(0, 1fr); }
   .ui-forum-grid > nav { max-height: 15rem; overflow-y: auto; border-right: 0; border-bottom: 1px solid var(--border-default); }
   .ui-knowledge-list > div { grid-template-columns: minmax(0, 1fr); gap: var(--space-3); }
+
+  .ui-feedback-launch,
+  .ui-feedback-activity > header,
+  .ui-lesson > header,
+  .ui-database > header,
+  .ui-workshop > header,
+  .ui-launch > header,
+  .ui-questionnaire > header { align-items: stretch; flex-direction: column; }
+
+  .ui-feedback-launch .ui-button,
+  .ui-launch-runtime .ui-button { inline-size: 100%; justify-content: center; }
 }
 @media (max-width: 35rem) {
   .ui-activity-files li { grid-template-columns: auto minmax(0, 1fr); }
@@ -290,4 +301,20 @@
   .ui-quiz-actions .ui-button { width: 100%; }
   .ui-questionnaire > footer { align-items: stretch; flex-direction: column; }
   .ui-questionnaire > footer > div { display: grid; grid-template-columns: 1fr 1fr; }
+  .ui-quiz-start dl { grid-template-columns: minmax(0, 1fr); }
+  .ui-quiz-attempts li { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); padding-block: var(--space-2); }
+  .ui-quiz-attempts li > :last-child { grid-column: 1 / -1; justify-self: start; }
+  .ui-choice > footer,
+  .ui-feedback-activity form footer,
+  .ui-lesson form footer,
+  .ui-workshop form footer { align-items: stretch; flex-direction: column; }
+  .ui-choice > footer .ui-button,
+  .ui-feedback-activity form footer .ui-button,
+  .ui-lesson form footer .ui-button,
+  .ui-workshop form footer .ui-button { inline-size: 100%; justify-content: center; }
+  .ui-choice fieldset label > span { align-items: flex-start; flex-direction: column; gap: var(--space-1); }
+  .ui-wiki-pages > article > header { grid-template-columns: auto minmax(0, 1fr); }
+  .ui-wiki-pages > article > header button { grid-column: 2; justify-self: start; }
+  .ui-wiki-pages form > div:last-child { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .ui-wiki-pages form > div:last-child .ui-button { inline-size: 100%; }
 }
