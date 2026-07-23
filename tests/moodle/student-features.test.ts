@@ -45,7 +45,12 @@ test("student features keep completion and messages isolated by user", async () 
       "events[0][eventtype]": "user",
       "events[0][timestart]": 1_790_000_300,
     }, CalendarCreateSchema);
-    const aliceConversation = await alice.call(MOODLE_FUNCTIONS.conversation, { userid: FIXTURE_USERS.alice.userid, conversationid: conversationId }, ConversationSchema);
+    const aliceConversation = await alice.call(MOODLE_FUNCTIONS.conversation, {
+      userid: FIXTURE_USERS.alice.userid,
+      conversationid: conversationId,
+      includecontactrequests: false,
+      includeprivacyinfo: false,
+    }, ConversationSchema);
     const bobConversations = await bob.call(MOODLE_FUNCTIONS.conversations, { userid: FIXTURE_USERS.bob.userid }, ConversationsSchema);
     const aliceEvents = await alice.call(MOODLE_FUNCTIONS.calendarEvents, {}, CalendarEventsSchema);
     const bobEvents = await bob.call(MOODLE_FUNCTIONS.calendarEvents, {}, CalendarEventsSchema);

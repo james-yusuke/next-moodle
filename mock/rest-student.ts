@@ -1,4 +1,4 @@
-import { numberField } from "./params";
+import { firstField, numberField } from "./params";
 import type { RestContext } from "./rest-context";
 import type { FixtureUser, MoodleFunction, MoodleMockState } from "./types";
 
@@ -63,7 +63,14 @@ export function studentPayload(functionName: MoodleFunction, context: RestContex
   if (functionName === "core_badges_get_user_badges") return { badges: [{ id: context.user.userid * 10, name: "First milestone", description: "Synthetic badge", dateissued: 1_790_000_000, issuername: "Synthetic Moodle" }] };
   if (functionName === "core_competency_list_user_plans") return [{ id: context.user.userid * 10, name: "Semester learning plan", statusname: "Active", duedate: 1_795_000_000 }];
   if (functionName === "core_message_get_conversations") return { conversations: [conversation(context.user, context.state)] };
-  if (functionName === "core_message_get_conversation") return conversation(context.user, context.state);
+  if (functionName === "core_message_get_conversation") {
+    // Moodle declares both fields as required parameters. Keep the fixture
+    // faithful so callers cannot accidentally rely on PHP defaults.
+    if (firstField(context.input, "includecontactrequests") === undefined || firstField(context.input, "includeprivacyinfo") === undefined) {
+      return { exception: "invalid_parameter_exception", errorcode: "invalidparameter", message: "Missing required conversation privacy parameters" };
+    }
+    return conversation(context.user, context.state);
+  }
   if (functionName === "core_message_get_conversation_between_users") return conversation(context.user, context.state);
   if (functionName === "core_message_send_instant_messages") return sendDirectMessage(context);
   if (functionName === "core_message_send_messages_to_conversation") return sendMessage(context);

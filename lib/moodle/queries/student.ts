@@ -206,7 +206,20 @@ export const readConversation = cache(async (
 ): Promise<MoodleReadResult<ConversationDetail>> => {
   try {
     const client = await createAuthenticatedMoodleClient();
-    const response = await client.call(MOODLE_FUNCTIONS.conversation, { userid: userId, conversationid: conversationId }, ConversationSchema);
+    // Unlike the pagination fields, these two privacy-related arguments are
+    // required by core_message_get_conversation. Moodle returns an
+    // invalid-parameter envelope when either is omitted.
+    const response = await client.call(MOODLE_FUNCTIONS.conversation, {
+      userid: userId,
+      conversationid: conversationId,
+      includecontactrequests: false,
+      includeprivacyinfo: false,
+      memberlimit: 0,
+      memberoffset: 0,
+      messagelimit: 0,
+      messageoffset: 0,
+      newestmessagesfirst: false,
+    }, ConversationSchema);
     return { kind: "ready", data: {
       id: response.data.id,
       members: response.data.members.map((member) => plainTextFromMoodleMessage(member.fullname) || "参加者"),

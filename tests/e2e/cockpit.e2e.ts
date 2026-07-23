@@ -280,8 +280,12 @@ test("companion Questionnaire and the first teacher DM remain inside the workspa
   await expect(page).toHaveURL(/\/messages\/1001$/);
   await expect(page.getByText("The next study session starts at 16:00.", { exact: true })).toBeVisible();
   await expect(page.locator(".ui-message-thread")).not.toContainText("<p>");
-  const sentMessage = page.getByRole("main").locator(".ui-message-thread > ol li[data-own='true'] p");
+  const sentMessage = page.getByRole("main").locator(".ui-message-thread__scroll > ol li[data-own='true'] p");
   await expect(sentMessage).toContainText("件名: Field session question");
   await expect(sentMessage).toContainText("Could you confirm the observation meeting time?");
+  await page.getByLabel("メッセージ").fill("Thanks, I will be there.");
+  await page.getByRole("button", { name: "送信" }).click();
+  await expect(page.getByRole("main").locator(".ui-message-thread__scroll")).toContainText("Thanks, I will be there.");
+  await expect(page.getByText("Enterで改行 · ⌘ / Ctrl + Enterで送信")).toBeVisible();
   await expect(page.getByRole("main")).toContainText("Aoi Mentor");
 });

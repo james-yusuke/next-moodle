@@ -1,16 +1,31 @@
 "use client";
 
 import { PaperPlaneRight } from "@phosphor-icons/react";
-import ky, { isKyError } from "ky";
+import ky from "ky";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 
-import { Button, Textarea } from "@/components/ui";
+import { Button } from "@/components/ui";
+
+const MAX_MESSAGE_LENGTH = 10_000;
+const COMPOSER_MAX_HEIGHT = 160;
 
 export function MessageComposer({ conversationId }: Readonly<{ conversationId: number }>) {
   const router = useRouter();
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [text, setText] = useState("");
-  const [status, setStatus] = useState<"idle" | "sending" | "error">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "error" | "forbidden">("idle");
+  const messageId = `conversation-${conversationId}-message`;
+  const hintId = `${messageId}-hint`;
+  const statusId = `${messageId}-status`;
+
+  useLayoutEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea === null) return;
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, COMPOSER_MAX_HEIGHT)}px`;
+    textarea.style.overflowY = textarea.scrollHeight > COMPOSER_MAX_HEIGHT ? "auto" : "hidden";
+  }, [text]);
 
   async function submit(): Promise<void> {
     if (text.trim() === "" || status === "sending") return;
@@ -23,11 +38,10 @@ export function MessageComposer({ conversationId }: Readonly<{ conversationId: n
         timeout: 15_000,
       });
       if (!response.ok) {
-        setStatus("error");
+        setStatus(response.status === 403 ? "forbidden" : "error");
         return;
       }
-    } catch (error) {
-      if (!isKyError(error)) throw error;
+    } catch {
       setStatus("error");
       return;
     }
@@ -37,10 +51,42 @@ export function MessageComposer({ conversationId }: Readonly<{ conversationId: n
   }
 
   return (
-    <div className="ui-message-composer">
-      <Textarea label="メッセージ" maxLength={10_000} onChange={(event) => setText(event.currentTarget.value)} placeholder="メッセージを入力" rows={2} value={text} />
-      <Button disabled={text.trim() === "" || status === "sending"} onClick={submit} type="button"><PaperPlaneRight aria-hidden size={18} />{status === "sending" ? "送信中" : "送信"}</Button>
-      <span aria-live="polite">{status === "error" ? "送信できませんでした。入力は保持されています。" : ""}</span>
-    </div>
+    <form className="ui-message-composer" onSubmit={(event) => {
+      event.preventDefault();
+      void submit();
+    }}>
+      <label className="ui-message-composer__label" htmlFor={messageId}>メッセージ</label>
+      <textarea
+        aria-describedby={`${hintId} ${statusId}`}
+        aria-invalid={status === "error" || status === "forbidden"}
+        autoComplete="off"
+        className="ui-message-composer__input"
+        enterKeyHint="enter"
+        id={messageId}
+        maxLength={MAX_MESSAGE_LENGTH}
+        name="message"
+        onChange={(event) => {
+          setText(event.currentTarget.value);
+          if (status !== "idle") setStatus("idle");
+        }}
+        onKeyDown={(event) => {
+          if (event.nativeEvent.isComposing || event.key !== "Enter" || (!event.metaKey && !event.ctrlKey)) return;
+          event.preventDefault();
+          void submit();
+        }}
+        placeholder="メッセージを入力"
+        ref={textareaRef}
+        rows={2}
+        value={text}
+      />
+      <div className="ui-message-composer__footer">
+        <span id={hintId}>Enterで改行 · ⌘ / Ctrl + Enterで送信</span>
+        <span aria-live="polite" className="ui-message-composer__count">{text.length.toLocaleString()} / {MAX_MESSAGE_LENGTH.toLocaleString()}</span>
+        <Button disabled={text.trim() === "" || status === "sending"} icon={<PaperPlaneRight aria-hidden size={18} />} loading={status === "sending"} type="submit" variant="primary">送信</Button>
+      </div>
+      <p aria-live="polite" className="ui-message-composer__status" id={statusId}>
+        {status === "forbidden" ? "アクセスが禁止されています。入力内容は保持されています。" : status === "error" ? "送信できませんでした。入力内容は保持されています。" : ""}
+      </p>
+    </form>
   );
 }

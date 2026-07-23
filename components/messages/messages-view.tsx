@@ -12,6 +12,7 @@ import { Badge, Notice } from "@/components/ui";
 import type { AppRuntimeConfig } from "@/lib/app-config";
 import { dateTimeFormatter } from "@/lib/date-time";
 import type { ConversationDetail, ConversationListItem } from "@/lib/moodle/queries/student";
+import { ConversationScrollRegion } from "./conversation-scroll-region";
 import { MessageComposer } from "./message-composer";
 import "./messages.css";
 
@@ -50,6 +51,15 @@ function ConversationContext({ conversations, selectedId }: Readonly<{
       ) : <ConversationList conversations={conversations} selectedId={selectedId} />}
     </ContextPanel>
   );
+}
+
+function MessageTime({ format, time }: Readonly<{ format: Intl.DateTimeFormat; time: number }>) {
+  // PHP accepts a broad integer range for Moodle timestamps. Do not let a
+  // malformed upstream value make a whole conversation unrenderable in JS.
+  if (!Number.isSafeInteger(time) || time <= 0 || time > 8_640_000_000_000) return null;
+  const date = new Date(time * 1_000);
+  if (Number.isNaN(date.valueOf())) return null;
+  return <time dateTime={date.toISOString()}>{format.format(date)}</time>;
 }
 
 export function MessagesIndex({ conversations }: Readonly<{ conversations: readonly ConversationListItem[] }>) {
@@ -93,16 +103,16 @@ export function ConversationView({ config, conversation, conversations }: Readon
       className="ui-message-thread-frame"
       content={(
         <section aria-label={`${conversation.name}のメッセージ`} className="ui-message-thread">
-          <ol>
-            {conversation.messages.map((message) => (
-              <li data-own={message.fromCurrentUser ? "true" : undefined} key={message.id}>
-                <p>{message.text}</p>
-                <time dateTime={new Date(message.time * 1_000).toISOString()}>
-                  {message.time === 0 ? "" : format.format(new Date(message.time * 1_000))}
-                </time>
-              </li>
-            ))}
-          </ol>
+          <ConversationScrollRegion messageCount={conversation.messages.length}>
+            <ol>
+              {conversation.messages.map((message) => (
+                <li data-own={message.fromCurrentUser ? "true" : undefined} key={message.id}>
+                  <p>{message.text}</p>
+                  <MessageTime format={format} time={message.time} />
+                </li>
+              ))}
+            </ol>
+          </ConversationScrollRegion>
           <MessageComposer conversationId={conversation.id} />
         </section>
       )}
