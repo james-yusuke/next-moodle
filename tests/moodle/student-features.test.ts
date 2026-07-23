@@ -5,6 +5,7 @@ import { MoodleClient } from "@/lib/moodle/client";
 import { MOODLE_FUNCTIONS } from "@/lib/moodle/functions";
 import { MoodleCourseSectionsResponseSchema } from "@/lib/moodle/dto";
 import { MoodleTokenSchema } from "@/lib/moodle/identifiers";
+import { plainTextFromMoodleMessage } from "@/lib/security/html";
 import { ConversationSchema, ConversationsSchema } from "@/lib/moodle/student-dto";
 import { FIXTURE_USERS } from "@/mock/fixtures";
 import { createMoodleMock } from "@/mock/moodle-server";
@@ -100,6 +101,31 @@ test("Moodle 4.5 conversations normalize a null unread count to zero", () => {
 
   // Then
   expect(parsed.unreadcount).toBe(0);
+});
+
+test("Moodle message markup becomes safe, readable plain text", () => {
+  // Given
+  const wire = {
+    id: 21,
+    name: "Course support",
+    members: [],
+    messages: [{
+      id: 0,
+      isread: 0,
+      text: "<p>First line</p><p>Second <strong>line</strong></p><script>steal()</script>",
+      timecreated: null,
+      useridfrom: 0,
+    }],
+  };
+
+  // When
+  const parsed = ConversationSchema.parse(wire);
+  const text = plainTextFromMoodleMessage(parsed.messages[0]?.text ?? "");
+
+  // Then
+  expect(parsed.messages[0]?.useridfrom).toBe(0);
+  expect(parsed.messages[0]?.timecreated).toBe(0);
+  expect(text).toBe("First line\nSecond line");
 });
 
 test("a malformed activity is isolated without rejecting its course section", () => {

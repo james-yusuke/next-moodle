@@ -74,11 +74,12 @@ export const UserPlansSchema = z.array(z.object({
 }));
 
 const MessageSchema = z.object({
-  id: z.number().int().positive(),
-  useridfrom: z.number().int().positive().optional(),
-  text: TextSchema.optional(),
-  timecreated: TimestampSchema.optional(),
-  isread: z.boolean().optional(),
+  id: z.number().int().nonnegative(),
+  // Moodle can use user id 0 for a system-originated message.
+  useridfrom: z.number().int().nonnegative().nullish().transform((value) => value ?? 0),
+  text: z.string().max(1_000_000).nullish().transform((value) => value ?? ""),
+  timecreated: TimestampSchema.nullish().transform((value) => value ?? 0),
+  isread: z.union([z.boolean(), z.literal(0), z.literal(1)]).optional().transform((value) => Boolean(value)),
 });
 
 export const ConversationSchema = z.object({

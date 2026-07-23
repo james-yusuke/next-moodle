@@ -10,6 +10,7 @@ import {
   type MoodleUserId,
 } from "@/lib/moodle/server";
 import { moodleFileProxyPath } from "@/lib/security/moodle-file";
+import { plainTextFromMoodleMessage } from "@/lib/security/html";
 import {
   ConversationSchema,
   ConversationsSchema,
@@ -190,8 +191,8 @@ export const readConversations = cache(async (
     const response = await client.call(MOODLE_FUNCTIONS.conversations, { userid: userId, limitfrom: 0, limitnum: 100 }, ConversationsSchema);
     return { kind: "ready", data: response.data.conversations.map((conversation) => ({
       id: conversation.id,
-      name: conversation.name,
-      preview: conversation.messages.at(-1)?.text ?? "メッセージはありません",
+      name: plainTextFromMoodleMessage(conversation.name) || "会話",
+      preview: plainTextFromMoodleMessage(conversation.messages.at(-1)?.text ?? "") || "メッセージはありません",
       unreadCount: conversation.unreadcount,
     })) };
   } catch (error) {
@@ -208,9 +209,14 @@ export const readConversation = cache(async (
     const response = await client.call(MOODLE_FUNCTIONS.conversation, { userid: userId, conversationid: conversationId }, ConversationSchema);
     return { kind: "ready", data: {
       id: response.data.id,
-      members: response.data.members.map((member) => member.fullname),
-      messages: response.data.messages.map((message) => ({ id: message.id, fromCurrentUser: message.useridfrom === userId, text: message.text ?? "", time: message.timecreated ?? 0 })),
-      name: response.data.name,
+      members: response.data.members.map((member) => plainTextFromMoodleMessage(member.fullname) || "参加者"),
+      messages: response.data.messages.map((message) => ({
+        id: message.id,
+        fromCurrentUser: message.useridfrom === userId,
+        text: plainTextFromMoodleMessage(message.text),
+        time: message.timecreated,
+      })),
+      name: plainTextFromMoodleMessage(response.data.name) || "会話",
     } };
   } catch (error) {
     return toMoodleReadFailure(error);

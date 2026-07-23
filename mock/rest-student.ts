@@ -23,7 +23,7 @@ const conversation = (user: FixtureUser, state: MoodleMockState): Record<string,
     unreadcount: sent.length === 0 ? 1 : 0,
     members: [{ id: user.userid, fullname: user.fullname }, { id: user.userid + 10, fullname: "Aoi Mentor" }],
     messages: [
-      { id: conversationId * 10, useridfrom: user.userid + 10, text: "The next study session starts at 16:00.", timecreated: 1_790_000_000, isread: false },
+      { id: conversationId * 10, useridfrom: user.userid + 10, text: "<p>The next study session starts at 16:00.</p>", timecreated: 1_790_000_000, isread: false },
       ...sent,
     ],
   };

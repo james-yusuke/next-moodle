@@ -38,6 +38,36 @@ const ALLOWED_TAGS = [
   "td",
 ] as const;
 
+const MESSAGE_BLOCK_END_TAG = /<\/(?:blockquote|div|h[1-6]|li|p|pre|tr)\s*>/gi;
+const MESSAGE_LINE_BREAK_TAG = /<br\s*\/?\s*>/gi;
+
+/**
+ * Moodle messages can contain HTML even when the surrounding API describes the
+ * value as text. Messages are intentionally rendered as plain text: this keeps
+ * conversation rows compact and prevents untrusted markup from becoming UI.
+ */
+export function plainTextFromMoodleMessage(value: string): string {
+  const input = MoodleHtmlSchema.parse(value)
+    .replaceAll("&lt;", "<")
+    .replaceAll("&LT;", "<")
+    .replaceAll("&gt;", ">")
+    .replaceAll("&GT;", ">")
+    .replace(MESSAGE_LINE_BREAK_TAG, "\n")
+    .replace(MESSAGE_BLOCK_END_TAG, "\n");
+  const text = sanitizeHtmlLibrary(input, {
+    allowedAttributes: {},
+    allowedTags: [],
+    disallowedTagsMode: "discard",
+  });
+  return text
+    .replaceAll("\u00a0", " ")
+    .replace(/\r\n?/g, "\n")
+    .replace(/[\t ]+\n/g, "\n")
+    .replace(/\n[\t ]+/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
 export function safeMoodleLink(value: string, siteUrl: string): string | null {
   if (!URL.canParse(value, `${siteUrl}/`)) {
     return null;
