@@ -166,10 +166,13 @@ test("standard activities remain inside the Editorial Native workspace", async (
   await page.goto("/activities/9105");
   await expect(page.getByRole("heading", { name: "小テストを開始" })).toBeVisible();
   await page.getByRole("button", { name: "受験を開始" }).click();
-  const answer = page.getByLabel("Answer");
+  const answer = page.getByLabel("Water temperature");
   await expect(answer).toBeVisible();
-  await answer.fill("Water temperature");
+  await answer.check();
   await expect(page.getByText("保存済み")).toBeVisible();
+  await page.getByRole("button", { name: "Clear my choice" }).click();
+  await expect(answer).not.toBeChecked();
+  await answer.check();
   page.once("dialog", (dialog) => void dialog.accept());
   await page.getByRole("button", { name: "回答を提出" }).click();
   await expect(page.getByText("提出済み")).toBeVisible();

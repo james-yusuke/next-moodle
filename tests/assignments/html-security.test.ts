@@ -99,4 +99,23 @@ describe("assignment HTML sanitizer", () => {
     expect(sanitized).not.toContain('type="submit"');
     expect(sanitized).not.toContain("<script");
   });
+
+  test("turns Moodle clear-choice submits into local, non-submitting controls", () => {
+    const sanitized = sanitizeQuizQuestionHtml([
+      '<input name="q12:1_answer" type="radio" value="1">',
+      '<input class="btn" name="q12:1_:clear" type="submit" value="Clear my choice">',
+      '<input name="finishattempt" type="submit" value="Submit all and finish">',
+    ].join(""), { siteUrl: SITE_URL });
+
+    expect(sanitized).toContain('<button class="btn" data-quiz-action="clear" type="button">Clear my choice</button>');
+    expect(sanitized).not.toContain("finishattempt");
+    expect(sanitized).not.toContain('type="submit"');
+
+    const localized = sanitizeQuizQuestionHtml(
+      '<input name="q12:1_:clear" type="submit" value="私の選択をクリアする">',
+      { siteUrl: SITE_URL },
+    );
+    expect(localized).toContain('data-quiz-action="clear"');
+    expect(localized).toContain("私の選択をクリアする");
+  });
 });

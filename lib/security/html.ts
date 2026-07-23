@@ -167,8 +167,14 @@ export function sanitizeMoodleHtml(
   return SanitizedHtmlSchema.parse(sanitized);
 }
 
-const QUIZ_CONTROL_TAGS = ["input", "label", "select", "option", "textarea"] as const;
+const QUIZ_CONTROL_TAGS = ["button", "input", "label", "select", "option", "textarea"] as const;
 const QUIZ_INPUT_TYPES = new Set(["checkbox", "hidden", "number", "radio", "text"]);
+
+function isQuizClearControl(attributes: Record<string, string>): boolean {
+  const value = attributes.value ?? "";
+  const name = attributes.name ?? "";
+  return /clear|選択.*クリア|クリア.*選択/i.test(`${name} ${value}`);
+}
 
 export function sanitizeQuizQuestionHtml(
   value: string,
@@ -180,6 +186,7 @@ export function sanitizeQuizQuestionHtml(
     allowedAttributes: {
       "*": ["class"],
       a: ["href", "title"],
+      button: ["class", "data-quiz-action", "type"],
       img: ["src", "alt", "title", "width", "height"],
       input: ["checked", "disabled", "id", "max", "maxlength", "min", "name", "step", "type", "value"],
       label: ["for"],
@@ -209,11 +216,22 @@ export function sanitizeQuizQuestionHtml(
           : { tagName: "img", attribs: { src, alt: attributes.alt ?? "" } };
       },
       input: (_tagName, attributes) => {
+        if (attributes.type?.toLowerCase() === "submit") {
+          if (isQuizClearControl(attributes)) {
+            return {
+              tagName: "button",
+              attribs: { class: attributes.class ?? "", "data-quiz-action": "clear", type: "button" },
+              text: attributes.value ?? "選択をクリア",
+            };
+          }
+          return { tagName: "span", attribs: {} };
+        }
         const type = QUIZ_INPUT_TYPES.has(attributes.type ?? "text")
           ? (attributes.type ?? "text")
           : "text";
         return { tagName: "input", attribs: { ...attributes, type } };
       },
+      button: () => ({ tagName: "span", attribs: {} }),
     },
   });
   return SanitizedQuizHtmlSchema.parse(sanitized);
