@@ -69,6 +69,9 @@ export const readActivityWorkspace = cache(
         for (const section of contents.data) {
           const courseModule = section.modules.find((candidate) => candidate.id === request.cmid);
           if (courseModule === undefined) continue;
+          if (course.visible === 0 || courseModule.visible === 0 || courseModule.uservisible === false) {
+            return { kind: "failure", reason: "permission" };
+          }
           const adapter = resolveActivityAdapter(courseModule.modname, request.manifest);
           const companionResponse = adapter.kind === "adapter_required" && request.manifest.companionModules.includes(courseModule.modname)
             ? await client.call(MOODLE_FUNCTIONS.activityAdapter, { cmid: courseModule.id }, ActivityAdapterPayloadSchema)
@@ -80,9 +83,7 @@ export const readActivityWorkspace = cache(
             kind: "ready",
             data: {
               adapter,
-              availability: courseModule.visible === 0
-                ? "hidden"
-                : courseModule.uservisible === false ? "restricted" : "available",
+              availability: "available",
               completion: courseModule.completion === undefined || courseModule.completion === 0
                 ? "none"
                 : (courseModule.completiondata?.state ?? 0) > 0 ? "complete" : "incomplete",

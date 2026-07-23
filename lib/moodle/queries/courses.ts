@@ -199,8 +199,11 @@ export const readCourseDetail = cache(
       return enrolled;
     }
     const course = enrolled.data.find((candidate) => candidate.id === request.courseId);
-    if (course === undefined || course.visible === 0) {
+    if (course === undefined) {
       return { kind: "ready", data: null };
+    }
+    if (course.visible === 0) {
+      return { kind: "failure", reason: "permission" };
     }
     try {
       const client = await createAuthenticatedMoodleClient();

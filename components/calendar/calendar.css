@@ -79,8 +79,8 @@
 
 .ui-calendar-agenda > section > ul {
   padding: 0;
-  border-block-start: 1px solid var(--border-default);
-  background: transparent;
+  border-block: 1px solid var(--border-default);
+  background: color-mix(in srgb, var(--surface-elevated) 35%, transparent);
   list-style: none;
 }
 
@@ -91,7 +91,10 @@
   align-items: center;
   min-block-size: 2.75rem;
   padding: var(--space-4);
+  transition: background-color var(--motion-feedback), transform var(--motion-feedback);
 }
+
+.ui-calendar-agenda > section > ul > li:hover { background: var(--surface-elevated); transform: translateX(1px); }
 
 .ui-calendar-agenda > section > ul > li + li {
   border-block-start: 1px solid var(--border-subtle);
@@ -152,7 +155,10 @@
   border-block-end: 1px solid var(--border-default);
   border-inline-end: 1px solid var(--border-default);
   background: transparent;
+  transition: background-color var(--motion-feedback);
 }
+
+.ui-calendar-day:hover { background: color-mix(in srgb, var(--surface-elevated) 56%, transparent); }
 
 .ui-calendar-day--placeholder {
   background: color-mix(in srgb, var(--surface-inset) 62%, transparent);

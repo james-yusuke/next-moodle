@@ -376,6 +376,16 @@
   gap: var(--space-3);
 }
 
+.systemStateStack {
+  display: grid;
+  gap: var(--space-5);
+  padding: var(--space-5);
+  border: 1px solid var(--border-default);
+  background: var(--surface-primary);
+}
+
+.systemStateStack > section { inline-size: 100%; }
+
 .stateCard {
   display: flex;
   min-block-size: 15rem;

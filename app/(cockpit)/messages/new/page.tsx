@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StateNotice } from "@/components/app-shell/state-notice";
+import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
 import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { TeacherContactForm } from "@/components/messages/teacher-contact-form";
 import { requireMoodleSession } from "@/lib/auth/server";
@@ -17,7 +17,7 @@ export default async function NewTeacherMessagePage({ searchParams }: Readonly<{
     return <PageFrame content={<StateNotice reason="capability" retryHref="/messages/new" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="受講コースの担当教員へ個別メッセージを送ります。" eyebrow="新規メッセージ" title="先生へ連絡" />} mode="focus" />;
   }
   const courses = await readCourses(session.userId, currentUnixSeconds());
-  if (courses.kind === "failure") return <PageFrame content={<StateNotice reason={courses.reason} retryHref="/messages/new" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="受講コースの担当教員へ個別メッセージを送ります。" eyebrow="新規メッセージ" title="先生へ連絡" />} mode="focus" />;
+  if (courses.kind === "failure") return <PageFrame content={<StateNotice reason={resolveMoodlePageFailure(courses.reason)} retryHref="/messages/new" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="受講コースの担当教員へ個別メッセージを送ります。" eyebrow="新規メッセージ" title="先生へ連絡" />} mode="focus" />;
   const courseIdParam = (await searchParams).courseId;
   const initialCourseId = typeof courseIdParam === "string" && /^\d+$/.test(courseIdParam)
     ? Number(courseIdParam)

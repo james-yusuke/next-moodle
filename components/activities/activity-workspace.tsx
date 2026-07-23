@@ -72,7 +72,7 @@ export function ActivityWorkspace({ canUpdateCompletion, config, data, native }:
   canUpdateCompletion: boolean;
   config: AppRuntimeConfig;
   data: ActivityWorkspaceDetail;
-  native: NativeActivityData | null | undefined;
+  native: NativeActivityData | undefined;
 }>) {
   const dateFormat = dateTimeFormatter(config.locale, { dateStyle: "medium", timeStyle: "short", timeZone: config.timeZone });
   const typeLabel = data.adapter.kind === "native" ? data.adapter.adapter.label : data.companion?.activity?.kind === "questionnaire" ? "アンケート" : data.moduleType;
@@ -111,8 +111,7 @@ export function ActivityWorkspace({ canUpdateCompletion, config, data, native }:
           })}</section>}
           {data.description === "" ? <p className="ui-activity-empty">説明は登録されていません。</p> : <section className="ui-rich-content" dangerouslySetInnerHTML={{ __html: data.description }} />}
           {data.companion?.activity?.kind === "questionnaire" ? <QuestionnaireWorkspace cmid={data.id} data={data.companion.activity} /> : null}
-          {native === null ? <Notice title="活動情報を取得できません" tone="warning"><p>コースへ戻って公開状態を確認してください。</p></Notice> : null}
-          {native === undefined || native === null ? null : <NativePanel cmid={data.id} config={config} native={native} />}
+          {native === undefined ? null : <NativePanel cmid={data.id} config={config} native={native} />}
           {data.files.length === 0 ? null : <section className="ui-activity-files" aria-labelledby="activity-files-title"><h2 id="activity-files-title">教材ファイル</h2><ul className="ui-ledger">{data.files.map((file) => <li key={`${file.filename}-${file.filesize}`}><File aria-hidden size={19} /><span><strong>{file.filename}</strong><small>{file.mimetype} · {formatBytes(file.filesize)}</small></span>{file.downloadUrl === null ? <span>取得不可</span> : <a href={file.downloadUrl}><DownloadSimple aria-hidden size={17} />ダウンロード</a>}</li>)}</ul></section>}
         </div>
       )}

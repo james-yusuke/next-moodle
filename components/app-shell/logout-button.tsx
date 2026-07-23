@@ -7,7 +7,19 @@ import { useState } from "react";
 
 import { Button } from "@/components/ui";
 
-export function LogoutButton() {
+type SessionEndButtonProps = Readonly<{
+  errorMessage: string;
+  label: string;
+  redirectHref: string;
+  variant: "ghost" | "secondary";
+}>;
+
+function SessionEndButton({
+  errorMessage,
+  label,
+  redirectHref,
+  variant,
+}: SessionEndButtonProps) {
   const [pending, setPending] = useState(false);
   const [failed, setFailed] = useState(false);
   const router = useRouter();
@@ -25,7 +37,7 @@ export function LogoutButton() {
         setFailed(true);
         return;
       }
-      router.replace("/login");
+      router.replace(redirectHref);
       router.refresh();
     } catch (error) {
       if (isKyError(error)) {
@@ -44,13 +56,35 @@ export function LogoutButton() {
         icon={<SignOut aria-hidden size={18} weight="regular" />}
         loading={pending}
         onClick={logout}
-        variant="ghost"
+        variant={variant}
       >
-        ログアウト
+        {label}
       </Button>
       <span aria-live="polite" className="ui-app-logout__status">
-        {failed ? "ログアウトできませんでした。もう一度お試しください。" : ""}
+        {failed ? errorMessage : ""}
       </span>
     </div>
+  );
+}
+
+export function LogoutButton() {
+  return (
+    <SessionEndButton
+      errorMessage="ログアウトできませんでした。もう一度お試しください。"
+      label="ログアウト"
+      redirectHref="/login"
+      variant="ghost"
+    />
+  );
+}
+
+export function ReauthenticateButton() {
+  return (
+    <SessionEndButton
+      errorMessage="セッションを終了できませんでした。もう一度お試しください。"
+      label="再ログイン"
+      redirectHref="/login?reason=expired"
+      variant="secondary"
+    />
   );
 }

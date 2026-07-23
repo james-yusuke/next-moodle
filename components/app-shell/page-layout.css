@@ -6,7 +6,8 @@
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: var(--space-4) var(--space-8);
-  padding-block-end: var(--space-4);
+  padding-block-end: var(--space-5);
+  border-block-end: 1px solid var(--border-subtle);
 }
 
 .ui-page-header h1,
@@ -46,11 +47,13 @@
   grid-template-rows: auto minmax(0, 1fr) auto;
   min-block-size: 100%;
   min-inline-size: 0;
-  background: color-mix(in srgb, var(--surface-primary) 82%, transparent);
+  background: var(--surface-primary);
 }
 
 .ui-page-frame__header { grid-column: 1 / -1; grid-row: 1; padding: clamp(var(--space-5), 4vw, var(--space-8)) clamp(var(--space-4), 5vw, var(--space-10)) var(--space-2); }
 .ui-page-frame__content { grid-column: 1; grid-row: 2; min-block-size: 0; min-inline-size: 0; padding: var(--space-5) clamp(var(--space-4), 5vw, var(--space-10)) var(--space-10); }
+.ui-page-frame__header > * { inline-size: min(100%, 80rem); margin-inline: auto; }
+.ui-page-frame[data-mode="focus"] > .ui-page-frame__header > * { inline-size: min(100%, 55rem); }
 .ui-page-frame__context,
 .ui-page-frame__utility { display: none; min-block-size: 0; min-inline-size: 0; background: var(--surface-secondary); }
 .ui-page-frame__context { border-inline-end: 1px solid var(--border-subtle); }
@@ -69,12 +72,12 @@
   min-block-size: 3.75rem;
   align-items: center;
   gap: var(--space-3);
-  padding: var(--space-3) var(--space-2);
+  padding: var(--space-3) var(--space-3);
   border-block-end: 1px solid var(--border-subtle);
   transition: background-color var(--motion-feedback), color var(--motion-feedback), opacity var(--motion-feedback), transform var(--motion-feedback);
 }
 
-.ui-data-row:hover { background: color-mix(in srgb, var(--surface-elevated) 58%, transparent); transform: translateY(-1px); }
+.ui-data-row:hover { background: color-mix(in srgb, var(--surface-elevated) 72%, transparent); transform: translateY(-1px); }
 .ui-data-row:active { transform: scale(.985); }
 .ui-data-row__index { color: var(--accent-400); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); }
 .ui-data-row__copy { display: grid; min-inline-size: 0; gap: .15rem; }
@@ -91,7 +94,7 @@
   gap: var(--space-3);
   padding: var(--space-2) clamp(var(--space-4), 5vw, var(--space-8));
   border-block-start: 1px solid var(--border-default);
-  background: color-mix(in srgb, var(--surface-elevated) 96%, transparent);
+  background: var(--surface-elevated);
   box-shadow: 0 -10px 28px rgb(10 8 5 / 8%);
   animation: ui-dock-enter var(--motion-enter) var(--ease-enter) both;
 }

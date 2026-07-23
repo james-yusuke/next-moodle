@@ -2,9 +2,9 @@
 .ui-messages-new { display: grid; inline-size: 2.75rem; block-size: 2.75rem; margin-inline-start: var(--space-1); border-radius: var(--shape-control); color: var(--accent-400); place-items: center; }
 .ui-messages-new:hover { background: var(--surface-elevated); }
 .ui-conversation-index { display: grid; }
-.ui-conversation-index > a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; min-block-size: 4.5rem; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); border-block-end: 1px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; }
-.ui-conversation-index > a:hover { background: var(--surface-elevated); }
-.ui-conversation-index > a[aria-current="page"] { box-shadow: inset 2px 0 0 var(--accent-500); background: var(--surface-selected); }
+.ui-conversation-index > a { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; min-block-size: 4.75rem; align-items: center; gap: var(--space-3); padding: var(--space-3); border-block-end: 1px solid var(--border-subtle); color: var(--text-primary); text-decoration: none; transition: background-color var(--motion-feedback), transform var(--motion-feedback); }
+.ui-conversation-index > a:hover { background: var(--surface-elevated); transform: translateX(1px); }
+.ui-conversation-index > a[aria-current="page"] { box-shadow: inset 3px 0 0 var(--accent-500); background: var(--surface-selected); }
 .ui-conversation-index__mark { display: grid; inline-size: 2.25rem; block-size: 2.25rem; border: 1px solid var(--border-default); border-radius: var(--shape-card); color: var(--accent-400); place-items: center; }
 .ui-conversation-index a > span:nth-child(2) { display: grid; min-inline-size: 0; }
 .ui-conversation-index strong,
@@ -17,13 +17,13 @@
 .ui-messages-placeholder .ui-app-action-link { margin-block-start: var(--space-3); }
 
 .ui-message-thread-frame .ui-page-frame__content { display: grid; min-block-size: 0; padding: 0; }
-.ui-message-thread { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-block-size: 0; background: var(--surface-primary); }
+.ui-message-thread { display: grid; grid-template-rows: minmax(0, 1fr) auto; min-block-size: 0; background: color-mix(in srgb, var(--surface-primary) 88%, var(--surface-canvas)); }
 .ui-message-thread > ol { display: grid; align-content: end; gap: var(--space-3); min-block-size: 0; margin: 0; padding: clamp(var(--space-4), 3vw, var(--space-8)); overflow-y: auto; overscroll-behavior: contain; list-style: none; }
-.ui-message-thread > ol li { inline-size: min(36rem, 84%); padding: var(--space-3) var(--space-4); border: 1px solid var(--border-default); border-radius: var(--shape-card); background: var(--surface-elevated); }
+.ui-message-thread > ol li { inline-size: min(36rem, 84%); padding: var(--space-3) var(--space-4); border: 1px solid var(--border-default); border-radius: var(--shape-card); background: var(--surface-elevated); box-shadow: 0 1px 0 rgb(10 8 5 / 8%); }
 .ui-message-thread > ol li[data-own="true"] { justify-self: end; border-color: color-mix(in srgb, var(--accent-500) 38%, var(--border-default)); background: var(--surface-selected); }
 .ui-message-thread p { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere; }
 .ui-message-thread time { display: block; margin-block-start: var(--space-2); color: var(--text-tertiary); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); text-align: end; }
-.ui-message-composer { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-2); padding: var(--space-3); border-block-start: 1px solid var(--border-default); background: var(--surface-secondary); }
+.ui-message-composer { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: var(--space-2); padding: var(--space-4); border-block-start: 1px solid var(--border-default); background: var(--surface-secondary); box-shadow: 0 -10px 24px rgb(10 8 5 / 6%); }
 .ui-message-composer textarea { min-block-size: 3.25rem; max-block-size: 9rem; padding: var(--space-2) var(--space-3); resize: vertical; }
 .ui-message-composer > span { grid-column: 1 / -1; min-block-size: 1rem; color: var(--status-error); font-size: var(--font-size-caption); }
 .ui-message-participants { display: grid; gap: var(--space-5); }
@@ -110,4 +110,8 @@
   .ui-teacher-compose__command { align-items: stretch; flex-direction: column; }
   .ui-teacher-compose__command > div { display: grid; grid-template-columns: 1fr 1fr; }
   .ui-teacher-compose__command .ui-button { inline-size: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-conversation-index > a:hover { transform: none; }
 }

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { StateNotice } from "@/components/app-shell/state-notice";
+import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
 import { CourseDetail } from "@/components/courses/course-detail";
-import { Notice } from "@/components/ui";
 import { requireMoodleSession } from "@/lib/auth/server";
 import { MoodleCourseIdSchema } from "@/lib/moodle/model";
 import { readCourseDetail } from "@/lib/moodle/queries/courses";
@@ -19,11 +19,7 @@ export default async function CoursePage({ params }: CoursePageProps) {
   const route = await params;
   const parsedCourseId = MoodleCourseIdSchema.safeParse(Number(route.courseId));
   if (!parsedCourseId.success) {
-    return (
-      <Notice title="コースが見つかりません" tone="warning">
-        <p>URLを確認して、コース一覧からもう一度選択してください。</p>
-      </Notice>
-    );
+    notFound();
   }
   if (session.manifest.features.courses !== "available") {
     return <StateNotice reason="capability" retryHref="/courses" siteUrl={session.site.siteUrl} />;
@@ -38,15 +34,14 @@ export default async function CoursePage({ params }: CoursePageProps) {
   if (result.kind === "failure") {
     return (
       <StateNotice
-        reason={result.reason}
+        reason={resolveMoodlePageFailure(result.reason)}
         retryHref={`/courses/${parsedCourseId.data}`}
         siteUrl={session.site.siteUrl}
       />
     );
   }
-  return result.data === null ? (
-    <Notice title="コースが見つかりません" tone="warning">
-      <p>このアカウントで受講できるコース一覧から選択してください。</p>
-    </Notice>
-  ) : <CourseDetail config={config} data={result.data} />;
+  if (result.data === null) {
+    notFound();
+  }
+  return <CourseDetail config={config} data={result.data} />;
 }

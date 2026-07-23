@@ -99,6 +99,19 @@ test("a second fixture account cannot see Alice's courses", async ({ page }) => 
     page.getByRole("main").getByRole("link", { name: "Archives and Public Memory" }),
   ).toBeVisible();
   await expect(page.getByText("Introduction to Marine Biology")).toHaveCount(0);
+
+  const response = await page.goto("/courses/101");
+  expect(response?.status()).toBe(404);
+  await expect(page.getByRole("heading", { name: "ページが見つかりません" })).toBeVisible();
+});
+
+test("restricted activities return a real forbidden response without leaking content", async ({ page }) => {
+  await signIn(page, "alice", "alice-password");
+
+  const response = await page.goto("/activities/9120");
+  expect(response?.status()).toBe(403);
+  await expect(page.getByRole("heading", { name: "アクセスは禁止されています" })).toBeVisible();
+  await expect(page.locator("body")).not.toContainText("This restricted fixture must never be rendered");
 });
 
 test("assignment draft, confirmation, client PDF, and ICS stay usable", async ({ page }) => {

@@ -96,8 +96,9 @@
 }
 
 .ui-assignment-form-surface > .ui-surface__header {
-  padding-block: var(--space-4);
+  padding: var(--space-4);
   border-block: 1px solid var(--border-default);
+  background: color-mix(in srgb, var(--surface-elevated) 56%, transparent);
 }
 
 .ui-assignment-form__text,
@@ -140,7 +141,7 @@
   overflow: clip;
   border-radius: var(--shape-card);
   border: 1px solid var(--border-default);
-  background: var(--surface-elevated);
+  background: color-mix(in srgb, var(--surface-elevated) 92%, var(--surface-primary));
   box-shadow: none;
 }
 
@@ -265,7 +266,7 @@
   justify-content: flex-end;
   padding: var(--space-4);
   border-block-start: 1px solid var(--border-default);
-  background: color-mix(in srgb, var(--surface-primary) 94%, transparent);
+  background: color-mix(in srgb, var(--surface-elevated) 96%, transparent);
   backdrop-filter: blur(16px);
 }
 

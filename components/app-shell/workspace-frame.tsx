@@ -8,7 +8,7 @@ type PageFrameProps = Readonly<{
   className?: string;
   content: ReactNode;
   context?: ReactNode;
-  header: ReactNode;
+  header?: ReactNode;
   mode: WorkspaceMode;
   state?: string;
   utility?: ReactNode;
@@ -44,7 +44,7 @@ type SectionIndexItem = Readonly<{
 export function PageFrame({ actions, className, content, context, header, mode, state, utility }: PageFrameProps) {
   return (
     <div className={["ui-page-frame", className].filter(Boolean).join(" ")} data-mode={mode} data-state={state}>
-      <div className="ui-page-frame__header">{header}</div>
+      {header === undefined ? null : <div className="ui-page-frame__header">{header}</div>}
       {context === undefined ? null : <aside className="ui-page-frame__context">{context}</aside>}
       <section className="ui-page-frame__content">{content}</section>
       {utility === undefined ? null : <aside className="ui-page-frame__utility">{utility}</aside>}

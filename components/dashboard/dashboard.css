@@ -10,8 +10,8 @@
 
 .ui-dashboard-board {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(18rem, .75fr);
-  grid-template-areas: "timeline deadline" "courses signals";
+  grid-template-columns: minmax(19rem, .72fr) minmax(0, 1.35fr);
+  grid-template-areas: "deadline timeline" "signals courses";
   gap: clamp(var(--space-6), 4vw, var(--space-10));
 }
 
@@ -26,7 +26,7 @@
 .ui-dashboard-panel:nth-child(4) { animation-delay: 40ms; }
 
 .ui-dashboard-panel--timeline { grid-area: timeline; }
-.ui-dashboard-panel--deadline { grid-area: deadline; align-self: start; padding: var(--space-2) var(--space-4) var(--space-4); border-inline-start: 2px solid var(--accent-500); background: var(--surface-elevated); }
+.ui-dashboard-panel--deadline { grid-area: deadline; align-self: stretch; padding: var(--space-3) var(--space-5) var(--space-5); border-inline-start: 3px solid var(--accent-500); background: var(--surface-elevated); box-shadow: inset 0 0 0 1px var(--border-subtle); }
 .ui-dashboard-panel--courses { grid-area: courses; }
 .ui-dashboard-panel--signals { grid-area: signals; }
 
@@ -70,7 +70,7 @@
 }
 
 .ui-dashboard-timeline > li + li { border-block-start: 1px solid var(--border-subtle); }
-.ui-dashboard-timeline > li[data-today="true"] { margin-inline: calc(var(--space-3) * -1); padding-inline: var(--space-3); background: var(--accent-soft); }
+.ui-dashboard-timeline > li[data-today="true"] { margin-inline: calc(var(--space-3) * -1); padding-inline: var(--space-3); border-inline-start: 2px solid var(--accent-500); background: var(--accent-soft); }
 .ui-dashboard-timeline > li[data-today="true"] > time,
 .ui-dashboard-timeline > li[data-today="true"] .ui-dashboard-empty-copy { color: var(--text-primary); }
 .ui-dashboard-timeline > li > time { color: var(--text-secondary); font-size: var(--font-size-label); font-weight: 650; }
@@ -81,9 +81,9 @@
 .ui-dashboard-timeline article span { color: var(--text-tertiary); font-size: var(--font-size-caption); }
 .ui-dashboard-timeline .ui-dashboard-empty-copy { align-self: center; padding: 0; }
 
-.ui-dashboard-deadline { display: grid; gap: var(--space-3); padding-block-start: var(--space-5); }
+.ui-dashboard-deadline { display: grid; min-block-size: 14rem; align-content: start; gap: var(--space-4); padding-block-start: var(--space-6); }
 .ui-dashboard-deadline > div { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2); color: var(--text-secondary); font-size: var(--font-size-caption); }
-.ui-dashboard-deadline h3 { margin: 0; font-size: 1.25rem; line-height: 1.3; overflow-wrap: anywhere; }
+.ui-dashboard-deadline h3 { margin: 0; font-size: clamp(1.35rem, 2.5vw, 1.8rem); letter-spacing: -.035em; line-height: 1.15; overflow-wrap: anywhere; text-wrap: balance; }
 .ui-dashboard-deadline time { color: var(--text-secondary); font-size: var(--font-size-body-sm); font-variant-numeric: tabular-nums; }
 .ui-dashboard-deadline .ui-app-action-link { justify-self: start; margin-block-start: var(--space-2); }
 
@@ -97,7 +97,7 @@
   padding: var(--space-3) 0;
   transition: background-color var(--motion-feedback), transform var(--motion-feedback);
 }
-.ui-dashboard-course-list li:hover { background: color-mix(in srgb, var(--surface-elevated) 58%, transparent); transform: translateX(1px); }
+.ui-dashboard-course-list li:hover { background: color-mix(in srgb, var(--surface-elevated) 72%, transparent); transform: translateX(1px); }
 .ui-dashboard-course-index { color: var(--text-tertiary); font-family: var(--font-geist-mono), monospace; font-size: var(--font-size-caption); }
 .ui-dashboard-course-list a { display: grid; color: var(--text-primary); text-decoration: none; }
 .ui-dashboard-course-list small { color: var(--text-tertiary); font-size: var(--font-size-caption); }

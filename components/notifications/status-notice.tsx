@@ -25,8 +25,8 @@ export function NotificationStatusNotice({
       );
     case "permission":
       return (
-        <Notice tone="warning" title="通知の閲覧が制限されています">
-          このアカウントには通知を読み取る権限がありません。
+        <Notice tone="warning" title="通知へのアクセスは禁止されています">
+          このアカウントには通知を読み取る権限がありません。Moodleの権限設定を確認してください。
         </Notice>
       );
     case "outage":
@@ -37,8 +37,8 @@ export function NotificationStatusNotice({
       );
     case "error":
       return (
-        <Notice tone="error" title="通知を読み込めませんでした">
-          Moodleの応答を安全に解釈できませんでした。時間をおいて再度お試しください。
+        <Notice tone="error" title="通知の読み込み中にエラーが発生しました" urgent>
+          安全な状態を保ったまま更新を停止しました。時間をおいて再度お試しください。
         </Notice>
       );
     default:

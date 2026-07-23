@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StateNotice } from "@/components/app-shell/state-notice";
+import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
 import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { DashboardView } from "@/components/dashboard/dashboard-view";
 import { requireMoodleSession } from "@/lib/auth/server";
@@ -22,6 +22,6 @@ export default async function DashboardPage() {
   return result.kind === "ready" ? (
     <DashboardView config={config} data={result.data} />
   ) : (
-    <PageFrame content={<StateNotice reason={result.reason} retryHref="/dashboard" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="締切とコースの動きを確認します。" eyebrow="今日" title="学習ワークスペース" />} mode="overview" />
+    <PageFrame content={<StateNotice reason={resolveMoodlePageFailure(result.reason)} retryHref="/dashboard" siteUrl={session.site.siteUrl} />} header={<RouteHeader description="締切とコースの動きを確認します。" eyebrow="今日" title="学習ワークスペース" />} mode="overview" />
   );
 }

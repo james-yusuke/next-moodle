@@ -3,6 +3,7 @@ import {
   ArrowRight,
   CalendarBlank,
 } from "@phosphor-icons/react/dist/ssr";
+import { SystemState } from "@/components/app-shell/system-state";
 import { Button, Notice, Skeleton, Surface } from "@/components/ui";
 import { ShowcaseSection } from "./showcase-frame";
 import styles from "./showcase.module.css";
@@ -38,6 +39,12 @@ export function FeedbackShowcase() {
         >
           Check your connection. Your saved work has not been changed.
         </Notice>
+      </div>
+
+      <div className={styles.systemStateStack}>
+        <SystemState description="このアカウントでは要求された情報を表示できません。" headingLevel={2} kind="forbidden" title="アクセスは禁止されています" />
+        <SystemState description="URLが正しくないか、利用できる一覧に対象がありません。" headingLevel={2} kind="not-found" title="ページが見つかりません" />
+        <SystemState description="安全な状態を保ったまま処理を停止しました。" headingLevel={2} kind="error" reference="demo-reference" title="問題が発生しました" />
       </div>
 
       <div className={styles.stateGrid}>

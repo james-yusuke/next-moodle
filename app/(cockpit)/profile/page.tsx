@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StateNotice } from "@/components/app-shell/state-notice";
+import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
 import { StudentAreaView } from "@/components/student/student-area-view";
 import { readAppRuntimeConfig } from "@/lib/app-config";
 import { requireMoodleSession } from "@/lib/auth/server";
@@ -15,6 +15,6 @@ export default async function ProfilePage() {
   }
   const result = await readProfile(session.userId);
   return result.kind === "failure"
-    ? <StateNotice reason={result.reason} retryHref="/profile" siteUrl={session.site.siteUrl} />
+    ? <StateNotice reason={resolveMoodlePageFailure(result.reason)} retryHref="/profile" siteUrl={session.site.siteUrl} />
     : <StudentAreaView config={readAppRuntimeConfig()} data={result.data} description="Moodleに登録されているプロフィールを確認します。" empty="プロフィール情報はありません" title="プロフィール" />;
 }

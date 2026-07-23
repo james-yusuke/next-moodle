@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import { StateNotice } from "@/components/app-shell/state-notice";
+import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
 import { PageFrame, RouteHeader } from "@/components/app-shell/workspace-frame";
 import { CourseList } from "@/components/courses/course-list";
 import { requireMoodleSession } from "@/lib/auth/server";
@@ -24,7 +24,7 @@ export default async function CoursesPage() {
       content={result.kind === "ready" ? (
         <CourseList canFavorite={session.manifest.features.favorites === "available"} config={config} courses={result.data} />
       ) : (
-        <StateNotice reason={result.reason} retryHref="/courses" siteUrl={session.site.siteUrl} />
+        <StateNotice reason={resolveMoodlePageFailure(result.reason)} retryHref="/courses" siteUrl={session.site.siteUrl} />
       )}
       header={<RouteHeader description="状態、期限、進捗を比較しながら、学習するコースを選べます。" eyebrow="コース索引" title="コース" />}
       mode="overview"

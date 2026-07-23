@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { forbidden } from "next/navigation";
 
 import {
   createAuthenticatedMoodleClient,
@@ -31,18 +32,19 @@ function stateFromError(error: Error): NotificationsPageState {
     return { kind: "auth" };
   }
   if (error instanceof MoodlePermissionError) {
-    return { kind: "permission" };
+    forbidden();
   }
   if (error instanceof MoodleFunctionError) {
     return { kind: "capability" };
   }
-  if (error instanceof MoodleOutageError) {
-    return { kind: "outage" };
+  if (
+    error instanceof MoodleOutageError ||
+    error instanceof MoodleResponseError ||
+    error instanceof MoodleConfigurationError
+  ) {
+    throw error;
   }
-  if (error instanceof MoodleResponseError || error instanceof MoodleConfigurationError) {
-    return { kind: "error" };
-  }
-  return { kind: "error" };
+  throw error;
 }
 
 export default async function NotificationsPage() {

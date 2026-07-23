@@ -1,12 +1,16 @@
 import { createHash } from "node:crypto";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
-import { StateNotice } from "@/components/app-shell/state-notice";
+import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
 import { AssignmentDetailView } from "@/components/assignments/assignment-detail";
-import { Notice } from "@/components/ui";
 import { createAuthenticatedMoodleClient, requireMoodleSession } from "@/lib/auth/server";
-import { MoodleCourseModulePathSchema } from "@/lib/moodle/queries/assignments";
+import {
+  AssignmentNotFoundError,
+  MoodleCourseModulePathSchema,
+} from "@/lib/moodle/queries/assignments";
 import { fetchAssignmentDetail } from "@/lib/moodle/queries/assignments.query";
+import { toMoodleReadFailure } from "@/lib/moodle/queries/dashboard";
 import { currentUnixSeconds } from "@/lib/moodle/now";
 import { readAppRuntimeConfig } from "@/lib/app-config";
 import { createAiUiContext } from "@/lib/ai/runtime";
@@ -21,26 +25,26 @@ export default async function AssignmentPage({ params }: AssignmentPageProps) {
   const route = await params;
   const cmid = MoodleCourseModulePathSchema.safeParse(route.cmid);
   if (!cmid.success) {
-    return (
-      <Notice title="課題が見つかりません" tone="warning">
-        <p>コース画面からもう一度課題を選択してください。</p>
-      </Notice>
-    );
+    notFound();
   }
   if (session.manifest.features.assignmentsRead !== "available") {
     return <StateNotice reason="capability" retryHref={`/assignments/${cmid.data}`} siteUrl={session.site.siteUrl} />;
   }
-  const data = await fetchAssignmentDetail(
+  let data;
+  try {
+    data = await fetchAssignmentDetail(
       { client: await createAuthenticatedMoodleClient(), now: currentUnixSeconds(), session },
       cmid.data,
-    )
-    .catch(() => null);
-  if (data === null) {
-    return (
-      <Notice title="課題を読み込めませんでした" tone="error">
-        <p>接続を確認して再読み込みしてください。繰り返す場合は接続診断の不足APIをMoodle管理者へ共有してください。</p>
-      </Notice>
     );
+  } catch (error) {
+    if (error instanceof AssignmentNotFoundError) {
+      notFound();
+    }
+    const failure = toMoodleReadFailure(error);
+    if (failure.kind === "failure") {
+      return <StateNotice reason={resolveMoodlePageFailure(failure.reason)} retryHref={`/assignments/${cmid.data}`} siteUrl={session.site.siteUrl} />;
+    }
+    throw error;
   }
   const draftStorageKey = `next-moodle:draft:${createHash("sha256")
     .update(`${session.site.siteUrl}|${session.userId}|${cmid.data}`)
