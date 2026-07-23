@@ -3,7 +3,7 @@ import "server-only";
 import { z } from "zod";
 
 import { createAuthenticatedMoodleClient } from "@/lib/auth/server";
-import { sanitizeQuizQuestionHtml, type SanitizedQuizHtml } from "@/lib/security/html";
+import { plainTextFromMoodleMessage, sanitizeQuizQuestionHtml, type SanitizedQuizHtml } from "@/lib/security/html";
 import { MOODLE_FUNCTIONS } from "../functions";
 import type { MoodleCourseId, MoodleCourseModuleId, MoodleUserId } from "../identifiers";
 import { toMoodleReadFailure, type MoodleReadResult } from "../queries/dashboard";
@@ -57,12 +57,20 @@ const AttemptDataResponseSchema = z.object({
 export type QuizAttempt = Readonly<z.infer<typeof AttemptSchema>>;
 export type QuizQuestion = Readonly<{
   html: SanitizedQuizHtml;
+  maximumMark: string | null;
   page: number;
   slot: number;
   state?: string;
   status?: string;
   type: string;
 }>;
+
+function maximumMarkFromQuestionHtml(value: string): string | null {
+  const grade = /<(?:div|span)\b[^>]*\bclass\s*=\s*(["'])[^"']*\bgrade\b[^"']*\1[^>]*>([\s\S]*?)<\/(?:div|span)>/i.exec(value)?.[2];
+  if (grade === undefined) return null;
+  const label = plainTextFromMoodleMessage(grade);
+  return label === "" ? null : label.slice(0, 160);
+}
 
 export type QuizActivityData = Readonly<{
   activeAttempt: Readonly<{
@@ -129,6 +137,7 @@ export async function readQuizActivity(
           page: request.page,
           questions: active.data.questions.map((question) => ({
             html: sanitizeQuizQuestionHtml(question.html, { siteUrl: request.siteUrl }),
+            maximumMark: maximumMarkFromQuestionHtml(question.html),
             page: question.page,
             slot: question.slot,
             type: question.type,

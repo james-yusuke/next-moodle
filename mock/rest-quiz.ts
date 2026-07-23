@@ -71,32 +71,21 @@ const attemptData = (context: RestContext): Record<string, unknown> => {
   const stored = context.state.quizAttempts.get(attemptKey(context.user, quizId));
   const answerName = `q${attemptId}:1_answer`;
   const answer = stored?.responses[answerName] ?? "";
-  const choices = [
-    ["water-temperature", "1", "Water temperature"],
-    ["cloud-cover", "2", "Cloud cover"],
-    ["wind-speed", "3", "Wind speed"],
-  ] as const;
-  const answerHtml = choices.map(([id, value, label], index) => [
-    `<div class="r${index % 2}">`,
-    `<input id="${id}" name="${answerName}" type="radio" value="${value}"${answer === value ? " checked" : ""}>`,
-    `<label for="${id}"><span class="answernumber">${String.fromCharCode(97 + index)}.</span>${label}</label>`,
-    "</div>",
-  ].join("")).join("");
   return {
     attempt,
     messages: [],
     nextpage: -1,
     questions: [{
       slot: 1,
-      type: "multichoice",
+      type: "shortanswer",
       page: 0,
       html: [
-        '<div class="que multichoice deferredfeedback">',
+        '<div class="que shortanswer deferredfeedback">',
         '<div class="info"><h3 class="no">Question <span class="qno">1</span></h3><div class="state">Not yet answered</div><div class="grade">Marked out of 1.00</div><div class="flag">Flag question</div></div>',
         '<div class="content"><div class="formulation clearfix">',
         '<h4 class="accesshide">Question text</h4>',
-        '<div class="qtext"><p>Which field observation should be recorded consistently?</p></div>',
-        `<div class="ablock"><div class="answer">${answerHtml}</div></div>`,
+        '<div class="qtext"><p><strong>Type “Attendance” and submit your answer.</strong></p></div>',
+        `<div class="ablock"><label class="prompt" for="quiz-answer">Answer text · Question 1</label><div class="answer"><input id="quiz-answer" name="${answerName}" type="text" value="${answer}"></div></div>`,
         `<input name="q${attemptId}:1_:sequencecheck" type="hidden" value="1">`,
         `<input class="btn btn-secondary" name="q${attemptId}:1_:clear" type="submit" value="Clear my choice">`,
         "</div></div></div>",

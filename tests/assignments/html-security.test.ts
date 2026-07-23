@@ -118,4 +118,18 @@ describe("assignment HTML sanitizer", () => {
     expect(localized).toContain('data-quiz-action="clear"');
     expect(localized).toContain("私の選択をクリアする");
   });
+
+  test("removes Moodle's duplicate quiz chrome while retaining a typed response field", () => {
+    const sanitized = sanitizeQuizQuestionHtml([
+      '<div class="info"><h3 class="no">Question 1</h3><div class="state">Not yet answered</div><div class="grade">Marked out of 1.00</div><div class="flag">Flag question</div></div>',
+      '<h4 class="accesshide">Question text</h4>',
+      '<div class="ablock"><label class="prompt" for="answer">Answer text</label><div class="answer"><input id="answer" name="q12:1_answer" type="text"></div></div>',
+    ].join(""), { siteUrl: SITE_URL });
+
+    expect(sanitized).toContain('class="quiz-source-hidden"');
+    expect(sanitized).toContain('class="prompt quiz-response-prompt"');
+    expect(sanitized).toContain('class="answer quiz-response-answer"');
+    expect(sanitized).toContain('class="quiz-response-input"');
+    expect(sanitized).toContain('name="q12:1_answer"');
+  });
 });

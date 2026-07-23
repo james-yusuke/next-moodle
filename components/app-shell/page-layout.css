@@ -60,7 +60,7 @@
 .ui-page-frame__utility { border-inline-start: 1px solid var(--border-subtle); }
 .ui-page-frame__actions { z-index: 4; grid-column: 1 / -1; grid-row: 3; }
 
-.ui-page-frame[data-mode="focus"] .ui-page-frame__content { overflow-y: auto; overscroll-behavior: contain; scrollbar-gutter: stable; }
+.ui-page-frame[data-mode="focus"] .ui-page-frame__content { overflow: visible; }
 .ui-page-frame[data-mode="focus"] .ui-page-frame__content > * { inline-size: min(100%, 55rem); margin-inline: auto; }
 .ui-page-frame[data-mode="overview"] .ui-page-frame__content > * { inline-size: min(100%, 80rem); margin-inline: auto; }
 

@@ -92,6 +92,12 @@
   padding: 0;
 }
 
+/* Focus pages are documents: let the app's main region own their vertical scroll.
+   Conversation pages retain their fixed-height, independently scrolling message pane. */
+.ui-app-shell[data-workspace-mode="focus"] .ui-app-content {
+  block-size: auto;
+}
+
 .ui-app-nav { display: grid; gap: var(--space-1); align-content: start; }
 
 .ui-app-tool-link,

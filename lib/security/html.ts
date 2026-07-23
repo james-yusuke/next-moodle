@@ -170,6 +170,17 @@ export function sanitizeMoodleHtml(
 const QUIZ_CONTROL_TAGS = ["button", "input", "label", "select", "option", "textarea"] as const;
 const QUIZ_INPUT_TYPES = new Set(["checkbox", "hidden", "number", "radio", "text"]);
 
+function hasMoodleClass(attributes: Record<string, string>, className: string): boolean {
+  return attributes.class?.split(/\s+/).includes(className) ?? false;
+}
+
+function withQuizClass(attributes: Record<string, string>, className: string): Record<string, string> {
+  return {
+    ...attributes,
+    class: [attributes.class, className].filter((value) => value !== undefined && value !== "").join(" "),
+  };
+}
+
 function isQuizClearControl(attributes: Record<string, string>): boolean {
   const value = attributes.value ?? "";
   const name = attributes.name ?? "";
@@ -215,6 +226,30 @@ export function sanitizeQuizQuestionHtml(
           ? { tagName: "span", attribs: {} }
           : { tagName: "img", attribs: { src, alt: attributes.alt ?? "" } };
       },
+      div: (_tagName, attributes) => {
+        if (hasMoodleClass(attributes, "info") || hasMoodleClass(attributes, "state") || hasMoodleClass(attributes, "flag")) {
+          return { tagName: "span", attribs: { class: "quiz-source-hidden" } };
+        }
+        if (hasMoodleClass(attributes, "grade")) {
+          return { tagName: "span", attribs: { class: "quiz-source-hidden" } };
+        }
+        if (hasMoodleClass(attributes, "prompt")) {
+          return { tagName: "div", attribs: withQuizClass(attributes, "quiz-response-prompt") };
+        }
+        if (hasMoodleClass(attributes, "answer")) {
+          return { tagName: "div", attribs: withQuizClass(attributes, "quiz-response-answer") };
+        }
+        return { tagName: "div", attribs: attributes };
+      },
+      h3: (_tagName, attributes) => hasMoodleClass(attributes, "no")
+        ? { tagName: "span", attribs: { class: "quiz-source-hidden" } }
+        : { tagName: "h3", attribs: attributes },
+      h4: (_tagName, attributes) => hasMoodleClass(attributes, "accesshide")
+        ? { tagName: "span", attribs: { class: "quiz-source-hidden" } }
+        : { tagName: "h4", attribs: attributes },
+      label: (_tagName, attributes) => hasMoodleClass(attributes, "prompt")
+        ? { tagName: "label", attribs: withQuizClass(attributes, "quiz-response-prompt") }
+        : { tagName: "label", attribs: attributes },
       input: (_tagName, attributes) => {
         if (attributes.type?.toLowerCase() === "submit") {
           if (isQuizClearControl(attributes)) {
@@ -229,9 +264,17 @@ export function sanitizeQuizQuestionHtml(
         const type = QUIZ_INPUT_TYPES.has(attributes.type ?? "text")
           ? (attributes.type ?? "text")
           : "text";
-        return { tagName: "input", attribs: { ...attributes, type } };
+        return {
+          tagName: "input",
+          attribs: type === "text" || type === "number"
+            ? { ...withQuizClass(attributes, "quiz-response-input"), type }
+            : { ...attributes, type },
+        };
       },
       button: () => ({ tagName: "span", attribs: {} }),
+      span: (_tagName, attributes) => hasMoodleClass(attributes, "accesshide")
+        ? { tagName: "span", attribs: { class: "quiz-source-hidden" } }
+        : { tagName: "span", attribs: attributes },
     },
   });
   return SanitizedQuizHtmlSchema.parse(sanitized);

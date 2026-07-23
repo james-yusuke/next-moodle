@@ -166,13 +166,14 @@ test("standard activities remain inside the Editorial Native workspace", async (
   await page.goto("/activities/9105");
   await expect(page.getByRole("heading", { name: "小テストを開始" })).toBeVisible();
   await page.getByRole("button", { name: "受験を開始" }).click();
-  const answer = page.getByLabel("Water temperature");
+  const answer = page.getByLabel("Answer text · Question 1");
   await expect(answer).toBeVisible();
-  await answer.check();
+  await expect(page.locator(".ui-quiz-question__meta small", { hasText: "Marked out of 1.00" })).toBeVisible();
+  await answer.fill("Attendance");
   await expect(page.getByText("保存済み")).toBeVisible();
   await page.getByRole("button", { name: "Clear my choice" }).click();
-  await expect(answer).not.toBeChecked();
-  await answer.check();
+  await expect(answer).toHaveValue("");
+  await answer.fill("Attendance");
   page.once("dialog", (dialog) => void dialog.accept());
   await page.getByRole("button", { name: "回答を提出" }).click();
   await expect(page.getByText("提出済み")).toBeVisible();
@@ -260,6 +261,22 @@ test("standard activities remain inside the Editorial Native workspace", async (
   await page.goto("/activities/9117");
   const meetingLaunch = await page.evaluate(async () => (await fetch("/api/activities/9117/launch", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" })).json());
   expect(meetingLaunch.result.url).toBe("https://meeting.synthetic.invalid/join/fixture");
+});
+
+test("quiz attempts scroll through the application main region on a narrow screen", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signIn(page, "alice", "alice-password");
+
+  await page.goto("/activities/9105");
+  await page.getByRole("button", { name: "受験を開始" }).click();
+  await expect(page.getByLabel("Answer text · Question 1")).toBeVisible();
+
+  const main = page.locator("#main-content");
+  await expect.poll(async () => main.evaluate((element) => element.scrollHeight > element.clientHeight)).toBe(true);
+  await main.hover();
+  await page.mouse.wheel(0, 640);
+  await expect.poll(async () => main.evaluate((element) => element.scrollTop)).toBeGreaterThan(0);
+  await expect(page.getByRole("button", { name: "回答を提出" })).toBeVisible();
 });
 
 test("companion Questionnaire and the first teacher DM remain inside the workspace", async ({ page }) => {
