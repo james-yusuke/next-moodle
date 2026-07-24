@@ -176,7 +176,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
                   setOpen(false);
                 }
               }}
-              placeholder="画面名、コース名、略称"
+              placeholder="画面名、コース名、またはMoodleの活動URL"
               ref={inputRef}
               role="combobox"
               value={query}

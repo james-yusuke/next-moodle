@@ -260,6 +260,14 @@
 .ui-questionnaire__options { display: grid; gap: 1px; overflow: hidden; border: 1px solid var(--border-default); border-radius: var(--shape-card); background: var(--border-default); }
 .ui-questionnaire__options label { display: flex; min-block-size: 3rem; align-items: center; gap: var(--space-3); padding: var(--space-2) var(--space-3); background: var(--surface-primary); cursor: pointer; }
 .ui-questionnaire__options input { inline-size: 1.125rem; block-size: 1.125rem; accent-color: var(--accent-500); }
+.ui-questionnaire__rate { display: grid; gap: 1px; overflow: hidden; border: 1px solid var(--border-default); border-radius: var(--shape-card); background: var(--border-default); }
+.ui-questionnaire__rate-row { display: grid; grid-template-columns: minmax(9rem, 1fr) minmax(0, 2fr); align-items: stretch; min-inline-size: 0; background: var(--surface-primary); }
+.ui-questionnaire__rate-row > p { display: flex; min-inline-size: 0; align-items: center; margin: 0; padding: var(--space-3); color: var(--text-secondary); font-size: var(--font-size-body-sm); font-weight: 650; overflow-wrap: anywhere; }
+.ui-questionnaire__rate-options { display: grid; grid-template-columns: repeat(auto-fit, minmax(5.5rem, 1fr)); min-inline-size: 0; border-inline-start: 1px solid var(--border-default); }
+.ui-questionnaire__rate-options label { display: flex; min-block-size: 2.75rem; min-inline-size: 0; align-items: center; justify-content: center; gap: var(--space-2); padding: var(--space-2); border-inline-end: 1px solid var(--border-default); background: var(--surface-primary); color: var(--text-secondary); cursor: pointer; font-size: var(--font-size-body-sm); overflow-wrap: anywhere; text-align: center; }
+.ui-questionnaire__rate-options label:last-child { border-inline-end: 0; }
+.ui-questionnaire__rate-options input { inline-size: 1.125rem; block-size: 1.125rem; flex: 0 0 auto; accent-color: var(--accent-500); }
+.ui-questionnaire__rate-options label:has(input:checked) { background: color-mix(in srgb, var(--accent-500) 12%, var(--surface-primary)); color: var(--text-primary); }
 .ui-questionnaire__info { padding: var(--space-4); border-inline-start: 3px solid var(--accent-500); background: var(--surface-inset); }
 .ui-questionnaire__info p { margin: var(--space-1) 0 0; color: var(--text-secondary); }
 .ui-questionnaire > footer { position: sticky; inset-block-end: 0; display: flex; min-block-size: 4.25rem; align-items: center; justify-content: space-between; gap: var(--space-4); padding: var(--space-2) var(--space-3); border: 1px solid var(--border-default); border-radius: var(--shape-card); background: var(--surface-secondary); }
@@ -301,6 +309,8 @@
   .ui-quiz-actions .ui-button { width: 100%; }
   .ui-questionnaire > footer { align-items: stretch; flex-direction: column; }
   .ui-questionnaire > footer > div { display: grid; grid-template-columns: 1fr 1fr; }
+  .ui-questionnaire__rate-row { grid-template-columns: minmax(0, 1fr); }
+  .ui-questionnaire__rate-options { border-block-start: 1px solid var(--border-default); border-inline-start: 0; }
   .ui-quiz-start dl { grid-template-columns: minmax(0, 1fr); }
   .ui-quiz-attempts li { grid-template-columns: minmax(0, 1fr) auto; gap: var(--space-2); padding-block: var(--space-2); }
   .ui-quiz-attempts li > :last-child { grid-column: 1 / -1; justify-self: start; }

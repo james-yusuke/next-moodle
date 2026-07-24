@@ -4,10 +4,11 @@ import { createAuthenticatedMoodleClient, requireMoodleSession } from "@/lib/aut
 import { MoodleCourseSectionsResponseSchema, MoodleEnrolledCoursesResponseSchema } from "@/lib/moodle/dto";
 import { MOODLE_FUNCTIONS } from "@/lib/moodle/functions";
 import { ConversationsSchema } from "@/lib/moodle/student-dto";
+import { safeMoodleDestination } from "@/lib/moodle/urls";
 
 export const runtime = "nodejs";
 
-const QuerySchema = z.string().trim().min(2).max(80);
+const QuerySchema = z.string().trim().min(2).max(2_048);
 
 function normalized(value: string): string {
   return value.normalize("NFKC").toLocaleLowerCase("ja");
@@ -19,6 +20,17 @@ export async function GET(request: Request): Promise<Response> {
     if (!query.success) return Response.json({ results: [] });
     const needle = normalized(query.data);
     const session = await requireMoodleSession();
+    const directHref = safeMoodleDestination(query.data, session.site.siteUrl);
+    if (directHref !== null) {
+      return Response.json({
+        results: [{
+          href: directHref,
+          keywords: [query.data, "Moodle URL", "活動", "コース"],
+          kind: "activity",
+          label: directHref.startsWith("/assignments/") ? "課題を開く" : "Moodleの活動を開く",
+        }],
+      }, { headers: { "Cache-Control": "private, no-store" } });
+    }
     const client = await createAuthenticatedMoodleClient();
     const courses = await client.call(MOODLE_FUNCTIONS.enrolledCourses, { userid: session.userId }, MoodleEnrolledCoursesResponseSchema);
     const contents = await Promise.all(courses.data.slice(0, 20).map(async (course) => ({

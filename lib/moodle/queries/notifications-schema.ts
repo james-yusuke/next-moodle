@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { MoodleNotificationIdSchema } from "../identifiers";
+import { safeMoodleDestination } from "../urls";
 
 export const NotificationFilterSchema = z.enum(["unread", "all"]);
 export type NotificationFilter = z.infer<typeof NotificationFilterSchema>;
@@ -54,43 +55,9 @@ export function filterNotifications(
   return notifications.filter((notification) => !notification.read);
 }
 
-function hasSensitiveQueryKey(key: string): boolean {
-  return /(token|secret|password|credential|private|api[-_]?key)/i.test(key);
-}
-
 export function safeNotificationHref(
   value: string | undefined,
   siteOrigin: string,
 ): string | null {
-  if (value === undefined) {
-    return null;
-  }
-  try {
-    const base = new URL(siteOrigin);
-    const candidate = new URL(value);
-    if (
-      candidate.origin !== base.origin ||
-      (candidate.protocol !== "http:" && candidate.protocol !== "https:") ||
-      candidate.username !== "" ||
-      candidate.password !== ""
-    ) {
-      return null;
-    }
-
-    const queryEntries = [...candidate.searchParams.entries()];
-    if (queryEntries.some(([key]) => hasSensitiveQueryKey(key))) {
-      return null;
-    }
-    const id = Number(candidate.searchParams.get("id"));
-    if (!Number.isSafeInteger(id) || id <= 0) return null;
-    if (candidate.pathname === "/course/view.php") return `/courses/${id}`;
-    const moduleName = /^\/mod\/([a-z0-9_]+)\/view\.php$/.exec(candidate.pathname)?.[1];
-    if (moduleName === undefined) return null;
-    return moduleName === "assign" ? `/assignments/${id}` : `/activities/${id}`;
-  } catch (error) {
-    if (error instanceof TypeError) {
-      return null;
-    }
-    throw error;
-  }
+  return safeMoodleDestination(value, siteOrigin);
 }

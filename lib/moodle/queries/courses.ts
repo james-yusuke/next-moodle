@@ -35,7 +35,7 @@ export type CommandCourse = {
 
 export type CourseActivity = {
   readonly kind: "activity";
-  readonly adapterState: "native" | "companion" | "adapter_required" | "unavailable";
+  readonly adapterState: "native" | "companion" | "moodle_fallback" | "adapter_required" | "unavailable";
   readonly availability: "available" | "hidden" | "restricted";
   readonly completion: "complete" | "incomplete" | "none";
   readonly description: SanitizedMoodleHtml;
@@ -242,12 +242,13 @@ export const readCourseDetail = cache(
           const resolution = resolveActivityAdapter(courseModule.modname, request.manifest);
           const hasCompanionAdapter = resolution.kind === "adapter_required" &&
             request.manifest.companionModules.includes(courseModule.modname);
+          const hasMoodleFallback = courseModule.modname === "questionnaire" && !hasCompanionAdapter;
           const dueAt = courseModule.dates?.find((date) =>
             date.dataid?.toLowerCase().includes("due") === true ||
             date.label.toLowerCase().includes("due") || date.label.includes("期限"),
           )?.timestamp;
           items.push({
-            adapterState: hasCompanionAdapter ? "companion" : resolution.kind,
+            adapterState: hasCompanionAdapter ? "companion" : hasMoodleFallback ? "moodle_fallback" : resolution.kind,
             availability: courseModule.visible === 0
               ? "hidden"
               : courseModule.uservisible === false ? "restricted" : "available",

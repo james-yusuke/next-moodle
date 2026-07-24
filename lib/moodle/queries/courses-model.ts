@@ -124,7 +124,10 @@ export function activityDestination(courseModule: CourseModuleWithUrl): Activity
   if (courseModule.modname === "assign") {
     return { kind: "internal", href: `/assignments/${courseModule.id}` };
   }
-  if (INTERNAL_ACTIVITY_MODULES.has(courseModule.modname)) {
+  // Questionnaire is a contributed Moodle plugin. Its question payload is not
+  // available through Moodle's standard Web Service, but its activity page can
+  // provide a safe Moodle fallback when no companion adapter is installed.
+  if (INTERNAL_ACTIVITY_MODULES.has(courseModule.modname) || courseModule.modname === "questionnaire") {
     return { kind: "internal", href: `/activities/${courseModule.id}` };
   }
   return { kind: "disabled", reason: "adapter_required" };

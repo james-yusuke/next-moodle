@@ -70,6 +70,17 @@ describe("activityDestination", () => {
     expect(result).toEqual({ kind: "internal", href: "/activities/9301" });
   });
 
+  test("Given a Questionnaire activity, When its native adapter is unavailable, Then it opens the safe Moodle fallback", () => {
+    const courseModule = MoodleCourseModuleSchema.parse({
+      id: 9302,
+      name: "出席確認アンケート",
+      modname: "questionnaire",
+      url: "https://moodle.example/mod/questionnaire/view.php?id=9302",
+    });
+
+    expect(activityDestination(courseModule)).toEqual({ kind: "internal", href: "/activities/9302" });
+  });
+
   test("Given an unknown module with a Moodle URL, When routed, Then it never escapes to Moodle UI", () => {
     const courseModule = MoodleCourseModuleSchema.parse({
       id: 9401,

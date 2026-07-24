@@ -179,6 +179,7 @@ const successPayload = (functionName: MoodleFunction, context: RestContext): unk
             { dependencies: [], description: "", id: 7001, kind: "yesno", label: "Safety guidance reviewed", max: null, min: null, options: [{ label: "Yes", value: "y" }, { label: "No", value: "n" }], required: true, step: null },
             { dependencies: [{ logic: "equals", questionId: 7001, value: "y" }], description: "", id: 7002, kind: "checkbox", label: "Equipment ready", max: null, min: null, options: [{ label: "Notebook", value: "7101" }, { label: "Weatherproof cover", value: "7102" }], required: true, step: null },
             { dependencies: [], description: "Optional note for the instructor", id: 7003, kind: "textarea", label: "Preparation note", max: null, min: null, options: [], required: false, step: null },
+            { dependencies: [], description: "Select one response for each row.", id: 7004, kind: "rate", label: "Attendance confirmation", max: null, min: null, options: [{ label: "I will attend the fieldwork session", value: "7201" }], rateOptions: [{ label: "Present", value: "Present" }, { label: "Absent", value: "Absent" }], required: true, step: null },
           ],
           responseId: 0,
           status: "not_started",
@@ -193,7 +194,7 @@ const successPayload = (functionName: MoodleFunction, context: RestContext): unk
         title: "Fieldwork preparation survey",
       };
     case "local_nextmoodle_execute_activity_action":
-      return { state: context.input.fields.get("action")?.[0] === "submit" ? "submitted" : "in_progress", warnings: [] };
+      return { responseid: 8001, state: context.input.fields.get("action")?.[0] === "submit" ? "submitted" : "in_progress", warnings: [] };
     case "local_nextmoodle_create_runtime_ticket":
       return { expiresat: Math.floor(Date.now() / 1_000) + 60, ticket: "mock-runtime-ticket-abcdefghijklmnopqrstuvwxyz" };
     case "core_course_get_enrolled_courses_by_timeline_classification":

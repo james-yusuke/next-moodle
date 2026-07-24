@@ -34,7 +34,11 @@ const ActivityAdapterPayloadModelSchema = z.object({
     z.object({
       kind: z.literal("questionnaire"),
       anonymous: z.boolean(),
-      answers: z.array(z.object({ questionId: z.number().int().positive(), values: z.array(z.string().max(10_000)).max(100) })).max(500),
+      answers: z.array(z.object({
+        questionId: z.number().int().positive(),
+        rateValues: z.array(z.object({ choiceId: z.string().max(500), value: z.string().max(500) })).max(200).default([]),
+        values: z.array(z.string().max(10_000)).max(100),
+      })).max(500),
       availableFrom: z.number().int().nonnegative(),
       availableUntil: z.number().int().nonnegative(),
       canSave: z.boolean(),
@@ -44,11 +48,12 @@ const ActivityAdapterPayloadModelSchema = z.object({
         dependencies: z.array(z.object({ logic: z.enum(["equals", "not_equals"]), questionId: z.number().int().positive(), value: z.string().max(2_000) })).max(20),
         description: z.string().max(20_000),
         id: z.number().int().positive(),
-        kind: z.enum(["checkbox", "date", "info", "number", "pagebreak", "radio", "scale", "select", "text", "textarea", "yesno"]),
+        kind: z.enum(["checkbox", "date", "info", "number", "pagebreak", "radio", "rate", "scale", "select", "text", "textarea", "yesno"]),
         label: z.string().max(20_000),
         max: z.number().nullable(),
         min: z.number().nullable(),
         options: z.array(z.object({ label: z.string().max(2_000), value: z.string().max(500) })).max(200),
+        rateOptions: z.array(z.object({ label: z.string().max(2_000), value: z.string().max(500) })).max(100).default([]),
         required: z.boolean(),
         step: z.number().positive().nullable(),
       })).max(500),
@@ -66,7 +71,7 @@ export const ActivityAdapterPayloadSchema = z.object({
   state: CapabilityStateSchema,
   operations: z.array(ActivityOperationKeySchema).max(20),
   blocks: z.array(ActivityDisplayBlockSchema).max(100),
-  activity: z.unknown().nullable(),
+  activity: z.unknown().nullable().optional(),
 }).transform((wire) => ActivityAdapterPayloadModelSchema.parse({
   contractVersion: wire.contractversion,
   cmid: wire.cmid,
@@ -76,7 +81,7 @@ export const ActivityAdapterPayloadSchema = z.object({
   state: wire.state,
   operations: wire.operations,
   blocks: wire.blocks,
-  activity: wire.activity,
+  activity: wire.activity ?? null,
 }));
 export type ActivityAdapterPayload = Readonly<
   z.infer<typeof ActivityAdapterPayloadSchema>

@@ -10,6 +10,11 @@ describe("notification links", () => {
     expect(safeNotificationHref(`${site}/course/view.php?id=83`, site)).toBe("/courses/83");
   });
 
+  test("maps a Questionnaire URL, including an installation path", () => {
+    const site = "https://moodle.example.invalid/learn";
+    expect(safeNotificationHref(`${site}/mod/questionnaire/view.php?id=23696`, site)).toBe("/activities/23696");
+  });
+
   test("does not expose an unmapped Moodle UI route", () => {
     const site = "https://moodle.example.invalid";
     expect(safeNotificationHref(`${site}/user/profile.php?id=99`, site)).toBeNull();

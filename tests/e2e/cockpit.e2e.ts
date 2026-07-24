@@ -286,11 +286,18 @@ test("companion Questionnaire and the first teacher DM remain inside the workspa
   await expect(page.getByRole("heading", { name: "アンケート回答" })).toBeVisible();
   await page.getByText("Yes", { exact: true }).click();
   await page.getByText("Notebook", { exact: true }).click();
+  await page.getByLabel("I will attend the fieldwork session: Present").check();
   await page.getByRole("button", { name: "下書き保存" }).click();
   await expect(page.getByText("下書きを保存しました")).toBeVisible();
   await page.getByRole("button", { name: "回答を送信" }).click();
   await expect(page.getByText("回答を送信しました")).toBeVisible();
   await expect(page.getByRole("link", { name: /Moodle/ })).toHaveCount(0);
+
+  await page.getByRole("button", { name: "移動・検索" }).click();
+  await page.getByLabel("検索語").fill("http://127.0.0.1:28765/mod/questionnaire/view.php?id=9198");
+  await expect(page.getByRole("option", { name: /Moodleの活動を開く/ })).toBeVisible();
+  await page.getByRole("option", { name: /Moodleの活動を開く/ }).click();
+  await expect(page).toHaveURL(/\/activities\/9198$/);
 
   await page.goto("/messages/new?courseId=101");
   await expect(page.getByRole("heading", { name: "先生へ連絡" })).toBeVisible();
@@ -311,4 +318,16 @@ test("companion Questionnaire and the first teacher DM remain inside the workspa
   await expect(page.getByRole("main").locator(".ui-message-thread__scroll")).toContainText("Thanks, I will be there.");
   await expect(page.getByText("Enterで改行 · ⌘ / Ctrl + Enterで送信")).toBeVisible();
   await expect(page.getByRole("main")).toContainText("Aoi Mentor");
+});
+
+test("Questionnaire rate tables fit a narrow workspace", async ({ page }) => {
+  await page.setViewportSize({ height: 667, width: 375 });
+  await signIn(page, "alice", "alice-password");
+
+  await page.goto("/activities/9198");
+  const rateTable = page.locator(".ui-questionnaire__rate");
+  await expect(rateTable).toBeVisible();
+  await expect.poll(async () => rateTable.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  await page.getByLabel("I will attend the fieldwork session: Present").check();
+  await expect(page.getByLabel("I will attend the fieldwork session: Present")).toBeChecked();
 });
