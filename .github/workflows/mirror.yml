@@ -1,0 +1,28 @@
+name: Mirror to Codeberg
+
+on:
+  push:
+    branches:
+      - '**'
+    tags:
+      - '*'
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Mirror to Codeberg
+        env:
+          CODEBERG_TOKEN: ${{ secrets.CODEBERG_TOKEN }}
+        run: |
+          git remote add codeberg https://${CODEBERG_TOKEN}@codeberg.org/james-yusuke/next-moodle.git
+
+          git push codeberg --all
+
+          git push codeberg --tags
