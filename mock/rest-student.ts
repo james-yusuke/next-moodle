@@ -16,11 +16,12 @@ const grades = (user: FixtureUser, courseId: number): Record<string, unknown> =>
 const conversation = (user: FixtureUser, state: MoodleMockState): Record<string, unknown> => {
   const conversationId = user.key === "alice" ? 1001 : 2001;
   const sent = state.sentMessages.get(`${user.key}:${conversationId}`) ?? [];
+  const read = state.readConversations.has(`${user.key}:${conversationId}`);
   return {
     id: conversationId,
     name: "Study group",
     type: 1,
-    unreadcount: sent.length === 0 ? 1 : 0,
+    unreadcount: read || sent.length > 0 ? 0 : 1,
     members: [{ id: user.userid, fullname: user.fullname }, { id: user.userid + 10, fullname: "Aoi Mentor" }],
     messages: [
       { id: conversationId * 10, useridfrom: user.userid + 10, text: "<p>The next study session starts at 16:00.</p>", timecreated: 1_790_000_000, isread: false },
@@ -74,5 +75,10 @@ export function studentPayload(functionName: MoodleFunction, context: RestContex
   if (functionName === "core_message_get_conversation_between_users") return conversation(context.user, context.state);
   if (functionName === "core_message_send_instant_messages") return sendDirectMessage(context);
   if (functionName === "core_message_send_messages_to_conversation") return sendMessage(context);
+  if (functionName === "core_message_mark_all_conversation_messages_as_read") {
+    const conversationId = numberField(context.input, "conversationid") ?? 0;
+    context.state.readConversations.add(`${context.user.key}:${conversationId}`);
+    return [];
+  }
   return undefined;
 }

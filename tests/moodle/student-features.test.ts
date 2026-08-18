@@ -14,6 +14,7 @@ const StatusSchema = z.object({ status: z.boolean() });
 const SendSchema = z.array(z.object({ msgid: z.number().int().positive() }));
 const CalendarCreateSchema = z.object({ events: z.array(z.object({ id: z.number().int().positive() })) });
 const CalendarEventsSchema = z.object({ events: z.array(z.object({ id: z.number().int().positive(), name: z.string() })) });
+const WarningsSchema = z.array(z.unknown());
 
 test("student features keep completion and messages isolated by user", async () => {
   // Given
@@ -34,6 +35,13 @@ test("student features keep completion and messages isolated by user", async () 
     const conversationId = conversations.data.conversations[0]?.id;
     expect(conversationId).toBeDefined();
     if (conversationId === undefined) return;
+    expect(conversations.data.conversations[0]?.unreadcount).toBe(1);
+    await alice.call(MOODLE_FUNCTIONS.markConversationRead, {
+      conversationid: conversationId,
+      userid: FIXTURE_USERS.alice.userid,
+    }, WarningsSchema);
+    const readConversations = await alice.call(MOODLE_FUNCTIONS.conversations, { userid: FIXTURE_USERS.alice.userid }, ConversationsSchema);
+    expect(readConversations.data.conversations[0]?.unreadcount).toBe(0);
     await alice.call(MOODLE_FUNCTIONS.sendConversationMessages, {
       conversationid: conversationId,
       "messages[0][text]": "Fixture reply",

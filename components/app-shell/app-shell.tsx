@@ -9,6 +9,7 @@ import {
   IdentificationCard,
   Lifebuoy,
   Lightning,
+  Table,
   UserCircle,
 } from "@phosphor-icons/react";
 import { usePathname } from "next/navigation";
@@ -28,6 +29,7 @@ const SCREEN_COMMANDS = [
   { href: "/dashboard", keywords: ["home", "next"], kind: "screen", label: "ダッシュボード" },
   { href: "/courses", keywords: ["class", "授業"], kind: "screen", label: "コース" },
   { href: "/calendar", keywords: ["予定", "締切"], kind: "screen", label: "カレンダー" },
+  { href: "/timetable", keywords: ["授業", "曜日", "時限"], kind: "screen", label: "時間割" },
   { href: "/notifications", keywords: ["お知らせ", "未読"], kind: "screen", label: "通知" },
   { href: "/messages", keywords: ["会話", "連絡"], kind: "screen", label: "メッセージ" },
   { href: "/grades", keywords: ["評価", "点数"], kind: "screen", label: "成績" },
@@ -71,6 +73,7 @@ function AccountMenuContent({ appName, siteName }: Readonly<{ appName: string; s
         <TransitionLink className={accountLinkClass} href="/tools/pdf" intent="switch"><FilePdf aria-hidden className="shrink-0" size={18} />PDF</TransitionLink>
         <TransitionLink className={accountLinkClass} href="/shortcuts" intent="switch"><Lightning aria-hidden className="shrink-0" size={18} />操作一覧</TransitionLink>
         <TransitionLink className={accountLinkClass} href="/diagnostics" intent="switch"><Lifebuoy aria-hidden className="shrink-0" size={18} />接続診断</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/timetable" intent="switch"><Table aria-hidden className="shrink-0" size={18} />時間割</TransitionLink>
         <TransitionLink className={classNames(accountLinkClass, "col-span-2")} href="/people" intent="switch"><IdentificationCard aria-hidden className="shrink-0" size={18} />参加者</TransitionLink>
       </div>
       <div className="border-t border-[var(--border-subtle)] pt-3"><ThemeControl /></div>

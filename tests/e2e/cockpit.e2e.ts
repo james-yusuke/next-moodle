@@ -56,6 +56,52 @@ test("student cockpit reads the mock Moodle core routes without exposing a token
   await expect(page.locator("body")).not.toContainText("synthetic-alice-token");
 });
 
+test("Windows uses Ctrl for commands and exposes an installable app manifest", async ({ page, request }) => {
+  await page.addInitScript(() => {
+    Object.defineProperty(window.navigator, "platform", { configurable: true, value: "Win32" });
+  });
+  await signIn(page, "alice", "alice-password");
+  await expect(page.getByRole("button", { name: "移動・検索" })).toContainText("CtrlK");
+  await page.keyboard.press("Control+K");
+  await expect(page.getByRole("dialog", { name: "移動・検索" })).toBeVisible();
+
+  const manifestResponse = await request.get("/manifest.webmanifest");
+  expect(manifestResponse.ok()).toBe(true);
+  await expect.poll(async () => (await manifestResponse.json() as { display?: string }).display).toBe("standalone");
+});
+
+test("courses, Moodle events, and a local timetable can be organized without losing data", async ({ page }) => {
+  await signIn(page, "alice", "alice-password");
+
+  await page.goto("/courses");
+  await page.getByRole("button", { name: "Introduction to Marine Biologyを一覧から非表示" }).click();
+  await expect(page.getByRole("main").getByRole("link", { name: "Introduction to Marine Biology" })).toHaveCount(0);
+  await page.getByRole("button", { name: "非表示 1" }).click();
+  await expect(page.getByRole("main").getByRole("link", { name: "Introduction to Marine Biology" })).toBeVisible();
+  await page.getByRole("button", { name: "Introduction to Marine Biologyを一覧へ戻す" }).click();
+  await expect(page.getByRole("button", { name: "非表示 0" })).toBeVisible();
+
+  await page.goto("/calendar");
+  const eventRow = page.getByRole("listitem").filter({ hasText: "Tide pool field notes due" });
+  await eventRow.getByRole("button", { name: "予定を非表示" }).click();
+  await expect(page.getByText("Tide pool field notes due")).toHaveCount(0);
+  await page.getByRole("button", { name: "非表示 1" }).click();
+  await expect(page.getByText("Tide pool field notes due")).toBeVisible();
+  await page.getByRole("button", { name: "予定を一覧へ戻す" }).click();
+  await page.getByRole("button", { name: "予定一覧へ戻る" }).click();
+  await expect(page.getByText("Tide pool field notes due")).toBeVisible();
+
+  await page.goto("/timetable");
+  await page.getByRole("button", { name: "授業を追加" }).click();
+  await page.getByLabel("コース").selectOption("101");
+  await page.getByLabel("曜日").selectOption("mon");
+  await page.getByLabel("時限").selectOption("2");
+  await page.getByLabel("教室（任意）").fill("1号館 203");
+  await page.getByRole("button", { name: "追加", exact: true }).click();
+  await expect(page.getByRole("region", { name: "時間割表" })).toContainText("Introduction to Marine Biology");
+  await expect(page.getByRole("region", { name: "時間割表" })).toContainText("1号館 203");
+});
+
 test("context panels persist locally and inspector sheets restore keyboard focus", async ({ page }) => {
   await page.setViewportSize({ height: 900, width: 1280 });
   await signIn(page, "alice", "alice-password");
@@ -104,6 +150,7 @@ test("message navigation and conversation icons keep their dimensions after a ta
   const primaryNavigation = page.getByRole("navigation", { name: "主要ナビゲーション" });
   const messageNavIcon = primaryNavigation.getByTestId("primary-nav-messages-icon");
   const firstConversationIcon = page.getByTestId("conversation-icon").first();
+  await expect(page.getByLabel("1件の未読メッセージ")).toBeVisible();
   await expect(messageNavIcon).toBeVisible();
   await expect(firstConversationIcon).toBeVisible();
   const before = await Promise.all([
@@ -124,6 +171,7 @@ test("message navigation and conversation icons keep their dimensions after a ta
   expect(after).toEqual(before);
 
   await page.goto("/messages/1001");
+  await expect(page.getByLabel("1件の未読メッセージ")).toHaveCount(0);
   const conversationGeometry = await page.evaluate(() => {
     const context = document.querySelector<HTMLElement>(".ui-page-frame__context");
     const content = document.querySelector<HTMLElement>(".ui-page-frame__content");

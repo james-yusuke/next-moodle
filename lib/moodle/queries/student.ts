@@ -50,7 +50,21 @@ export type ConversationDetail = Readonly<{
   members: readonly string[];
   messages: readonly Readonly<{ id: number; fromCurrentUser: boolean; text: string; time: number }>[];
   name: string;
+  unreadCount: number;
 }>;
+
+function conversationName(
+  conversation: Readonly<{ name: string; members: readonly Readonly<{ id: number; fullname: string }>[] }>,
+  userId: MoodleUserId,
+): string {
+  const supplied = plainTextFromMoodleMessage(conversation.name);
+  if (supplied !== "" && supplied !== "会話" && supplied.toLocaleLowerCase("en") !== "conversation") return supplied;
+  const participants = conversation.members
+    .filter((member) => member.id !== userId)
+    .map((member) => plainTextFromMoodleMessage(member.fullname))
+    .filter((name) => name !== "");
+  return participants.join(" / ") || supplied || "会話";
+}
 
 export const readGrades = cache(async (
   userId: MoodleUserId,
@@ -192,7 +206,7 @@ export const readConversations = cache(async (
     const response = await client.call(MOODLE_FUNCTIONS.conversations, { userid: userId, limitfrom: 0, limitnum: 100 }, ConversationsSchema);
     return { kind: "ready", data: response.data.conversations.map((conversation) => ({
       id: conversation.id,
-      name: plainTextFromMoodleMessage(conversation.name) || "会話",
+      name: conversationName(conversation, userId),
       preview: plainTextFromMoodleMessage(conversation.messages.at(-1)?.text ?? "") || "メッセージはありません",
       unreadCount: conversation.unreadcount,
     })) };
@@ -230,7 +244,8 @@ export const readConversation = cache(async (
         text: plainTextFromMoodleMessage(message.text),
         time: message.timecreated,
       })),
-      name: plainTextFromMoodleMessage(response.data.name) || "会話",
+      name: conversationName(response.data, userId),
+      unreadCount: response.data.unreadcount,
     } };
   } catch (error) {
     return toMoodleReadFailure(error);

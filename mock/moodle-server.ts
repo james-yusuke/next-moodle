@@ -50,6 +50,7 @@ const createState = (): MoodleMockState => ({
   uploadItems: new Map(),
   submissions: new Map(),
   readNotifications: new Set(),
+  readConversations: new Set(),
   outageAttempts: new Map(),
   sentMessages: new Map(),
   quizAttempts: new Map(),

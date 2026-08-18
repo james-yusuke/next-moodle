@@ -11,8 +11,15 @@ import "./globals.css";
 export function generateMetadata(): Metadata {
   const { appName } = readAppRuntimeConfig();
   return {
+    applicationName: appName,
     title: { default: appName, template: `%s · ${appName}` },
     description: "Moodleの学習情報を整える、静かな学習コックピット。",
+    appleWebApp: {
+      capable: true,
+      statusBarStyle: "black-translucent",
+      title: appName,
+    },
+    formatDetection: { telephone: false },
   };
 }
 

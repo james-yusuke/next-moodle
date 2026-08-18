@@ -19,5 +19,5 @@ export default async function ConversationPage({ params }: Readonly<{ params: Pr
   if (!list.data.some((conversation) => conversation.id === value)) notFound();
   const detail = await readConversation(session.userId, value);
   if (detail.kind === "failure") return <StateNotice reason={resolveMoodlePageFailure(detail.reason)} retryHref={`/messages/${value}`} siteUrl={session.site.siteUrl} />;
-  return <ConversationView config={readAppRuntimeConfig()} conversation={detail.data} conversations={list.data} />;
+  return <ConversationView canMarkRead={session.manifest.operations["message.markRead"] === "available"} config={readAppRuntimeConfig()} conversation={detail.data} conversations={list.data} />;
 }

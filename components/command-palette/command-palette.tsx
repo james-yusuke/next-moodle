@@ -18,6 +18,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 
 import { Button, DialogSheet, EmptyState } from "@/components/ui";
@@ -30,6 +31,14 @@ type CommandPaletteProps = Readonly<{
 
 const RECENT_COMMANDS_STORAGE_KEY = "next-moodle-recent-commands";
 const MAX_RECENT_COMMANDS = 6;
+
+function subscribePlatform(): () => void {
+  return () => undefined;
+}
+
+function platformShortcutLabel(): "Ctrl" | "⌘" {
+  return /Mac|iPhone|iPad|iPod/i.test(window.navigator.platform) ? "⌘" : "Ctrl";
+}
 
 function readRecentCommands(): readonly CommandItem[] {
   try {
@@ -55,6 +64,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
   const [remoteCommands, setRemoteCommands] = useState<readonly CommandItem[]>([]);
   const [recentCommands, setRecentCommands] = useState<readonly CommandItem[]>([]);
   const [remoteState, setRemoteState] = useState<"idle" | "loading" | "error">("idle");
+  const shortcutLabel = useSyncExternalStore(subscribePlatform, platformShortcutLabel, () => "Ctrl");
   const inputRef = useRef<HTMLInputElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -152,7 +162,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
         variant="secondary"
       >
         <span className="hidden md:inline">移動・検索</span>
-        <kbd className="hidden rounded-md bg-[var(--surface-inset)] px-2 py-1 font-mono text-xs text-[var(--text-tertiary)] md:inline">⌘K</kbd>
+        <kbd className="hidden rounded-md bg-[var(--surface-inset)] px-2 py-1 font-mono text-xs text-[var(--text-tertiary)] md:inline">{shortcutLabel}K</kbd>
       </Button>
       <DialogSheet
         description="画面、コース、活動、メッセージ、ファイルを横断します。"

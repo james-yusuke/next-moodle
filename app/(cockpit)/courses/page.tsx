@@ -22,7 +22,7 @@ export default async function CoursesPage() {
   return (
     <PageFrame
       content={result.kind === "ready" ? (
-        <CourseList canFavorite={session.manifest.features.favorites === "available"} config={config} courses={result.data} />
+        <CourseList canFavorite={session.manifest.features.favorites === "available"} config={config} courses={result.data} preferenceScope={String(session.userId)} />
       ) : (
         <StateNotice reason={resolveMoodlePageFailure(result.reason)} retryHref="/courses" siteUrl={session.site.siteUrl} />
       )}

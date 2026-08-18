@@ -1,11 +1,12 @@
 "use client";
 
-import { Books, MagnifyingGlass, Star } from "@phosphor-icons/react";
+import { Books, Eye, EyeSlash, MagnifyingGlass, Star } from "@phosphor-icons/react";
 import ky from "ky";
 import { useMemo, useState } from "react";
 
 import { SharedTransition, TransitionLink } from "@/components/app-shell/transitions";
 import { Badge, Button, Card, EmptyState, Field, Notice, Toolbar } from "@/components/ui";
+import { useLocalStorageValue } from "@/components/ui/use-local-storage-value";
 import type { AppRuntimeConfig } from "@/lib/app-config";
 import {
   filterCourseItems,
@@ -14,7 +15,7 @@ import {
 } from "@/lib/moodle/queries/courses-model";
 
 const CLASSIFICATIONS = ["active", "future", "past"] as const;
-type CourseFilter = "all" | CourseClassification;
+type CourseFilter = "all" | "hidden" | CourseClassification;
 const CLASSIFICATION_COPY: Readonly<
   Record<CourseClassification, Readonly<{ label: string; tone: "success" | "info" | "neutral" }>>
 > = {
@@ -41,10 +42,11 @@ function initialFavorites(courses: readonly CourseListItem[]): ReadonlySet<numbe
   return ids;
 }
 
-export function CourseList({ canFavorite, config, courses }: Readonly<{
+export function CourseList({ canFavorite, config, courses, preferenceScope }: Readonly<{
   canFavorite: boolean;
   config: AppRuntimeConfig;
   courses: readonly CourseListItem[];
+  preferenceScope: string;
 }>) {
   const [query, setQuery] = useState("");
   const [courseFilter, setCourseFilter] = useState<CourseFilter>("all");
@@ -52,10 +54,23 @@ export function CourseList({ canFavorite, config, courses }: Readonly<{
   const [favorites, setFavorites] = useState<ReadonlySet<number>>(() => initialFavorites(courses));
   const [pendingFavorite, setPendingFavorite] = useState<number | null>(null);
   const [favoriteError, setFavoriteError] = useState("");
-  const filtered = useMemo(() => filterCourseItems(courses, query).filter((course) =>
-    (courseFilter === "all" || course.classification === courseFilter) &&
-    (!favoriteOnly || favorites.has(course.id)),
-  ), [courseFilter, courses, favoriteOnly, favorites, query]);
+  const storageKey = `next-moodle:hidden-courses:${preferenceScope}`;
+  const [hiddenValue, setHiddenValue] = useLocalStorageValue(storageKey, "[]");
+  const hiddenCourses = useMemo<ReadonlySet<number>>(() => {
+    try {
+      const value: unknown = JSON.parse(hiddenValue);
+      return Array.isArray(value) ? new Set(value.filter((id): id is number => Number.isSafeInteger(id) && id > 0)) : new Set();
+    } catch {
+      return new Set();
+    }
+  }, [hiddenValue]);
+  const filtered = useMemo(() => filterCourseItems(courses, query).filter((course) => {
+    const hidden = hiddenCourses.has(course.id);
+    const matchesClassification = courseFilter === "hidden"
+      ? hidden
+      : !hidden && (courseFilter === "all" || course.classification === courseFilter);
+    return matchesClassification && (!favoriteOnly || favorites.has(course.id));
+  }), [courseFilter, courses, favoriteOnly, favorites, hiddenCourses, query]);
   const dateFormat = useMemo(() => new Intl.DateTimeFormat(config.locale, {
     dateStyle: "medium", timeZone: config.timeZone,
   }), [config.locale, config.timeZone]);
@@ -76,6 +91,12 @@ export function CourseList({ canFavorite, config, courses }: Readonly<{
       if (favourite) next.add(course.id); else next.delete(course.id);
       return next;
     });
+  }
+
+  function toggleHidden(courseId: number): void {
+    const next = new Set(hiddenCourses);
+    if (next.has(courseId)) next.delete(courseId); else next.add(courseId);
+    setHiddenValue(JSON.stringify([...next]));
   }
 
   if (courses.length === 0) {
@@ -106,22 +127,23 @@ export function CourseList({ canFavorite, config, courses }: Readonly<{
           {CLASSIFICATIONS.map((classification) => (
             <Button aria-pressed={courseFilter === classification} className="whitespace-nowrap" key={classification} onClick={() => setCourseFilter(classification)} size="compact" variant={courseFilter === classification ? "primary" : "ghost"}>{CLASSIFICATION_COPY[classification].label}</Button>
           ))}
+          <Button aria-pressed={courseFilter === "hidden"} className="whitespace-nowrap" onClick={() => setCourseFilter("hidden")} size="compact" variant={courseFilter === "hidden" ? "primary" : "ghost"}><EyeSlash aria-hidden size={15} />非表示 {hiddenCourses.size}</Button>
           {canFavorite ? <Button aria-pressed={favoriteOnly} className="whitespace-nowrap" onClick={() => setFavoriteOnly((current) => !current)} size="compact" variant={favoriteOnly ? "primary" : "ghost"}><Star aria-hidden size={15} weight={favoriteOnly ? "fill" : "regular"} />スター付き</Button> : null}
         </div>
       </Toolbar>
       <p aria-live="polite" className="ui-courses-result-count m-0 text-xs text-[var(--text-tertiary)]">{filtered.length}件のコースを表示</p>
       {favoriteError === "" ? null : <Notice title="スターを更新できませんでした" tone="error" urgent><p>{favoriteError}</p></Notice>}
       {filtered.length === 0 ? (
-        <EmptyState icon={<MagnifyingGlass aria-hidden size={22} />} title="検索条件に一致するコースはありません">
-          コース名または略称を短くして、もう一度検索してください。
+        <EmptyState icon={courseFilter === "hidden" ? <EyeSlash aria-hidden size={22} /> : <MagnifyingGlass aria-hidden size={22} />} title={courseFilter === "hidden" ? "非表示のコースはありません" : "検索条件に一致するコースはありません"}>
+          {courseFilter === "hidden" ? "コース行の非表示ボタンを押すと、ここからいつでも一覧へ戻せます。" : "コース名または略称を短くして、もう一度検索してください。"}
         </EmptyState>
       ) : (
-        CLASSIFICATIONS.map((classification) => {
-          const group = filtered.filter((course) => course.classification === classification);
+        (courseFilter === "hidden" ? ["hidden"] as const : CLASSIFICATIONS).map((classification) => {
+          const group = classification === "hidden" ? filtered : filtered.filter((course) => course.classification === classification);
           if (group.length === 0) {
             return null;
           }
-          const copy = CLASSIFICATION_COPY[classification];
+          const copy = classification === "hidden" ? { label: "非表示済み", tone: "neutral" as const } : CLASSIFICATION_COPY[classification];
           return (
             <Card className="ui-courses-group" key={classification} padding="standard" tone="default">
               <header className="flex min-h-11 items-center justify-between gap-3">
@@ -141,7 +163,7 @@ export function CourseList({ canFavorite, config, courses }: Readonly<{
                           <small className="truncate text-xs text-[var(--text-tertiary)]">{course.shortName}</small>
                         </span>
                         <span className="ui-courses-list__period pr-2 text-right text-xs text-[var(--text-secondary)] max-sm:col-start-2 max-sm:text-left">{coursePeriod(course, dateFormat)}</span>
-                      </TransitionLink>{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} aria-pressed={favorites.has(course.id)} className="ui-course-favourite mr-2 grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-tertiary)] transition-colors duration-[120ms] hover:bg-[var(--surface-inset)] hover:text-[var(--accent-400)] aria-pressed:text-[var(--accent-400)]" disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}</div>
+                      </TransitionLink><div className="mr-2 flex shrink-0 items-center">{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} aria-pressed={favorites.has(course.id)} className="ui-course-favourite grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-tertiary)] transition-colors duration-[120ms] hover:bg-[var(--surface-inset)] hover:text-[var(--accent-400)] aria-pressed:text-[var(--accent-400)]" disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}<button aria-label={hiddenCourses.has(course.id) ? `${course.name}を一覧へ戻す` : `${course.name}を一覧から非表示`} className="grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-tertiary)] transition-colors duration-[120ms] hover:bg-[var(--surface-inset)] hover:text-[var(--text-primary)]" onClick={() => toggleHidden(course.id)} type="button">{hiddenCourses.has(course.id) ? <Eye aria-hidden size={19} /> : <EyeSlash aria-hidden size={19} />}</button></div></div>
                     </li>
                   ))}
                 </ul>

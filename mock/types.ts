@@ -191,6 +191,7 @@ export type MoodleMockState = {
   readonly uploadItems: Map<number, MockUploadItem>
   readonly submissions: Map<string, MockSubmissionState>
   readonly readNotifications: Set<string>
+  readonly readConversations: Set<string>
   readonly outageAttempts: Map<string, number>
   readonly sentMessages: Map<string, readonly MockMessageState[]>
   readonly quizAttempts: Map<string, MockQuizAttemptState>

@@ -14,6 +14,7 @@ import { dateTimeFormatter } from "@/lib/date-time";
 import type { ConversationDetail, ConversationListItem } from "@/lib/moodle/queries/student";
 import { ConversationScrollRegion } from "./conversation-scroll-region";
 import { MessageComposer } from "./message-composer";
+import { ConversationReadReceipt } from "./conversation-read-receipt";
 
 function ConversationList({ conversations, selectedId }: Readonly<{
   conversations: readonly ConversationListItem[];
@@ -29,7 +30,7 @@ function ConversationList({ conversations, selectedId }: Readonly<{
             {selectedId === conversation.id ? <strong className="truncate">{conversation.name}</strong> : <SharedTransition identifier={conversation.id} kind="conversation"><strong className="block truncate">{conversation.name}</strong></SharedTransition>}
             <small className="truncate text-xs text-[var(--text-tertiary)]">{conversation.preview}</small>
           </span>
-          {conversation.unreadCount === 0 ? null : <Badge tone="accent">{conversation.unreadCount}</Badge>}
+          {conversation.unreadCount === 0 ? null : <span aria-label={`${conversation.unreadCount}件の未読メッセージ`}><Badge tone="accent">{conversation.unreadCount}</Badge></span>}
         </TransitionLink>
       ))}
     </nav>
@@ -78,7 +79,8 @@ export function MessagesIndex({ conversations }: Readonly<{ conversations: reado
   );
 }
 
-export function ConversationView({ config, conversation, conversations }: Readonly<{
+export function ConversationView({ canMarkRead, config, conversation, conversations }: Readonly<{
+  canMarkRead: boolean;
   config: AppRuntimeConfig;
   conversation: ConversationDetail;
   conversations: readonly ConversationListItem[];
@@ -100,6 +102,7 @@ export function ConversationView({ config, conversation, conversations }: Readon
       className="ui-message-thread-frame"
       content={(
         <section aria-label={`${conversation.name}の会話履歴`} className="ui-message-thread grid h-full min-h-0 w-full min-w-0 grid-rows-[minmax(0,1fr)_auto] overflow-hidden bg-[color-mix(in_srgb,var(--surface-primary)_88%,var(--surface-canvas))]">
+          {canMarkRead ? <ConversationReadReceipt conversationId={conversation.id} unread={conversation.unreadCount > 0} /> : null}
           <ConversationScrollRegion key={conversation.id} messageCount={conversation.messages.length}>
             <ol className="m-0 grid min-h-full list-none content-end gap-3 p-4 sm:p-6 lg:p-8">
               {conversation.messages.map((message) => (

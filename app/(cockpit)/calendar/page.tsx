@@ -29,7 +29,7 @@ export default async function CalendarPage({ searchParams }: CalendarPageProps) 
   const result = await readCalendar(session.userId, selection, nowSeconds, config.timeZone);
   if (result.kind === "failure" && shouldUseHtmlDelivery(result.reason)) return <StudentHtmlScreen description={`学習予定を${config.timeZone}で確認します。`} session={session} surface="calendar" title="カレンダー" />;
   return result.kind === "ready" ? (
-    <CalendarView canManage={session.manifest.features.calendarManage === "available"} config={config} data={result.data} />
+    <CalendarView canManage={session.manifest.features.calendarManage === "available"} config={config} data={result.data} preferenceScope={String(session.userId)} />
   ) : (
     <PageFrame content={<StateNotice reason={resolveMoodlePageFailure(result.reason)} retryHref="/calendar" siteUrl={session.site.siteUrl} />} header={<RouteHeader description={`学習予定を${config.timeZone}で確認します。`} eyebrow="予定" title="カレンダー" />} mode="overview" />
   );
