@@ -97,6 +97,54 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
+html[data-theme="neon"] {
+  color-scheme: dark;
+
+  /* Deliberately translucent: the outer "canvas" gaps (page background,
+     sidebar/header whitespace, gutters between cards) are exactly where the
+     starfield canvas beneath the page should show through. Opaque surfaces
+     (surface-primary/elevated/inset used by cards, forms, tables) are left
+     unchanged so content stays fully readable. */
+  --surface-canvas: rgb(5 6 15 / 88%);
+  --surface-primary: #0b0b16;
+  --surface-secondary: #0c0c1a;
+  --surface-elevated: #12111f;
+  --surface-selected: #201a3a;
+  --surface-inset: #0a0a14;
+
+  --text-primary: #f1eefc;
+  --text-secondary: #b6afd6;
+  --text-tertiary: #8a83ab;
+  --text-disabled: #5c5680;
+
+  --border-subtle: rgb(180 160 255 / 8%);
+  --border-default: rgb(180 160 255 / 14%);
+  --border-strong: rgb(180 160 255 / 26%);
+
+  --accent-soft: #241a44;
+  --accent-400: #a893ff;
+  --accent-500: #7c5cff;
+  --accent-600: #5b3fe0;
+  --accent-contrast: #05050c;
+  --accent-glow: rgb(124 92 255 / 55%);
+
+  --shadow-control: 0 0 0 1px var(--border-default);
+  --shadow-surface: 0 1px 1px rgb(0 0 0 / 30%), 0 0 0 1px var(--border-subtle);
+  --shadow-elevated: 0 0 0 1px var(--border-default), 0 1.5rem 4rem rgb(0 0 0 / 55%);
+  /* Neon is the only theme allowed a glow-style focus ring, per the Neon
+     background exception to Editorial Native's no-glow rule. */
+  --shadow-focus:
+    0 0 0 2px var(--surface-canvas),
+    0 0 0 4px var(--accent-400),
+    0 0 14px var(--accent-glow);
+}
+
+.ui-starfield {
+  /* Sits behind all in-flow content (see components/ui/starfield.tsx); never
+     intercepts pointer input and never triggers layout. */
+  z-index: -1;
+}
+
 @theme inline {
   --color-canvas: var(--surface-canvas);
   --color-surface: var(--surface-primary);
