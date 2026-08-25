@@ -104,8 +104,12 @@ html[data-theme="neon"] {
      sidebar/header whitespace, gutters between cards) are exactly where the
      starfield canvas beneath the page should show through. Opaque surfaces
      (surface-primary/elevated/inset used by cards, forms, tables) are left
-     unchanged so content stays fully readable. */
-  --surface-canvas: rgb(5 6 15 / 88%);
+     unchanged so content stays fully readable.
+
+     Kept fairly light (vs. a near-opaque overlay) so the canvas sky
+     underneath — stars, Milky Way band, nebulae — reads clearly instead of
+     being smothered by this layer. */
+  --surface-canvas: rgb(4 4 12 / 32%);
   --surface-primary: #0b0b16;
   --surface-secondary: #0c0c1a;
   --surface-elevated: #12111f;
@@ -147,16 +151,35 @@ html[data-theme="neon"] {
     0 0 14px var(--accent-glow);
 
   /* Ambient (non-hover) glow strengths for interactive/elevated surfaces.
-     Kept subtle by design: the sky should read as "quiet", not floodlit. */
-  --neon-card-glow: 0 0 0 1px rgb(180 160 255 / 16%), 0 0 22px -8px var(--accent-glow), 0 1.5rem 4rem rgb(0 0 0 / 55%);
-  --neon-control-glow: 0 0 0 1px rgb(180 160 255 / 16%), 0 0 10px -4px var(--accent-glow);
-  --neon-hover-glow: 0 0 0 1px rgb(180 160 255 / 32%), 0 0 18px -2px var(--accent-glow), 0 0 34px -6px var(--neon-cyan);
+     Kept subtle by design: the sky should read as "quiet", not floodlit.
+     Entirely `inset` + a flush (non-blurred) 1px ring: cards and controls
+     often sit flush against an `overflow-x-clip` ancestor edge (page
+     gutters, scroll containers), and any outward-blurred shadow gets
+     hard-clipped there, reading as a broken line poking out of the layout.
+     Neither an inset glow nor a 0-blur ring can ever spill outside the
+     element's own box, so this stays clean at any edge regardless of
+     ancestor clipping. */
+  --neon-card-glow: 0 0 0 1px rgb(180 160 255 / 16%), inset 0 0 26px -10px var(--accent-glow);
+  --neon-control-glow: 0 0 0 1px rgb(180 160 255 / 16%), inset 0 0 14px -6px var(--accent-glow);
+  --neon-hover-glow: 0 0 0 1px rgb(180 160 255 / 32%), inset 0 0 22px -6px var(--accent-glow), inset 0 0 40px -14px var(--neon-cyan);
 }
 
 .ui-starfield {
   /* Sits behind all in-flow content (see components/ui/starfield.tsx); never
      intercepts pointer input and never triggers layout. */
   z-index: -1;
+}
+
+html[data-theme="neon"] body {
+  /* `isolation: isolate` gives body its own stacking context without
+     requiring `position`. This matters specifically for the starfield:
+     without it, a child with `z-index: -1` (the canvas) stacks *below the
+     initial/root stacking context*, i.e. behind body's own
+     `background: var(--surface-canvas)` layer — making the sky nearly
+     invisible under that layer's tint. With this, the canvas still stacks
+     below all normal in-flow content (as intended) but above body's own
+     background/border, so the stars actually render visibly. */
+  isolation: isolate;
 }
 
 /* ------------------------------------------------------------------ *
