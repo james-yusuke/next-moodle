@@ -115,10 +115,18 @@ export function Starfield() {
 
   useEffect(() => {
     if (!isNeon) return;
-    const canvas = canvasRef.current;
-    if (canvas === null) return;
-    const context = canvas.getContext("2d");
-    if (context === null) return;
+    const canvasEl = canvasRef.current;
+    if (canvasEl === null) return;
+    const contextEl = canvasEl.getContext("2d");
+    if (contextEl === null) return;
+    // Re-bind to freshly-typed (non-nullable) consts: TS narrows `canvasEl`/
+    // `contextEl` themselves after the guards above, but that narrowing
+    // does not propagate into the nested function declarations below since
+    // they may run after this closure returns. Assigning to `canvas`/
+    // `context` here gives those closures variables whose *declared* type
+    // is already non-nullable, without needing control-flow narrowing.
+    const canvas: HTMLCanvasElement = canvasEl;
+    const context: CanvasRenderingContext2D = contextEl;
 
     const reducedMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     let animate = !reducedMotionQuery.matches;
