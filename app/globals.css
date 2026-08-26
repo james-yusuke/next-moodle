@@ -97,6 +97,185 @@ html[data-theme="dark"] {
   color-scheme: dark;
 }
 
+html[data-theme="neon"] {
+  color-scheme: dark;
+
+  /* Deliberately translucent: the outer "canvas" gaps (page background,
+     sidebar/header whitespace, gutters between cards) are exactly where the
+     starfield canvas beneath the page should show through. Opaque surfaces
+     (surface-primary/elevated/inset used by cards, forms, tables) are left
+     unchanged so content stays fully readable.
+
+     Kept fairly light (vs. a near-opaque overlay) so the canvas sky
+     underneath — stars, Milky Way band, nebulae — reads clearly instead of
+     being smothered by this layer. */
+  --surface-canvas: rgb(4 4 12 / 32%);
+  --surface-primary: #0b0b16;
+  --surface-secondary: #0c0c1a;
+  --surface-elevated: #12111f;
+  --surface-selected: #201a3a;
+  --surface-inset: #0a0a14;
+
+  --text-primary: #f1eefc;
+  --text-secondary: #b6afd6;
+  --text-tertiary: #8a83ab;
+  --text-disabled: #5c5680;
+
+  --border-subtle: rgb(180 160 255 / 8%);
+  --border-default: rgb(180 160 255 / 14%);
+  --border-strong: rgb(180 160 255 / 26%);
+
+  --accent-soft: #241a44;
+  --accent-400: #a893ff;
+  --accent-500: #7c5cff;
+  --accent-600: #5b3fe0;
+  --accent-contrast: #05050c;
+  --accent-glow: rgb(124 92 255 / 55%);
+
+  /* Secondary neon tube hues (cyan / blue) used alongside --accent-* (purple)
+     so neon text and glow accents read as a coherent cyan-blue-purple family
+     rather than a single flat color. */
+  --neon-cyan: #5eead4;
+  --neon-blue: #5aa6ff;
+  --neon-purple: var(--accent-500);
+  --neon-core: #f5f3ff;
+
+  --shadow-control: 0 0 0 1px var(--border-default);
+  --shadow-surface: 0 1px 1px rgb(0 0 0 / 30%), 0 0 0 1px var(--border-subtle);
+  --shadow-elevated: 0 0 0 1px var(--border-default), 0 1.5rem 4rem rgb(0 0 0 / 55%);
+  /* Neon is the only theme allowed a glow-style focus ring, per the Neon
+     background exception to Editorial Native's no-glow rule. */
+  --shadow-focus:
+    0 0 0 2px var(--surface-canvas),
+    0 0 0 4px var(--accent-400),
+    0 0 14px var(--accent-glow);
+
+  /* Ambient (non-hover) glow strengths for interactive/elevated surfaces.
+     Kept subtle by design: the sky should read as "quiet", not floodlit.
+     Entirely `inset` + a flush (non-blurred) 1px ring: cards and controls
+     often sit flush against an `overflow-x-clip` ancestor edge (page
+     gutters, scroll containers), and any outward-blurred shadow gets
+     hard-clipped there, reading as a broken line poking out of the layout.
+     Neither an inset glow nor a 0-blur ring can ever spill outside the
+     element's own box, so this stays clean at any edge regardless of
+     ancestor clipping. */
+  --neon-card-glow: 0 0 0 1px rgb(180 160 255 / 16%), inset 0 0 26px -10px var(--accent-glow);
+  --neon-control-glow: 0 0 0 1px rgb(180 160 255 / 16%), inset 0 0 14px -6px var(--accent-glow);
+  --neon-hover-glow: 0 0 0 1px rgb(180 160 255 / 32%), inset 0 0 22px -6px var(--accent-glow), inset 0 0 40px -14px var(--neon-cyan);
+}
+
+.ui-starfield {
+  /* Sits behind all in-flow content (see components/ui/starfield.tsx); never
+     intercepts pointer input and never triggers layout. */
+  z-index: -1;
+}
+
+html[data-theme="neon"] body {
+  /* `isolation: isolate` gives body its own stacking context without
+     requiring `position`. This matters specifically for the starfield:
+     without it, a child with `z-index: -1` (the canvas) stacks *below the
+     initial/root stacking context*, i.e. behind body's own
+     `background: var(--surface-canvas)` layer — making the sky nearly
+     invisible under that layer's tint. With this, the canvas still stacks
+     below all normal in-flow content (as intended) but above body's own
+     background/border, so the stars actually render visibly. */
+  isolation: isolate;
+}
+
+/* ------------------------------------------------------------------ *
+ * Neon theme decorations
+ *
+ * Editorial Native's no-decorative-animation / no-glow / no-large-shadow
+ * rules are deliberately excepted here for the Neon theme only, scoped
+ * under html[data-theme="neon"] so light/dark/system are never touched.
+ * ------------------------------------------------------------------ */
+
+/* Neon-tube text: a bright core color plus layered soft halos in
+   cyan/blue/purple. Reusable via .ui-neon-text, and applied automatically
+   to the app's primary page/story headings while in Neon mode. */
+html[data-theme="neon"] .ui-neon-text,
+html[data-theme="neon"] .ui-route-header h1,
+html[data-theme="neon"] #login-story-title {
+  color: var(--neon-core);
+  text-shadow:
+    0 0 1px rgb(255 255 255 / 90%),
+    0 0 3px var(--neon-core),
+    0 0 9px var(--neon-purple),
+    0 0 18px var(--neon-blue),
+    0 0 34px color-mix(in srgb, var(--neon-cyan) 55%, transparent);
+  animation: ui-neon-flicker 3s ease-in-out infinite;
+}
+
+/* Neon tube flicker: a brief chatter, a dip, a relight, a strong flare,
+   then it settles and holds — not a steady metronome blink. Runs once
+   every 3s per element; elements desync slightly via animation-delay so a
+   page full of neon text doesn't pulse in unison. */
+@keyframes ui-neon-flicker {
+  0%,
+  56%,
+  100% {
+    opacity: 1;
+    filter: brightness(1) saturate(1);
+  }
+  57% { opacity: 0.55; filter: brightness(0.6) saturate(0.9); }
+  58% { opacity: 1; filter: brightness(1.05) saturate(1.05); }
+  59.5% { opacity: 0.4; filter: brightness(0.5) saturate(0.85); }
+  61% { opacity: 1; filter: brightness(1.35) saturate(1.15); }
+  64% { opacity: 1; filter: brightness(1.35) saturate(1.15); }
+  70% { opacity: 1; filter: brightness(1) saturate(1); }
+}
+
+html[data-theme="neon"] .ui-route-header h1 { animation-delay: -0.4s; }
+html[data-theme="neon"] #login-story-title { animation-delay: -1.7s; }
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="neon"] .ui-neon-text,
+  html[data-theme="neon"] .ui-route-header h1,
+  html[data-theme="neon"] #login-story-title {
+    animation: none;
+  }
+}
+
+/* Cards, panels and controls: a quiet ambient glow rather than a flat
+   shadow, so the UI reads as "floating in the night sky". */
+html[data-theme="neon"] .ui-card,
+html[data-theme="neon"] .ui-login-workspace,
+html[data-theme="neon"] .ui-status-panel {
+  box-shadow: var(--neon-card-glow);
+  transition: box-shadow var(--motion-standard);
+}
+
+html[data-theme="neon"] .ui-button,
+html[data-theme="neon"] .ui-icon-button,
+html[data-theme="neon"] .ui-theme-control__item[aria-pressed="true"] {
+  box-shadow: var(--neon-control-glow);
+  transition: box-shadow var(--motion-standard), background-color var(--duration-feedback), color var(--duration-feedback), transform var(--duration-instant);
+}
+
+html[data-theme="neon"] .ui-app-nav__link[aria-current="page"] {
+  box-shadow: var(--neon-control-glow);
+}
+
+/* Hover: a modest boost in glow intensity, never a change in size/position
+   beyond what the base component already does. */
+html[data-theme="neon"] .ui-card:hover,
+html[data-theme="neon"] .ui-button:hover:not(:disabled),
+html[data-theme="neon"] .ui-icon-button:hover:not(:disabled),
+html[data-theme="neon"] .ui-app-nav__link:hover,
+html[data-theme="neon"] .ui-data-row:hover,
+html[data-theme="neon"] .ui-section-index a:hover {
+  box-shadow: var(--neon-hover-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="neon"] .ui-card,
+  html[data-theme="neon"] .ui-button,
+  html[data-theme="neon"] .ui-icon-button,
+  html[data-theme="neon"] .ui-app-nav__link {
+    transition: none;
+  }
+}
+
 @theme inline {
   --color-canvas: var(--surface-canvas);
   --color-surface: var(--surface-primary);

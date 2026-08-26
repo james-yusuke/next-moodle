@@ -1,6 +1,6 @@
 "use client";
 
-import { Desktop, Moon, Sun } from "@phosphor-icons/react";
+import { Desktop, Moon, Sparkle, Sun } from "@phosphor-icons/react";
 import {
   createContext,
   useContext,
@@ -98,6 +98,7 @@ const THEME_LABELS = {
   system: "自動",
   light: "ライト",
   dark: "ダーク",
+  neon: "ネオン",
 } as const satisfies Record<ThemeMode, string>;
 
 function ThemeGlyph({ mode }: Readonly<{ mode: ThemeMode }>) {
@@ -108,6 +109,8 @@ function ThemeGlyph({ mode }: Readonly<{ mode: ThemeMode }>) {
       return <Sun aria-hidden size={17} weight="regular" />;
     case "dark":
       return <Moon aria-hidden size={17} weight="regular" />;
+    case "neon":
+      return <Sparkle aria-hidden size={17} weight="regular" />;
   }
 }
 
@@ -118,7 +121,7 @@ export function ThemeControl() {
   }
 
   return (
-    <div aria-label="表示テーマ" className="ui-theme-control inline-grid grid-cols-3 gap-1 rounded-[var(--shape-card)] bg-[var(--surface-inset)] p-1" role="group">
+    <div aria-label="表示テーマ" className="ui-theme-control inline-grid grid-cols-4 gap-1 rounded-[var(--shape-card)] bg-[var(--surface-inset)] p-1" role="group">
       {THEME_MODES.map((themeMode) => (
         <button
           aria-pressed={context.mode === themeMode}
