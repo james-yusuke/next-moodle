@@ -28,3 +28,4 @@ export { Tab, Tabs } from "./tabs";
 export { Toast, ToastRegion } from "./toast";
 export type { ToastTone } from "./toast";
 export { Toolbar } from "./toolbar";
+export { Starfield } from "./starfield";
