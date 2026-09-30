@@ -14,6 +14,14 @@ const VIEWPORTS = [
 
 const THEMES = ["dark", "light"] as const;
 
+test("does not expose the removed writing-assistance API", async ({ request }) => {
+  const response = await request.post("/api/assignments/9101/ai/review", {
+    data: { draft: "This route must remain unavailable." },
+  });
+
+  expect(response.status()).toBe(404);
+});
+
 for (const viewport of VIEWPORTS) {
   for (const theme of THEMES) {
     test(`renders the ${theme} showcase without overflow at ${viewport.width}px`, async ({
@@ -47,7 +55,8 @@ for (const viewport of VIEWPORTS) {
 
       const undersizedTargets = await page.evaluate(() =>
         Array.from(document.querySelectorAll("button, input:not([type=checkbox])")).flatMap((element) => {
-          if (element.matches(".sr-only, .ui-sr-only") || getComputedStyle(element).display === "none") return [];
+          const computed = getComputedStyle(element);
+          if (computed.display === "none" || (computed.position === "absolute" && computed.inlineSize === "1px" && computed.blockSize === "1px")) return [];
           const rect = element.getBoundingClientRect();
           if (rect.width >= 44 && rect.height >= 44) {
             return [];
@@ -135,8 +144,8 @@ test.describe("reduced motion", () => {
     await page.goto("/dev/ui");
     await hideDevelopmentChrome(page);
 
-    const dock = page.locator(".ui-action-dock").first();
-    const row = page.locator(".ui-data-row").first();
+    const dock = page.getByTestId("action-dock").first();
+    const row = page.getByTestId("data-row").first();
     await row.hover();
     const motion = await dock.evaluate((element) => ({
       animationDuration: getComputedStyle(element).animationDuration,

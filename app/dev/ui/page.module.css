@@ -1,0 +1,217 @@
+/* Component-local styles with independent scope. */
+.style5 {
+    margin: 0px;
+  }
+.style7 {
+    margin: 0px;
+  }
+.style10 {
+    margin: 0px;
+  }
+.tabular {
+    margin: 0px;
+  }
+.style12 {
+    margin: 0px;
+  }
+.style1 {
+    margin-inline: auto;
+  }
+.style6 {
+    display: block;
+  }
+.style13 {
+    display: flex;
+  }
+.style2 {
+    display: grid;
+  }
+.style3 {
+    display: grid;
+  }
+.style8 {
+    display: grid;
+  }
+.style10 {
+    display: grid;
+  }
+.style11 {
+    display: grid;
+  }
+.style1 {
+    min-height: 100dvh;
+  }
+.style1 {
+    width: 100%;
+  }
+.style7 {
+    max-width: var(--container-2xl);
+  }
+.style3 {
+    max-width: var(--container-4xl);
+  }
+.style1 {
+    max-width: 90rem;
+  }
+.style13 {
+    flex-wrap: wrap;
+  }
+.style8 {
+    align-content: flex-start;
+  }
+.style13 {
+    justify-content: space-between;
+  }
+.style8 {
+    justify-items: end;
+  }
+.style11 {
+    gap: 0.25rem;
+  }
+.style8 {
+    gap: calc(0.25rem * 2);
+  }
+.style10 {
+    gap: calc(0.25rem * 3);
+  }
+.style13 {
+    gap: calc(0.25rem * 3);
+  }
+.style3 {
+    gap: calc(0.25rem * 4);
+  }
+.style2 {
+    gap: calc(0.25rem * 8);
+  }
+.style10 {
+    border-radius: var(--shape-card);
+  }
+.style2 {
+    border-radius: var(--shape-sheet);
+  }
+.style1 {
+    background-color: var(--surface-canvas);
+  }
+.style10 {
+    background-color: var(--surface-inset);
+  }
+.style2 {
+    background-color: var(--surface-primary);
+  }
+.style10 {
+    padding: calc(0.25rem * 4);
+  }
+.style2 {
+    padding: calc(0.25rem * 5);
+  }
+.style1 {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style1 {
+    padding-block: calc(0.25rem * 8);
+  }
+.style13 {
+    padding-block: calc(0.25rem * 8);
+  }
+.style4 {
+    font-family: var(--font-geist-mono);
+  }
+.style7 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.tabular {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style12 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style9 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style13 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style7 {
+    --nm-leading: calc(0.25rem * 7);
+    line-height: calc(0.25rem * 7);
+  }
+.style5 {
+    --nm-leading: .98;
+    line-height: .98;
+  }
+.style5 {
+    --nm-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+.style4 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style5 {
+    --nm-tracking: -.065em;
+    letter-spacing: -.065em;
+  }
+.style4 {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.style7 {
+    color: var(--text-secondary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+.style9 {
+    color: var(--text-tertiary);
+  }
+.style13 {
+    color: var(--text-tertiary);
+  }
+@media (width >= 40rem) {
+    .style10 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+@media (width >= 40rem) {
+    .style2 {
+      padding: calc(0.25rem * 8);
+    }
+  }
+@media (width >= 40rem) {
+    .style1 {
+      padding-inline: calc(0.25rem * 6);
+    }
+  }
+@media (width >= 64rem) {
+    .style10 {
+      grid-column: span 2 / span 2;
+    }
+  }
+@media (width >= 64rem) {
+    .style1 {
+      padding-inline: calc(0.25rem * 10);
+    }
+  }
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+.tabular2 {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+@media (width >= 64rem) {
+  .style2 { grid-template-columns: minmax(0,1fr) auto; }
+}
+
+/* Complex arbitrary values migrated from the former utility markup. */
+.style5 { font-size: clamp(2.25rem,6vw,5rem); }

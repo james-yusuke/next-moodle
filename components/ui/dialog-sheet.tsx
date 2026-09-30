@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./dialog-sheet.module.css";
 import { AnimatePresence, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import { X } from "@phosphor-icons/react";
@@ -19,9 +20,9 @@ type DialogSheetProps = Readonly<{
 }>;
 
 const placementClasses = {
-  center: "max-h-[calc(100dvh-2rem)] w-full max-w-[42rem] rounded-[var(--shape-sheet)]",
-  right: "ml-auto h-dvh w-[min(28rem,100%)] rounded-l-[var(--shape-sheet)]",
-  bottom: "mt-auto max-h-[calc(100dvh-1rem)] w-full rounded-t-[var(--shape-sheet)]",
+  center: styles.placementClassescenter1!,
+  right: styles.placementClassesright2!,
+  bottom: styles.placementClassesbottom3!,
 } as const;
 
 const placementMotion = {
@@ -78,11 +79,11 @@ export function DialogSheet({
       aria-describedby={description === undefined ? undefined : descriptionId}
       aria-labelledby={titleId}
       className={classNames(
-        "ui-dialog-sheet fixed inset-0 z-50 m-0 h-dvh max-h-none w-full max-w-none overflow-hidden bg-transparent p-0 text-[var(--text-primary)] backdrop:bg-transparent",
-        placement === "center" && "grid place-items-center p-4",
-        placement === "right" && "flex justify-end",
-        placement === "bottom" && "flex items-end",
-        !open && "pointer-events-none",
+        styles.dialogSheet!,
+        placement === "center" && styles.style1!,
+        placement === "right" && styles.style2!,
+        placement === "bottom" && styles.style3!,
+        !open && styles.style4!,
       )}
       onCancel={(event) => {
         event.preventDefault();
@@ -98,7 +99,7 @@ export function DialogSheet({
           <m.div
             animate={{ opacity: 1 }}
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-black/55 backdrop-blur-[2px]"
+            className={styles.style5!}
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             transition={{ duration }}
@@ -110,24 +111,24 @@ export function DialogSheet({
           <m.section
             animate={panelMotion.animate}
             className={classNames(
-              "relative z-10 flex max-w-full flex-col overflow-hidden bg-[var(--surface-elevated)] shadow-[var(--shadow-elevated)]",
+              styles.style6!,
               placementClasses[placement],
             )}
             exit={panelMotion.exit}
             initial={panelMotion.initial}
             transition={{ duration, ease: [0.16, 1, 0.3, 1] }}
           >
-            <header className="flex min-h-16 items-start gap-3 px-4 py-3 sm:px-5">
-              <div className="min-w-0 flex-1">
-                <span className="text-xs font-semibold text-[var(--accent-400)]">{label}</span>
-                <h2 className="m-0 mt-0.5 text-lg font-semibold text-[var(--text-primary)]" id={titleId}>{title}</h2>
+            <header className={styles.style7!}>
+              <div className={styles.style8!}>
+                <span className={styles.style9!}>{label}</span>
+                <h2 className={styles.style10!} id={titleId}>{title}</h2>
                 {description === undefined ? null : (
-                  <p className="m-0 mt-1 text-sm leading-6 text-[var(--text-secondary)]" id={descriptionId}>{description}</p>
+                  <p className={styles.style11!} id={descriptionId}>{description}</p>
                 )}
               </div>
               <IconButton icon={<X size={20} />} label="閉じる" onClick={() => onOpenChange(false)} variant="ghost" />
             </header>
-            <div className="min-h-0 flex-1 overflow-y-auto px-4 pb-5 sm:px-5">{children}</div>
+            <div className={styles.style12!}>{children}</div>
           </m.section>
         ) : null}
       </AnimatePresence>

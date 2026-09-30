@@ -1,0 +1,165 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    margin: 0px;
+  }
+.style4 {
+    margin: 0px;
+  }
+.style5 {
+    margin: 0px;
+  }
+.style9 {
+    margin: 0px;
+  }
+.style10 {
+    margin: 0px;
+  }
+.style4 {
+    margin-top: 0.25rem;
+  }
+.style1 {
+    display: flex;
+  }
+.style7 {
+    display: flex;
+  }
+.style10 {
+    display: flex;
+  }
+.style6 {
+    display: grid;
+  }
+.style6 {
+    min-height: calc(0.25rem * 14);
+  }
+.style1 {
+    min-height: calc(0.25rem * 18);
+  }
+.style2 {
+    flex-shrink: 0;
+  }
+.style11 {
+    flex-shrink: 0;
+  }
+.style7 {
+    flex-wrap: wrap;
+  }
+.style1 {
+    align-items: center;
+  }
+.style6 {
+    align-items: center;
+  }
+.style10 {
+    align-items: center;
+  }
+.style7 {
+    gap: 0.25rem;
+  }
+.style6 {
+    gap: calc(0.25rem * 2);
+  }
+.style10 {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+:where(.style5 > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.style5 > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+.shortcuts {
+    overflow: hidden;
+  }
+.style8 {
+    border-radius: var(--shape-control);
+  }
+.style8 {
+    background-color: var(--surface-inset);
+  }
+.style10 {
+    background-color: var(--surface-inset);
+  }
+.style1 {
+    padding: calc(0.25rem * 4);
+  }
+.style10 {
+    padding: calc(0.25rem * 4);
+  }
+.style8 {
+    padding-inline: calc(0.25rem * 2);
+  }
+.style6 {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style8 {
+    padding-block: 0.25rem;
+  }
+.style6 {
+    padding-block: calc(0.25rem * 3);
+  }
+.style8 {
+    font-family: var(--font-geist-mono);
+  }
+.style3 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style9 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style8 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style10 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style10 {
+    --nm-leading: calc(0.25rem * 5);
+    line-height: calc(0.25rem * 5);
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style2 {
+    color: var(--accent-400);
+  }
+.style9 {
+    color: var(--text-secondary);
+  }
+.style10 {
+    color: var(--text-secondary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+@media (width >= 40rem) {
+    .style6 {
+      gap: calc(0.25rem * 4);
+    }
+  }
+@media (width >= 40rem) {
+    .style1 {
+      padding: calc(0.25rem * 5);
+    }
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+@media (width >= 40rem) {
+  .style6 { grid-template-columns: minmax(10rem,.7fr) minmax(0,1.3fr); }
+}

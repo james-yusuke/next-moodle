@@ -1,3 +1,4 @@
+import styles from "./surface.module.css";
 import type { ReactNode } from "react";
 import { classNames } from "./class-names";
 
@@ -13,9 +14,9 @@ type SurfaceProps = Readonly<{
 }>;
 
 const variantClasses: Record<SurfaceVariant, string> = {
-  base: "bg-[var(--surface-primary)]",
-  raised: "bg-[var(--surface-elevated)] shadow-[var(--shadow-surface)]",
-  inset: "bg-[var(--surface-inset)]",
+  base: styles.variantClassesbase1!,
+  raised: styles.variantClassesraised2!,
+  inset: styles.variantClassesinset3!,
 };
 
 export function Surface({
@@ -27,24 +28,23 @@ export function Surface({
   variant = "base",
 }: SurfaceProps) {
   const classes = classNames(
-    "ui-surface relative min-w-0 overflow-visible rounded-[var(--shape-card)] p-4 sm:p-5",
-    `ui-surface--${variant}`,
+    styles.surface!,
     variantClasses[variant],
     className,
   );
 
   return (
-    <section className={classes}>
+    <section className={classes} data-variant={variant}>
       {eyebrow || title || actions ? (
-        <header className="ui-surface__header mb-4 flex items-start justify-between gap-4 max-sm:flex-col">
-          <div className="ui-surface__heading grid min-w-0 gap-1">
-            {eyebrow ? <span className="ui-surface__eyebrow text-xs font-semibold text-[var(--text-tertiary)]">{eyebrow}</span> : null}
-            {title ? <h3 className="ui-surface__title m-0 text-base font-semibold leading-snug text-[var(--text-primary)]">{title}</h3> : null}
+        <header className={styles.surfaceHeader!}>
+          <div className={styles.surfaceHeading!}>
+            {eyebrow ? <span className={styles.surfaceEyebrow!}>{eyebrow}</span> : null}
+            {title ? <h3 className={styles.surfaceTitle!}>{title}</h3> : null}
           </div>
-          {actions ? <div className="ui-surface__actions shrink-0">{actions}</div> : null}
+          {actions ? <div className={styles.surfaceActions!}>{actions}</div> : null}
         </header>
       ) : null}
-      <div className="ui-surface__body text-sm leading-6 text-[var(--text-secondary)]">{children}</div>
+      <div className={styles.surfaceBody!}>{children}</div>
     </section>
   );
 }

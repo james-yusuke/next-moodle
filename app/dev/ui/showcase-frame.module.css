@@ -1,0 +1,124 @@
+/* Component-local styles with independent scope. */
+.style5 {
+    margin: 0px;
+  }
+.style6 {
+    margin: 0px;
+  }
+.style1 {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style4 {
+    display: grid;
+  }
+.style6 {
+    max-width: var(--container-3xl);
+  }
+.style8 {
+    min-width: 0px;
+  }
+.style4 {
+    gap: calc(0.25rem * 2);
+  }
+.style2 {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 6);
+  }
+.style1 {
+    padding-block: calc(0.25rem * 10);
+  }
+.style3 {
+    font-family: var(--font-geist-mono);
+  }
+.style7 {
+    font-family: var(--font-geist-mono);
+  }
+.style5 {
+    font-size: var(--text-2xl);
+    line-height: var(--nm-leading, var(--text-2xl--line-height));
+  }
+.style6 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style3 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style7 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style6 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style5 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style5 {
+    --nm-tracking: -.035em;
+    letter-spacing: -.035em;
+  }
+.style7 {
+    --nm-tracking: .04em;
+    letter-spacing: .04em;
+  }
+.style3 {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.style6 {
+    color: var(--text-secondary);
+  }
+.style3 {
+    color: var(--text-tertiary);
+  }
+.style7 {
+    color: var(--text-tertiary);
+  }
+@media (width >= 40rem) {
+    .style2 {
+      gap: calc(0.25rem * 8);
+    }
+  }
+
+/* Component-local styles with independent scope. */
+.style12 {
+    display: grid;
+  }
+.style12 {
+    min-width: 0px;
+  }
+.style12 {
+    gap: calc(0.25rem * 3);
+  }
+.style12 {
+    border-radius: var(--shape-card);
+  }
+.style12 {
+    background-color: var(--surface-primary);
+  }
+.style12 {
+    padding: calc(0.25rem * 4);
+  }
+@media (width >= 48rem) {
+    .style22 {
+      grid-column: span 2 / span 2;
+    }
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+@media (width >= 40rem) {
+  .style2 { grid-template-columns: 9rem minmax(0,1fr); }
+}

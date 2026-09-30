@@ -1,0 +1,180 @@
+/* Component-local styles with independent scope. */
+.assignmentFacts {
+    margin: 0px;
+  }
+.tabular {
+    margin: 0px;
+  }
+.style3 {
+    margin: 0px;
+  }
+.style5 {
+    margin: 0px;
+  }
+.assignmentFiles {
+    margin: 0px;
+  }
+.style10 {
+    margin: 0px;
+  }
+.style1 {
+    display: flex;
+  }
+.style6 {
+    display: flex;
+  }
+.assignmentInspector {
+    display: grid;
+  }
+.assignmentFacts {
+    display: grid;
+  }
+.style4 {
+    display: grid;
+  }
+.assignmentFiles {
+    display: grid;
+  }
+.assignmentCanvas {
+    display: grid;
+  }
+.assignmentDescription {
+    display: grid;
+  }
+.style8 {
+    display: grid;
+  }
+.assignmentFeedback {
+    display: grid;
+  }
+.style6 {
+    min-height: calc(0.25rem * 11);
+  }
+.assignmentCanvas {
+    width: 100%;
+  }
+.assignmentCanvas {
+    min-width: 0px;
+  }
+.style7 {
+    flex-shrink: 0;
+  }
+.assignmentFiles {
+    list-style-type: none;
+  }
+.style6 {
+    align-items: center;
+  }
+.style1 {
+    justify-content: space-between;
+  }
+.style8 {
+    gap: 0.25rem;
+  }
+.style6 {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.style4 {
+    gap: calc(0.25rem * 3);
+  }
+.assignmentDescription {
+    gap: calc(0.25rem * 4);
+  }
+.assignmentFeedback {
+    gap: calc(0.25rem * 4);
+  }
+.assignmentInspector {
+    gap: calc(0.25rem * 5);
+  }
+.assignmentCanvas {
+    gap: calc(0.25rem * 6);
+  }
+:where(.assignmentFacts > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.assignmentFiles > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.assignmentFacts > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+:where(.assignmentFiles > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+.assignmentFiles {
+    padding: 0px;
+  }
+.style1 {
+    padding-block: calc(0.25rem * 3);
+  }
+.tabular {
+    text-align: right;
+  }
+.style3 {
+    text-align: right;
+  }
+.style9 {
+    font-family: var(--font-geist-mono);
+  }
+.style5 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.style10 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style1 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style6 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style9 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.richContent {
+    --nm-leading: calc(0.25rem * 7);
+    line-height: calc(0.25rem * 7);
+  }
+.style5 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style10 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style9 {
+    --nm-tracking: .07em;
+    letter-spacing: .07em;
+  }
+.style9 {
+    color: var(--accent-400);
+  }
+.style6 {
+    color: var(--text-secondary);
+  }
+.style2 {
+    color: var(--text-tertiary);
+  }
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+.tabular2 {
+  font-variant-numeric: tabular-nums;
+}

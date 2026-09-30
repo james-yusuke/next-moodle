@@ -1,0 +1,99 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    pointer-events: none;
+  }
+.style3 {
+    position: fixed;
+  }
+.style3 {
+    right: calc(0.25rem * 4);
+  }
+.style3 {
+    z-index: 70;
+  }
+.toast {
+    display: flex;
+  }
+.style1 {
+    display: grid;
+  }
+.style3 {
+    display: grid;
+  }
+.style1 {
+    width: calc(0.25rem * 6);
+    height: calc(0.25rem * 6);
+  }
+.toast {
+    min-height: calc(0.25rem * 14);
+  }
+.style2 {
+    min-width: 0px;
+  }
+.style2 {
+    flex: 1;
+  }
+.style1 {
+    flex-shrink: 0;
+  }
+.style1 {
+    place-items: center;
+  }
+.toast {
+    align-items: center;
+  }
+.style3 {
+    justify-items: end;
+  }
+.style3 {
+    gap: calc(0.25rem * 2);
+  }
+.toast {
+    gap: calc(0.25rem * 3);
+  }
+.toast {
+    border-radius: var(--shape-card);
+  }
+.toast {
+    background-color: var(--surface-elevated);
+  }
+.toast {
+    padding: calc(0.25rem * 3);
+  }
+.toast {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style2 {
+    color: var(--text-primary);
+  }
+.toast {
+    --nm-shadow: var(--shadow-elevated);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (width >= 48rem) {
+    .style3 {
+      bottom: calc(0.25rem * 4);
+    }
+  }
+.style3 > * {
+    pointer-events: auto;
+  }
+
+/* Component-local styles with independent scope. */
+.toneClasseserror4 {
+    color: var(--status-error);
+  }
+.toneClassesinfo1 {
+    color: var(--status-info);
+  }
+.toneClassessuccess2 {
+    color: var(--status-success);
+  }
+.toneClasseswarning3 {
+    color: var(--status-warning);
+  }
+
+/* Complex arbitrary values migrated from the former utility markup. */
+.toast { width: min(24rem,calc(100vw-2rem)); }
+.style3 { bottom: calc(var(--mobile-nav-height,0px)+1rem); }

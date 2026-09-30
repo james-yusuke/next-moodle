@@ -1,0 +1,84 @@
+/* Component-local styles with independent scope. */
+.tabs {
+    display: inline-flex;
+  }
+.tab {
+    display: inline-flex;
+  }
+.tab {
+    min-height: calc(0.25rem * 9);
+  }
+.tabs {
+    min-height: calc(0.25rem * 11);
+  }
+.tabs {
+    max-width: 100%;
+  }
+.tab {
+    flex-shrink: 0;
+  }
+.tabs {
+    align-items: center;
+  }
+.tab {
+    align-items: center;
+  }
+.tab {
+    justify-content: center;
+  }
+.tabs {
+    gap: 0.25rem;
+  }
+.tabs {
+    overflow-x: auto;
+  }
+.tab {
+    border-radius: calc(var(--shape-control) - 0.125rem);
+  }
+.tabs {
+    border-radius: var(--shape-control);
+  }
+.style1 {
+    background-color: var(--surface-elevated);
+  }
+.tabs {
+    background-color: var(--surface-inset);
+  }
+.tabs {
+    padding: 0.25rem;
+  }
+.tab {
+    padding-inline: calc(0.25rem * 3);
+  }
+.tab {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.tab {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style1 {
+    color: var(--text-primary);
+  }
+.style2 {
+    color: var(--text-secondary);
+  }
+.style1 {
+    --nm-shadow: var(--shadow-control);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+.tab {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.tab {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+@media (hover: hover) {
+    .style2:hover {
+      color: var(--text-primary);
+    }
+  }

@@ -1,0 +1,69 @@
+/* Component-local styles with independent scope. */
+.style1 {
+    display: flex;
+  }
+.progress {
+    display: grid;
+  }
+.style3 {
+    height: calc(0.25rem * 1.5);
+  }
+.style3 {
+    width: 100%;
+  }
+.progress {
+    min-width: 0px;
+  }
+.style1 {
+    align-items: center;
+  }
+.style1 {
+    justify-content: space-between;
+  }
+.progress {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.style3 {
+    overflow: hidden;
+  }
+.style3 {
+    border-radius: calc(infinity * 1px);
+  }
+.style3 {
+    background-color: var(--surface-inset);
+  }
+.style1 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style1 {
+    color: var(--text-secondary);
+  }
+.style2 {
+    --nm-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--nm-ordinal,) var(--nm-slashed-zero,) var(--nm-numeric-figure,) var(--nm-numeric-spacing,) var(--nm-numeric-fraction,);
+  }
+.style3 {
+    accent-color: var(--accent-500);
+  }
+.style3::-moz-progress-bar {
+    border-radius: calc(infinity * 1px);
+  }
+.style3::-moz-progress-bar {
+    background-color: var(--accent-500);
+  }
+.style3::-webkit-progress-bar {
+    border-radius: calc(infinity * 1px);
+  }
+.style3::-webkit-progress-bar {
+    background-color: var(--surface-inset);
+  }
+.style3::-webkit-progress-value {
+    border-radius: calc(infinity * 1px);
+  }
+.style3::-webkit-progress-value {
+    background-color: var(--accent-500);
+  }

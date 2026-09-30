@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./calendar-event-actions.module.css";
 import { Plus, Trash } from "@phosphor-icons/react";
 import ky, { isKyError } from "ky";
 import { useRouter } from "next/navigation";
@@ -43,7 +44,7 @@ export function CalendarEventCreator() {
     }
   }
 
-  return <><Button icon={<Plus aria-hidden size={17} />} onClick={() => setOpen(true)} variant="secondary">予定を追加</Button><DialogSheet description="個人用の学習予定としてMoodleへ保存します。" label="予定" onOpenChange={setOpen} open={open} placement="center" title="予定を追加"><form className="grid gap-5" onSubmit={submit}><Field id="calendar-event-name" label="予定名" maxLength={200} name="name" required /><Field id="calendar-event-start" label="開始日時" name="startsAt" required type="datetime-local" /><div className="flex justify-end gap-2"><Button onClick={() => setOpen(false)} variant="ghost">キャンセル</Button><Button disabled={pending} loading={pending} type="submit" variant="primary">追加</Button></div><span aria-live="polite" className="text-xs text-[var(--status-error)]">{error ? "予定を追加できませんでした。" : ""}</span></form></DialogSheet></>;
+  return <><Button icon={<Plus aria-hidden size={17} />} onClick={() => setOpen(true)} variant="secondary">予定を追加</Button><DialogSheet description="個人用の学習予定としてMoodleへ保存します。" label="予定" onOpenChange={setOpen} open={open} placement="center" title="予定を追加"><form className={styles.style1!} onSubmit={submit}><Field id="calendar-event-name" label="予定名" maxLength={200} name="name" required /><Field id="calendar-event-start" label="開始日時" name="startsAt" required type="datetime-local" /><div className={styles.style2!}><Button onClick={() => setOpen(false)} variant="ghost">キャンセル</Button><Button disabled={pending} loading={pending} type="submit" variant="primary">追加</Button></div><span aria-live="polite" className={styles.style3!}>{error ? "予定を追加できませんでした。" : ""}</span></form></DialogSheet></>;
 }
 
 export function CalendarEventDelete({ eventId }: Readonly<{ eventId: number }>) {
@@ -59,5 +60,5 @@ export function CalendarEventDelete({ eventId }: Readonly<{ eventId: number }>) 
       setPending(false);
     }
   }
-  return <IconButton aria-label="予定を削除" className="ui-calendar-delete" disabled={pending} icon={<Trash aria-hidden size={16} />} label="予定を削除" onClick={remove} variant="ghost" />;
+  return <IconButton aria-label="予定を削除" className={styles.calendarDelete!} disabled={pending} icon={<Trash aria-hidden size={16} />} label="予定を削除" onClick={remove} variant="ghost" />;
 }

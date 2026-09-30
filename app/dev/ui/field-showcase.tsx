@@ -1,3 +1,4 @@
+import styles from "./field-showcase.module.css";
 import {
   CheckCircle,
   Clock,
@@ -15,7 +16,7 @@ export function FieldShowcase() {
       eyebrow="02 / Input"
       title="Fields and status"
     >
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className={styles.style1!}>
         <ShowcaseSample label="Default">
           <Field id="course-search" label="Course search" placeholder="Search by title" />
         </ShowcaseSample>
@@ -60,9 +61,9 @@ export function FieldShowcase() {
         </ShowcaseSample>
       </div>
 
-      <div className="grid gap-3 rounded-[var(--shape-card)] bg-[var(--surface-primary)] p-4 sm:p-6">
-        <h3 className="m-0 text-lg font-semibold">Semantic badges</h3>
-        <div className="flex flex-wrap gap-2">
+      <div className={styles.style2!}>
+        <h3 className={styles.style3!}>Semantic badges</h3>
+        <div className={styles.style4!}>
           <Badge>Draft</Badge>
           <Badge icon={<Info aria-hidden size={14} />} tone="accent">Selected</Badge>
           <Badge icon={<CheckCircle aria-hidden size={14} />} tone="success">Submitted</Badge>

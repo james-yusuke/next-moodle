@@ -1,0 +1,204 @@
+/* Component-local styles with independent scope. */
+.style6 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+.style3 {
+    margin: 0px;
+  }
+.style10 {
+    margin-right: auto;
+  }
+.style11 {
+    margin-right: auto;
+  }
+.style1 {
+    display: flex;
+  }
+.style9 {
+    display: flex;
+  }
+.choice {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style5 {
+    display: grid;
+  }
+.style7 {
+    display: grid;
+  }
+.style11 {
+    display: inline-flex;
+  }
+.style8 {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+.style7 {
+    min-height: calc(0.25rem * 14);
+  }
+.style9 {
+    min-width: 0px;
+  }
+.style7 {
+    cursor: pointer;
+  }
+.style1 {
+    flex-wrap: wrap;
+  }
+.style9 {
+    flex-wrap: wrap;
+  }
+.style9 {
+    align-items: baseline;
+  }
+.style7 {
+    align-items: center;
+  }
+.style11 {
+    align-items: center;
+  }
+.style1 {
+    align-items: flex-end;
+  }
+.style1 {
+    justify-content: space-between;
+  }
+.style9 {
+    justify-content: space-between;
+  }
+.style2 {
+    gap: 0.25rem;
+  }
+.style11 {
+    gap: calc(0.25rem * 1.5);
+  }
+.style5 {
+    gap: calc(0.25rem * 2);
+  }
+.style9 {
+    gap: calc(0.25rem * 2);
+  }
+.style7 {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 4);
+  }
+.choice {
+    gap: calc(0.25rem * 5);
+  }
+.choice {
+    border-radius: var(--shape-card);
+  }
+.style7 {
+    border-radius: var(--shape-control);
+  }
+.style5 {
+    border-style: var(--nm-border-style);
+    border-width: 0px;
+  }
+.style7 {
+    background-color: var(--surface-inset);
+  }
+.choice {
+    background-color: var(--surface-primary);
+  }
+.style5 {
+    padding: 0px;
+  }
+.choice {
+    padding: calc(0.25rem * 4);
+  }
+.style7 {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style7 {
+    padding-block: calc(0.25rem * 3);
+  }
+.kicker {
+    font-family: var(--font-geist-mono);
+  }
+.style10 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style11 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style3 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.kicker {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.kicker {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.style10 {
+    color: var(--status-error);
+  }
+.style11 {
+    color: var(--status-success);
+  }
+.kicker {
+    color: var(--text-tertiary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+.style8 {
+    accent-color: var(--accent-500);
+  }
+.style7 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.style7 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.style7:has(:is(:checked)) {
+    background-color: var(--surface-selected);
+  }
+.style7:has(:is(:disabled)) {
+    cursor: not-allowed;
+  }
+.style7:has(:is(:disabled)) {
+    opacity: 55%;
+  }
+.style7:has(:is(:focus-visible)) {
+    --nm-shadow: var(--shadow-focus);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (width >= 40rem) {
+    .choice {
+      padding: calc(0.25rem * 6);
+    }
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.style7 { grid-template-columns: auto minmax(0,1fr); }

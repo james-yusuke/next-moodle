@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./starfield.module.css";
 import { useEffect, useRef, useSyncExternalStore } from "react";
 
 type StarKind = "tiny" | "small" | "bright";
@@ -209,7 +210,7 @@ function serverIsNeonTheme(): boolean {
 /**
  * Canvas-based starfield background for the Neon theme only. Fixed,
  * pointer-events: none, and drawn behind all app content (see the
- * `.ui-starfield { z-index: -1 }` rule in globals.css). Positions are
+ * The component-local starfield rule keeps the canvas behind content. Positions are
  * generated once from a fixed seed so the layout stays stable across
  * reloads; every star then drifts left at a slow, constant, time-based
  * rate (no scroll tracking) so the sky feels alive without depending on
@@ -332,5 +333,5 @@ export function Starfield() {
 
   if (!isNeon) return null;
 
-  return <canvas aria-hidden className="ui-starfield pointer-events-none fixed inset-0" ref={canvasRef} />;
+  return <canvas aria-hidden className={styles.starfield!} ref={canvasRef} />;
 }

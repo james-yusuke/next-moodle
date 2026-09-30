@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./command-palette.module.css";
 import {
   ArrowRight,
   BookOpen,
@@ -85,7 +86,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
   useEffect(() => {
     const handleShortcut = (event: KeyboardEvent) => {
       if ((event.metaKey || event.ctrlKey) && event.key.toLocaleLowerCase("en") === "k") {
-        const trigger = rootRef.current?.querySelector<HTMLButtonElement>(".ui-command-trigger");
+        const trigger = rootRef.current?.querySelector<HTMLButtonElement>('[data-command-trigger="true"]');
         if (trigger === undefined || trigger === null || trigger.getClientRects().length === 0) return;
         event.preventDefault();
         openPalette();
@@ -151,18 +152,19 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
   };
 
   return (
-    <div className="ui-command-root contents" ref={rootRef}>
+    <div className={styles.commandRoot!} ref={rootRef}>
       <Button
         aria-label="移動・検索"
         aria-expanded={open}
         aria-haspopup="dialog"
-        className="ui-command-trigger min-w-11 justify-between md:min-w-[min(18rem,40vw)]"
+        className={styles.commandTrigger!}
+        data-command-trigger="true"
         icon={<MagnifyingGlass aria-hidden size={18} weight="regular" />}
         onClick={openPalette}
         variant="secondary"
       >
-        <span className="hidden md:inline">移動・検索</span>
-        <kbd className="hidden rounded-md bg-[var(--surface-inset)] px-2 py-1 font-mono text-xs text-[var(--text-tertiary)] md:inline">{shortcutLabel}K</kbd>
+        <span className={styles.style1!}>移動・検索</span>
+        <kbd className={styles.style2!}>{shortcutLabel}K</kbd>
       </Button>
       <DialogSheet
         description="画面、コース、活動、メッセージ、ファイルを横断します。"
@@ -172,11 +174,11 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
         placement="center"
         title="移動・検索"
       >
-        <div className="ui-command-panel grid max-h-[min(34rem,calc(100dvh-12rem))] min-h-0 grid-rows-[auto_minmax(0,1fr)_auto]">
-          <h2 className="ui-sr-only" id={titleId}>画面とコースを検索</h2>
-          <div className="ui-command-search grid min-h-12 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 rounded-[var(--shape-control)] bg-[var(--surface-inset)] px-3 shadow-[var(--shadow-focus)]">
-            <MagnifyingGlass aria-hidden className="shrink-0 text-[var(--text-secondary)]" size={20} weight="regular" />
-            <label className="ui-sr-only" htmlFor={`${listId}-input`}>検索語</label>
+        <div className={styles.commandPanel!}>
+          <h2 className={styles.srOnly!} id={titleId}>画面とコースを検索</h2>
+          <div className={styles.commandSearch!}>
+            <MagnifyingGlass aria-hidden className={styles.style3!} size={20} weight="regular" />
+            <label className={styles.srOnly!} htmlFor={`${listId}-input`}>検索語</label>
             <input
               aria-activedescendant={
                 results[selectedIndex] === undefined
@@ -186,7 +188,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
               aria-controls={listId}
               aria-expanded="true"
               autoComplete="off"
-              className="min-h-12 min-w-0 border-0 bg-transparent text-[var(--text-primary)] outline-none placeholder:text-[var(--text-tertiary)]"
+              className={styles.style4!}
               id={`${listId}-input`}
               onChange={(event) => {
                 setQuery(event.currentTarget.value);
@@ -217,20 +219,20 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
               role="combobox"
               value={query}
             />
-            <span className="ui-command-search__tools inline-flex items-center gap-1">
-              <kbd className="hidden rounded-md bg-[var(--surface-elevated)] px-2 py-1 font-mono text-xs text-[var(--text-tertiary)] sm:inline">Esc</kbd>
-              <button aria-label="検索を閉じる" className="grid size-9 place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-secondary)] hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]" onClick={() => setOpen(false)} type="button"><X aria-hidden size={18} weight="regular" /></button>
+            <span className={styles.commandSearchTools!}>
+              <kbd className={styles.style5!}>Esc</kbd>
+              <button aria-label="検索を閉じる" className={styles.style6!} onClick={() => setOpen(false)} type="button"><X aria-hidden size={18} weight="regular" /></button>
             </span>
           </div>
-          <div className="ui-command-results mt-3 grid min-h-0 gap-1 overflow-y-auto" id={listId} role="listbox">
+          <div className={styles.commandResults!} id={listId} role="listbox">
             {results.length === 0 ? (
-              <EmptyState className="my-1" icon={<MagnifyingGlass aria-hidden size={20} />} title="一致する結果はありません">別の言葉で検索してください。</EmptyState>
+              <EmptyState className={styles.style7!} icon={<MagnifyingGlass aria-hidden size={20} />} title="一致する結果はありません">別の言葉で検索してください。</EmptyState>
             ) : results.map((command, index) => (
               <button
                 aria-selected={selectedIndex === index}
                 className={classNames(
-                  "ui-command-option grid min-h-12 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3 rounded-[var(--shape-control)] border-0 px-3 py-2 text-left text-[var(--text-secondary)] transition-colors duration-[120ms] max-sm:grid-cols-[auto_minmax(0,1fr)_auto]",
-                  selectedIndex === index && "bg-[var(--surface-selected)] text-[var(--text-primary)]",
+                  styles.commandOption!,
+                  selectedIndex === index && styles.style8!,
                 )}
                 id={`${listId}-option-${index}`}
                 key={`${command.kind}-${command.href}`}
@@ -250,13 +252,13 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
                 ) : (
                   <SquaresFour aria-hidden size={20} weight="regular" />
                 )}
-                <span className="min-w-0 truncate font-semibold">{command.label}</span>
-                <small className="text-xs text-[var(--text-tertiary)] max-sm:hidden">{command.kind === "course" ? "コース" : command.kind === "activity" ? "活動" : command.kind === "file" ? "ファイル" : command.kind === "message" ? "会話" : "画面"}</small>
-                <ArrowRight aria-hidden className="shrink-0" size={17} weight="regular" />
+                <span className={styles.style9!}>{command.label}</span>
+                <small className={styles.style10!}>{command.kind === "course" ? "コース" : command.kind === "activity" ? "活動" : command.kind === "file" ? "ファイル" : command.kind === "message" ? "会話" : "画面"}</small>
+                <ArrowRight aria-hidden className={styles.style11!} size={17} weight="regular" />
               </button>
             ))}
           </div>
-          <p aria-live="polite" className="ui-command-help m-0 px-2 pt-3 text-xs text-[var(--text-tertiary)]">{remoteState === "loading" ? "Moodleを検索中…" : remoteState === "error" ? "Moodle検索を完了できませんでした。画面内の候補は利用できます。" : "上下キーで選択、Enterで移動、Escapeで閉じます。"}</p>
+          <p aria-live="polite" className={styles.commandHelp!}>{remoteState === "loading" ? "Moodleを検索中…" : remoteState === "error" ? "Moodle検索を完了できませんでした。画面内の候補は利用できます。" : "上下キーで選択、Enterで移動、Escapeで閉じます。"}</p>
         </div>
       </DialogSheet>
     </div>

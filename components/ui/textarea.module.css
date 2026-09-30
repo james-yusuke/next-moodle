@@ -1,0 +1,102 @@
+/* Component-local styles with independent scope. */
+.textarea {
+    display: grid;
+  }
+.textareaInput {
+    min-height: calc(0.25rem * 44);
+  }
+.textareaInput {
+    width: 100%;
+  }
+.textarea {
+    min-width: 0px;
+  }
+.textareaInput {
+    min-width: 0px;
+  }
+.textareaInput {
+    resize: vertical;
+  }
+.textarea {
+    gap: calc(0.25rem * 2);
+  }
+.textareaInput {
+    border-radius: var(--shape-card);
+  }
+.textareaInput {
+    border-style: var(--nm-border-style);
+    border-width: 0px;
+  }
+.textareaInput {
+    background-color: var(--surface-inset);
+  }
+.textareaInput {
+    padding: calc(0.25rem * 4);
+  }
+.fieldDescription {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.fieldMessage {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.fieldDescription {
+    --nm-leading: calc(0.25rem * 5);
+    line-height: calc(0.25rem * 5);
+  }
+.fieldMessage {
+    --nm-leading: calc(0.25rem * 5);
+    line-height: calc(0.25rem * 5);
+  }
+.textareaInput {
+    --nm-leading: calc(0.25rem * 7);
+    line-height: calc(0.25rem * 7);
+  }
+.fieldLabel {
+    --nm-leading: var(--leading-snug);
+    line-height: var(--leading-snug);
+  }
+.fieldLabel {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.fieldLabel {
+    color: var(--font-size-label);
+  }
+.fieldLabel {
+    color: var(--text-primary);
+  }
+.textareaInput {
+    color: var(--text-primary);
+  }
+.fieldDescription {
+    color: var(--text-secondary);
+  }
+.fieldMessage {
+    color: var(--text-secondary);
+  }
+.textareaInput {
+    --nm-shadow: var(--shadow-control);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+.textareaInput {
+    transition-property: box-shadow;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.textareaInput {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.textareaInput {
+    --nm-outline-style: none;
+    outline-style: none;
+  }
+.textareaInput::placeholder {
+    color: var(--text-tertiary);
+  }
+.textareaInput:focus-visible {
+    --nm-shadow: var(--shadow-focus);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }

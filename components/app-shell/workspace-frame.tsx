@@ -1,3 +1,4 @@
+import styles from "./workspace-frame.module.css";
 import type { ReactNode } from "react";
 
 import type { SharedTransitionKind, WorkspaceMode } from "@/components/app-shell/motion";
@@ -8,7 +9,7 @@ export type PageWidth = "reading" | "standard" | "wide" | "full";
 
 type PageFrameProps = Readonly<{
   actions?: ReactNode;
-  className?: string;
+  className?: string | undefined;
   content: ReactNode;
   context?: ReactNode;
   header?: ReactNode;
@@ -51,53 +52,53 @@ type SectionIndexItem = Readonly<{
 }>;
 
 const widthClasses: Record<PageWidth, string> = {
-  reading: "max-w-3xl",
-  standard: "max-w-6xl",
-  wide: "max-w-[90rem]",
-  full: "max-w-none",
+  reading: styles.widthClassesreading1!,
+  standard: styles.widthClassesstandard2!,
+  wide: styles.widthClasseswide3!,
+  full: styles.widthClassesfull4!,
 };
 
 export function PageFrame({ actions, className, content, context, header, mobileView = "content", mode, state, utility, width }: PageFrameProps) {
   const resolvedWidth = width ?? (mode === "focus" ? "reading" : mode === "conversation" ? "full" : "wide");
   return (
     <div className={classNames(
-      "ui-page-frame grid min-h-full min-w-0 grid-cols-[minmax(0,1fr)] grid-rows-[auto_minmax(0,1fr)_auto] overflow-x-clip bg-[var(--surface-canvas)]",
-      mode === "conversation" && "h-full max-h-full overflow-hidden",
-      context !== undefined && mode === "conversation" && "md:grid-cols-[18rem_minmax(0,1fr)]",
-      context !== undefined && mode === "browse" && "xl:grid-cols-[18rem_minmax(0,1fr)]",
-      utility !== undefined && "2xl:grid-cols-[18rem_minmax(0,1fr)_20rem]",
+      styles.pageFrame!,
+      mode === "conversation" && styles.style1!,
+      context !== undefined && mode === "conversation" && styles.style2!,
+      context !== undefined && mode === "browse" && styles.style3!,
+      utility !== undefined && styles.style4!,
       className,
-    )} data-mode={mode} data-state={state} data-width={resolvedWidth}>
+    )} data-mode={mode} data-state={state} data-ui="page-frame" data-width={resolvedWidth}>
       {header === undefined ? null : (
-        <div className="ui-page-frame__header col-span-full row-start-1 px-4 pt-5 pb-2 sm:px-6 sm:pt-7 lg:px-10 lg:pt-8">
-          <div className={classNames("mx-auto w-full", widthClasses[resolvedWidth])}>{header}</div>
+        <div className={styles.pageFrameHeader!}>
+          <div className={classNames(styles.style5!, widthClasses[resolvedWidth])}>{header}</div>
         </div>
       )}
       {context === undefined ? null : (
         <aside className={classNames(
-          "ui-page-frame__context row-start-2 hidden min-h-0 w-full min-w-0 bg-[var(--surface-secondary)]",
-          mobileView === "context" && "!block col-start-1",
-          mode === "conversation" && "md:block md:col-start-1 md:w-[18rem] md:min-w-[18rem]",
-          mode === "browse" && "xl:block xl:col-start-1 xl:w-[18rem] xl:min-w-[18rem]",
-        )}>{context}</aside>
+          styles.pageFrameContext!,
+          mobileView === "context" && styles.style6!,
+          mode === "conversation" && styles.style7!,
+          mode === "browse" && styles.style8!,
+        )} data-testid="page-frame-context">{context}</aside>
       )}
       <section className={classNames(
-        "ui-page-frame__content row-start-2 min-h-0 w-full min-w-0 px-4 py-5 pb-10 sm:px-6 lg:px-10",
-        mobileView === "context" && "max-md:hidden",
-        context !== undefined && mode === "conversation" && "md:col-start-2",
-        context !== undefined && mode === "browse" && "xl:col-start-2",
-        mode === "conversation" && "h-full overflow-hidden !p-0",
-      )}>
-        <div className={classNames("mx-auto w-full", widthClasses[resolvedWidth], mode === "conversation" && "h-full")}>{content}</div>
+        styles.pageFrameContent!,
+        mobileView === "context" && styles.style9!,
+        context !== undefined && mode === "conversation" && styles.style10!,
+        context !== undefined && mode === "browse" && styles.style11!,
+        mode === "conversation" && styles.style12!,
+      )} data-testid="page-frame-content">
+        <div className={classNames(styles.style5!, widthClasses[resolvedWidth], mode === "conversation" && styles.style13!)}>{content}</div>
       </section>
-      {utility === undefined ? null : <aside className="ui-page-frame__utility row-start-2 hidden min-h-0 min-w-0 bg-[var(--surface-secondary)] 2xl:col-start-3 2xl:block">{utility}</aside>}
-      {actions === undefined ? null : <footer className="ui-page-frame__actions z-20 col-span-full row-start-3">{actions}</footer>}
+      {utility === undefined ? null : <aside className={styles.pageFrameUtility!}>{utility}</aside>}
+      {actions === undefined ? null : <footer className={styles.pageFrameActions!}>{actions}</footer>}
     </div>
   );
 }
 
 export function RouteHeader({ actions, breadcrumbs, description, eyebrow, metadata, primaryAction, secondaryActions, shared, status, title }: RouteHeaderProps) {
-  const heading = <h1 className="m-0 max-w-[26ch] text-[clamp(1.625rem,2.8vw,2.125rem)] leading-[1.08] font-bold tracking-[-.04em] text-[var(--text-primary)] text-balance">{title}</h1>;
+  const heading = <h1 className={styles.style14!}>{title}</h1>;
   const resolvedEyebrow = breadcrumbs ?? eyebrow;
   const resolvedActions = actions ?? (
     primaryAction === undefined && secondaryActions === undefined ? undefined : (
@@ -106,30 +107,30 @@ export function RouteHeader({ actions, breadcrumbs, description, eyebrow, metada
   );
 
   return (
-    <header className="ui-route-header grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-end gap-x-8 gap-y-3 pb-5 max-md:grid-cols-1">
-      <div className="ui-route-header__copy row-span-2 grid min-w-0 gap-2">
-        {resolvedEyebrow === undefined ? null : <div className="ui-route-header__eyebrow flex flex-wrap items-center gap-2 text-xs font-semibold tracking-[.025em] text-[var(--text-secondary)] [&_a]:text-inherit [&_a]:no-underline">{resolvedEyebrow}</div>}
-        <div className="flex min-w-0 flex-wrap items-center gap-3">
+    <header className={styles.routeHeader!}>
+      <div className={styles.routeHeaderCopy!}>
+        {resolvedEyebrow === undefined ? null : <div className={styles.routeHeaderEyebrow!}>{resolvedEyebrow}</div>}
+        <div className={styles.style15!}>
           {shared === undefined ? heading : <SharedTransition identifier={shared.identifier} kind={shared.kind}>{heading}</SharedTransition>}
           {status}
         </div>
-        {description === undefined ? null : <p className="m-0 max-w-[68ch] text-sm leading-6 text-[var(--text-secondary)] text-pretty">{description}</p>}
+        {description === undefined ? null : <p className={styles.style16!}>{description}</p>}
       </div>
-      {metadata === undefined ? null : <div className="ui-route-header__metadata self-start text-right font-mono text-xs text-[var(--text-tertiary)] max-md:text-left">{metadata}</div>}
-      {resolvedActions === undefined ? null : <div className="ui-route-header__actions flex min-w-0 flex-wrap justify-end gap-2 max-md:justify-start">{resolvedActions}</div>}
+      {metadata === undefined ? null : <div className={styles.routeHeaderMetadata!}>{metadata}</div>}
+      {resolvedActions === undefined ? null : <div className={styles.routeHeaderActions!}>{resolvedActions}</div>}
     </header>
   );
 }
 
 export function SectionIndex({ items }: Readonly<{ items: readonly SectionIndexItem[] }>) {
   return (
-    <ol className="ui-section-index m-0 list-none p-2">
+    <ol className={styles.sectionIndex!}>
       {items.map((item, index) => (
         <li key={item.id}>
-          <a className="grid min-h-11 grid-cols-[2rem_minmax(0,1fr)_auto] items-center gap-2 rounded-[var(--shape-control)] p-2 text-sm text-[var(--text-secondary)] no-underline transition-colors duration-[120ms] hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)]" href={item.href}>
-            <span className="ui-section-index__number font-mono text-xs text-[var(--accent-400)]">{String(index + 1).padStart(2, "0")}</span>
-            <span className="ui-section-index__label min-w-0 truncate">{item.label}</span>
-            {item.state === undefined ? null : <span className="ui-section-index__state text-xs text-[var(--text-tertiary)]">{item.state}</span>}
+          <a className={styles.style17!} href={item.href}>
+            <span className={styles.sectionIndexNumber!}>{String(index + 1).padStart(2, "0")}</span>
+            <span className={styles.sectionIndexLabel!}>{item.label}</span>
+            {item.state === undefined ? null : <span className={styles.sectionIndexState!}>{item.state}</span>}
           </a>
         </li>
       ))}
@@ -139,15 +140,15 @@ export function SectionIndex({ items }: Readonly<{ items: readonly SectionIndexI
 
 export function DataRow({ action, index, metadata, state, title }: DataRowProps) {
   return (
-    <div className="ui-data-row grid min-h-15 min-w-0 grid-cols-[auto_minmax(0,1fr)_auto_auto] items-center gap-3 border-b border-[var(--border-subtle)] px-3 py-3 transition-colors duration-[120ms] hover:bg-[var(--surface-elevated)] max-sm:grid-cols-[auto_minmax(0,1fr)_auto] max-sm:items-start">
-      {index === undefined ? null : <span className="ui-data-row__index font-mono text-xs text-[var(--accent-400)]">{index}</span>}
-      <span className="ui-data-row__copy grid min-w-0 gap-0.5"><strong className="truncate">{title}</strong>{metadata === undefined ? null : <small className="truncate text-xs text-[var(--text-tertiary)]">{metadata}</small>}</span>
-      {state === undefined ? null : <span className="ui-data-row__state text-xs text-[var(--text-tertiary)] max-sm:col-start-2">{state}</span>}
-      {action === undefined ? null : <span className="ui-data-row__action max-sm:col-start-2">{action}</span>}
+    <div className={styles.dataRow!} data-testid="data-row">
+      {index === undefined ? null : <span className={styles.dataRowIndex!}>{index}</span>}
+      <span className={styles.dataRowCopy!}><strong className={styles.style18!}>{title}</strong>{metadata === undefined ? null : <small className={styles.style19!}>{metadata}</small>}</span>
+      {state === undefined ? null : <span className={styles.dataRowState!}>{state}</span>}
+      {action === undefined ? null : <span className={styles.dataRowAction!}>{action}</span>}
     </div>
   );
 }
 
 export function ActionDock({ children }: Readonly<{ children: ReactNode }>) {
-  return <div className="ui-action-dock flex min-h-17 items-center justify-between gap-3 bg-[color-mix(in_srgb,var(--surface-elevated)_94%,transparent)] px-4 py-2 shadow-[0_-12px_32px_rgb(10_8_5_/_8%)] backdrop-blur-xl max-sm:flex-col max-sm:items-stretch max-sm:p-3 sm:px-6 lg:px-8">{children}</div>;
+  return <div className={styles.actionDock!} data-testid="action-dock">{children}</div>;
 }

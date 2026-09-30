@@ -1,8 +1,9 @@
+import styles from "./skeleton-group.module.css";
 import { Skeleton } from "./skeleton";
 import { classNames } from "./class-names";
 
 type SkeletonGroupProps = Readonly<{
-  className?: string;
+  className?: string | undefined;
   rows?: number;
 }>;
 
@@ -11,12 +12,12 @@ export function SkeletonGroup({ className, rows = 3 }: SkeletonGroupProps) {
     <div
       aria-busy="true"
       aria-label="読み込み中"
-      className={classNames("ui-skeleton-group grid gap-3", className)}
+      className={classNames(styles.skeletonGroup!, className)}
       role="status"
     >
       {Array.from({ length: rows }, (_, index) => (
         <Skeleton
-          className={classNames("h-14 w-full", index === rows - 1 && rows > 1 && "w-4/5")}
+          className={classNames(styles.style1!, index === rows - 1 && rows > 1 && styles.style2!)}
           key={index}
         />
       ))}

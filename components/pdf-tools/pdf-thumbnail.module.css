@@ -1,0 +1,17 @@
+/* Component-local styles with independent scope. */
+.pdfThumbnail {
+    display: block;
+  }
+.pdfThumbnail {
+    height: auto;
+  }
+.pdfThumbnail {
+    max-width: 100%;
+  }
+.pdfThumbnail {
+    border-radius: var(--radius-sm);
+  }
+.pdfThumbnail {
+    --nm-shadow: var(--shadow-control);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }

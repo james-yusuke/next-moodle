@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./login-form.module.css";
 import { LockKey, SignIn } from "@phosphor-icons/react";
 import ky, { isKyError } from "ky";
 import { useRouter } from "next/navigation";
@@ -111,7 +112,7 @@ export function LoginForm() {
   const copy = loginError === null ? null : ERROR_COPY[loginError];
 
   return (
-    <form className="ui-login-form grid gap-4" noValidate onSubmit={submit}>
+    <form className={styles.loginForm!} noValidate onSubmit={submit}>
       <Field
         autoComplete="username"
         disabled={pending}
@@ -138,7 +139,7 @@ export function LoginForm() {
         </Notice>
       )}
       <Button
-        className="w-full"
+        className={styles.style1!}
         icon={<SignIn aria-hidden size={19} weight="regular" />}
         loading={pending}
         type="submit"
@@ -146,9 +147,9 @@ export function LoginForm() {
       >
         Moodleでログイン
       </Button>
-      <div className="ui-login-security grid grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-[var(--shape-control)] bg-[var(--surface-inset)] p-3 text-sm text-[var(--text-secondary)]">
-        <LockKey aria-hidden className="mt-0.5 shrink-0" size={19} weight="regular" />
-        <p className="m-0 leading-6">
+      <div className={styles.loginSecurity!}>
+        <LockKey aria-hidden className={styles.style2!} size={19} weight="regular" />
+        <p className={styles.style3!}>
           認証情報は設定済みのMoodleへサーバー経由で送信され、保存されません。
           発行されたセッションは暗号化されたHttpOnly Cookieで保護されます。
         </p>

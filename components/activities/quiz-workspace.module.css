@@ -1,0 +1,309 @@
+/* Component-local styles with independent scope. */
+.style2 {
+    margin: 0px;
+  }
+.style3 {
+    margin: 0px;
+  }
+.style4 {
+    margin: 0px;
+  }
+.style6 {
+    margin: 0px;
+  }
+.style9 {
+    margin: 0px;
+  }
+.style3 {
+    margin-top: 0.25rem;
+  }
+.quizAttemptHeader {
+    display: flex;
+  }
+.quizAttemptSummary {
+    display: flex;
+  }
+.quizQuestionMeta {
+    display: flex;
+  }
+.style10 {
+    display: flex;
+  }
+.quizStart {
+    display: grid;
+  }
+.style1 {
+    display: grid;
+  }
+.style4 {
+    display: grid;
+  }
+.quizAttempt {
+    display: grid;
+  }
+.quizQuestions {
+    display: grid;
+  }
+.quizQuestionMeta {
+    min-height: calc(0.25rem * 12);
+  }
+.style8 {
+    animation: var(--animate-spin);
+  }
+.quizAttemptHeader {
+    flex-wrap: wrap;
+  }
+.quizAttemptSummary {
+    flex-wrap: wrap;
+  }
+.quizQuestionMeta {
+    flex-wrap: wrap;
+  }
+.style10 {
+    flex-wrap: wrap;
+  }
+.quizAttemptSummary {
+    align-items: center;
+  }
+.quizQuestionMeta {
+    align-items: center;
+  }
+.style10 {
+    align-items: center;
+  }
+.quizAttemptHeader {
+    align-items: flex-end;
+  }
+.quizAttemptHeader {
+    justify-content: space-between;
+  }
+.quizQuestionMeta {
+    justify-content: space-between;
+  }
+.quizActions {
+    justify-content: space-between;
+  }
+.quizAttemptSummary {
+    justify-content: flex-end;
+  }
+.style10 {
+    justify-content: flex-end;
+  }
+.style1 {
+    gap: 0.25rem;
+  }
+.style10 {
+    gap: calc(0.25rem * 2);
+  }
+.style4 {
+    gap: calc(0.25rem * 3);
+  }
+.quizAttemptSummary {
+    gap: calc(0.25rem * 3);
+  }
+.quizQuestionMeta {
+    gap: calc(0.25rem * 3);
+  }
+.quizAttemptHeader {
+    gap: calc(0.25rem * 4);
+  }
+.quizStart {
+    gap: calc(0.25rem * 5);
+  }
+.quizAttempt {
+    gap: calc(0.25rem * 5);
+  }
+.quizQuestions {
+    gap: calc(0.25rem * 5);
+  }
+.quizQuestion {
+    overflow: hidden;
+  }
+.quizStart {
+    border-radius: var(--shape-card);
+  }
+.style4 {
+    border-radius: var(--shape-card);
+  }
+.style11 {
+    border-radius: calc(infinity * 1px);
+  }
+.style11 {
+    background-color: var(--surface-elevated);
+  }
+.style4 {
+    background-color: var(--surface-inset);
+  }
+.quizQuestionMeta {
+    background-color: var(--surface-inset);
+  }
+.quizStart {
+    background-color: var(--surface-primary);
+  }
+.quizStart {
+    padding: calc(0.25rem * 4);
+  }
+.style4 {
+    padding: calc(0.25rem * 4);
+  }
+.quizQuestionBody {
+    padding: calc(0.25rem * 4);
+  }
+.style11 {
+    padding-inline: calc(0.25rem * 2);
+  }
+.quizQuestionMeta {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style11 {
+    padding-block: calc(0.25rem * 0.5);
+  }
+.quizQuestionMeta {
+    padding-block: calc(0.25rem * 2);
+  }
+.quizAttempt {
+    padding-bottom: calc(0.25rem * 24);
+  }
+.style13 {
+    text-align: center;
+  }
+.kicker {
+    font-family: var(--font-geist-mono);
+  }
+.style3 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style7 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style9 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style2 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.kicker {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style5 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.quizPageCount {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style11 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style12 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style13 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style3 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style2 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style9 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.kicker {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.style3 {
+    color: var(--text-secondary);
+  }
+.style11 {
+    color: var(--text-secondary);
+  }
+.kicker {
+    color: var(--text-tertiary);
+  }
+.style5 {
+    color: var(--text-tertiary);
+  }
+.quizPageCount {
+    color: var(--text-tertiary);
+  }
+.style12 {
+    color: var(--text-tertiary);
+  }
+.style13 {
+    color: var(--text-tertiary);
+  }
+.style6 {
+    --nm-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--nm-ordinal,) var(--nm-slashed-zero,) var(--nm-numeric-figure,) var(--nm-numeric-spacing,) var(--nm-numeric-fraction,);
+  }
+.style7 {
+    --nm-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--nm-ordinal,) var(--nm-slashed-zero,) var(--nm-numeric-figure,) var(--nm-numeric-spacing,) var(--nm-numeric-fraction,);
+  }
+.style12 {
+    --nm-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--nm-ordinal,) var(--nm-slashed-zero,) var(--nm-numeric-figure,) var(--nm-numeric-spacing,) var(--nm-numeric-fraction,);
+  }
+@media (width < 40rem) {
+    .style13 {
+      display: none;
+    }
+  }
+@media (width >= 40rem) {
+    .style4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+@media (width >= 40rem) {
+    .quizStart {
+      padding: calc(0.25rem * 6);
+    }
+  }
+@media (width >= 40rem) {
+    .quizQuestionBody {
+      padding: calc(0.25rem * 6);
+    }
+  }
+.quizAttempts {}
+
+/* Component-local styles with independent scope. */
+.quizSave {
+    display: inline-flex;
+  }
+.quizSave {
+    min-height: calc(0.25rem * 7);
+  }
+.quizSave {
+    align-items: center;
+  }
+.quizSave {
+    gap: calc(0.25rem * 1.5);
+  }
+.quizSave {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style22 {
+    color: var(--status-error);
+  }
+.style14 {
+    color: var(--status-success);
+  }
+.style32 {
+    color: var(--text-tertiary);
+  }

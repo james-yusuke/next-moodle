@@ -8,7 +8,7 @@ Moodleを公式Web Service APIのまま利用し、学生向けフロントエ�
 - 成績、参加者、プロフィール、プライベートファイル、バッジ、学習プラン
 - 会話一覧、メッセージ送信、通知既読化
 - 標準活動を `/activities/[cmid]` の共通ワークスペースへ統合
-- 端末内PDFツールと、任意の文章補助
+- 端末内PDFツール
 
 ログイン時にMoodleが返す関数一覧から、機能ごとの `available` / `unavailable` を生成します。関数名の一覧はCookieへ保存せず、SHA-256と小さな能力マニフェストだけを8時間保持します。
 
@@ -25,12 +25,6 @@ Moodleを公式Web Service APIのまま利用し、学生向けフロントエ�
 | `MOODLE_SERVICE` | Moodle管理者が許可したWeb Service名。通常は `moodle_mobile_app`。 |
 | `MOODLE_TEACHER_ROLE_SHORTNAMES` | 先生連絡で宛先候補にするMoodleロールのshortname。 |
 | `SESSION_PASSWORD` | 32バイト以上のランダムな暗号化Cookie秘密鍵。 |
-| `AI_ASSIST_ENABLED` | `true`のときだけ文章補助を有効化。既定値は`false`。 |
-| `AI_BASE_URL` | OpenAI互換の`/v1` API URL。OpenAI、LM Studio、Ollamaを設定できます。 |
-| `AI_API_KEY` | APIキー。LM Studio／Ollamaのローカル構成では空欄にできます。 |
-| `AI_MODEL` | 利用するチャット補完モデル名。 |
-| `AI_SAFETY_SECRET` | 利用回数制御用の不透明な利用者識別子を作る、32バイト以上の秘密鍵。 |
-| `AI_PRIVACY_NOTICE_URL` | 端末上の同意画面から案内する任意のHTTPSプライバシー説明。 |
 
 秘密鍵は次で生成できます。
 
@@ -58,12 +52,6 @@ bun run dev
 標準 Web Service にない活動（例: Questionnaire、出席、学内独自活動）は、本アプリで活動状態と教材を表示した上で、接続中 Moodle と同一オリジンの検証済み URL だけを別タブで開きます。トークン、パスワード、任意の外部 URL は引き渡しません。
 
 ローカルのMock Moodleは実在組織と無関係な2ユーザー分のfixtureを提供し、成績、教材、完了更新、課題提出、メッセージ、通知を実環境へ更新せず検証できます。
-
-## 文章補助
-
-文章補助は提出エディタの任意機能です。利用者が端末ごとに同意するまで通信しません。補助案は自動挿入せず、利用者が確認してから挿入します。本文の不足点確認または補足案の作成に、課題名、課題文、本文の最大6,000文字だけを使用します。Moodleトークン、パスワード、添付ファイル、コース一覧は送信しません。
-
-通信先はOpenAI互換の`POST /v1/chat/completions`です。OpenAIのほか、同じインターフェースを公開するLM Studio（例: `http://127.0.0.1:1234/v1`）およびOllama（例: `http://127.0.0.1:11434/v1`）をサーバー環境変数だけで利用できます。ローカルHTTPはloopbackアドレスだけを許可し、外部通信先はHTTPSを必須にしています。
 
 ## 検証
 

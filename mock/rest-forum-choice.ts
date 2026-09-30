@@ -2,6 +2,8 @@ import { allFields, firstField, numberField } from "./params";
 import type { RestContext } from "./rest-context";
 import type { MoodleFunction } from "./types";
 
+const now = Math.floor(Date.now() / 1_000);
+
 const discussions = (context: RestContext): readonly Record<string, unknown>[] => {
   const baseline = context.user.key === "alice" ? [{
     id: 6101,
@@ -130,7 +132,7 @@ export function forumChoicePayload(functionName: MoodleFunction, context: RestCo
     return { status: true, warnings: [] };
   }
   if (functionName === "mod_forum_update_discussion_post") return { status: true, warnings: [] };
-  if (functionName === "mod_choice_get_choices_by_courses") return { choices: context.user.key === "alice" ? [{ id: 507, course: 101, coursemodule: 9107, name: "Select the next field site", allowupdate: true, allowmultiple: false, timeopen: 0, timeclose: 1_790_259_200 }] : [], warnings: [] };
+  if (functionName === "mod_choice_get_choices_by_courses") return { choices: context.user.key === "alice" ? [{ id: 507, course: 101, coursemodule: 9107, name: "Select the next field site", allowupdate: true, allowmultiple: false, timeopen: 0, timeclose: now + 30 * 86_400 }] : [], warnings: [] };
   if (functionName === "mod_choice_get_choice_options") return choiceOptions(context);
   if (functionName === "mod_choice_submit_choice_response") {
     const responses = allFields(context.input, "responses").map(Number).filter(Number.isFinite);

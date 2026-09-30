@@ -15,7 +15,6 @@ import { fetchAssignmentDetail } from "@/lib/moodle/queries/assignments.query";
 import { toMoodleReadFailure } from "@/lib/moodle/queries/dashboard";
 import { currentUnixSeconds } from "@/lib/moodle/now";
 import { readAppRuntimeConfig } from "@/lib/app-config";
-import { createAiUiContext } from "@/lib/ai/runtime";
 
 export const metadata: Metadata = { title: "課題" };
 
@@ -75,11 +74,8 @@ export default async function AssignmentPage({ params }: AssignmentPageProps) {
   const draftStorageKey = `next-moodle:draft:${createHash("sha256")
     .update(`${session.site.siteUrl}|${session.userId}|${cmid.data}`)
     .digest("base64url")}`;
-  const ai = createAiUiContext({ siteUrl: session.site.siteUrl, userId: session.userId });
   return (
     <AssignmentDetailView
-      aiAvailability={ai.availability}
-      aiConsentStorageKey={ai.consentStorageKey}
       config={config}
       data={data}
       draftStorageKey={draftStorageKey}

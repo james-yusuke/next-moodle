@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./pdf-thumbnail.module.css";
 import { useEffect, useRef } from "react";
 
 export function PdfThumbnail({ bytes, pageIndex }: Readonly<{
@@ -42,5 +43,5 @@ export function PdfThumbnail({ bytes, pageIndex }: Readonly<{
       destroyDocument?.();
     };
   }, [bytes, pageIndex]);
-  return <canvas aria-label={`PDF ${pageIndex + 1}ページのプレビュー`} className="ui-pdf-thumbnail block h-auto max-w-full rounded-sm shadow-[var(--shadow-control)]" ref={canvasRef} />;
+  return <canvas aria-label={`PDF ${pageIndex + 1}ページのプレビュー`} className={styles.pdfThumbnail!} ref={canvasRef} />;
 }

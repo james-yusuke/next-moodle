@@ -1,3 +1,4 @@
+import styles from "./not-found.module.css";
 import type { Metadata } from "next";
 
 import {
@@ -13,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function NotFoundPage() {
   return (
-    <main className="ui-system-page grid min-h-dvh place-items-center bg-[var(--surface-canvas)] p-5 sm:p-8">
+    <main className={styles.systemPage!}>
       <SystemState
         actions={<><BackStateLink /><DashboardStateLink /></>}
         description="URLが正しくないか、このアカウントで利用できる一覧に対象がありません。コース一覧からもう一度選択してください。"

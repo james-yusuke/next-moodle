@@ -1,0 +1,77 @@
+/* Component-local styles with independent scope. */
+.style1 {
+    display: inline-flex;
+  }
+.style1 {
+    min-height: calc(0.25rem * 11);
+  }
+.style1 {
+    max-width: 100%;
+  }
+.style1 {
+    min-width: 0px;
+  }
+.style1 {
+    align-items: center;
+  }
+.style1 {
+    justify-content: center;
+  }
+.style1 {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    border-radius: var(--shape-control);
+  }
+.style1 {
+    background-color: var(--surface-elevated);
+  }
+.style1 {
+    padding-inline: calc(0.25rem * 3);
+  }
+.style1 {
+    padding-block: calc(0.25rem * 2);
+  }
+.style1 {
+    text-align: center;
+  }
+.style1 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style1 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style1 {
+    color: var(--text-primary);
+  }
+.style1 {
+    text-decoration-line: none;
+  }
+.style1 {
+    --nm-shadow: var(--shadow-control);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+.style1 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.style1 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+@media (hover: hover) {
+    .style1:hover {
+      background-color: var(--surface-selected);
+    }
+  }
+.style1:focus-visible {
+    --nm-shadow: var(--shadow-focus);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+.style1:focus-visible {
+    --nm-outline-style: none;
+    outline-style: none;
+  }

@@ -1,0 +1,186 @@
+/* Component-local styles with independent scope. */
+.editorToolbar {
+    display: flex;
+  }
+.editor {
+    display: grid;
+  }
+.style1 {
+    display: grid;
+  }
+.style1 {
+    width: calc(0.25rem * 11);
+    height: calc(0.25rem * 11);
+  }
+.editorToolbar {
+    min-height: calc(0.25rem * 14);
+  }
+.editor {
+    min-height: calc(0.25rem * 64);
+  }
+.style1 {
+    flex-shrink: 0;
+  }
+.editorToolbar {
+    flex-wrap: wrap;
+  }
+.editor {
+    place-items: center;
+  }
+.style1 {
+    place-items: center;
+  }
+.editorToolbar {
+    align-items: center;
+  }
+.editorToolbar {
+    gap: 0.25rem;
+  }
+.editor2 {
+    overflow: hidden;
+  }
+.editor {
+    border-radius: var(--shape-card);
+  }
+.editor2 {
+    border-radius: var(--shape-card);
+  }
+.style1 {
+    border-radius: var(--shape-control);
+  }
+.style1 {
+    border-style: var(--nm-border-style);
+    border-width: 0px;
+  }
+.editor2 {
+    background-color: var(--surface-elevated);
+  }
+.editor {
+    background-color: var(--surface-inset);
+  }
+.editorToolbar {
+    background-color: var(--surface-inset);
+  }
+.style1 {
+    background-color: transparent;
+  }
+.editorToolbar {
+    padding: calc(0.25rem * 2);
+  }
+.editor {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.editor {
+    color: var(--text-secondary);
+  }
+.style1 {
+    color: var(--text-secondary);
+  }
+.editor2 {
+    --nm-shadow: var(--shadow-control);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+.style1 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.editor2 {
+    transition-property: box-shadow;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.editor2 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.style1 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.editor2:focus-within {
+    --nm-shadow: var(--shadow-focus);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (hover: hover) {
+    .style1:hover {
+      background-color: var(--surface-elevated);
+    }
+  }
+@media (hover: hover) {
+    .style1:hover {
+      color: var(--text-primary);
+    }
+  }
+.style1:disabled {
+    opacity: 45%;
+  }
+.style1[aria-pressed="true"] {
+    background-color: var(--surface-selected);
+  }
+.style1[aria-pressed="true"] {
+    color: var(--accent-400);
+  }
+.style2 .tiptap {
+    min-height: calc(0.25rem * 80);
+  }
+.style2 .tiptap {
+    padding-inline: calc(0.25rem * 5);
+  }
+.style2 .tiptap {
+    padding-block: calc(0.25rem * 6);
+  }
+.style2 .tiptap {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.style2 .tiptap {
+    --nm-leading: calc(0.25rem * 8);
+    line-height: calc(0.25rem * 8);
+  }
+.style2 .tiptap {
+    color: var(--text-primary);
+  }
+.style2 .tiptap {
+    --nm-outline-style: none;
+    outline-style: none;
+  }
+@media (width >= 40rem) {
+    .style2 .tiptap {
+      min-height: 24rem;
+    }
+  }
+@media (width >= 40rem) {
+    .style2 .tiptap {
+      padding-inline: calc(0.25rem * 8);
+    }
+  }
+@media (width >= 40rem) {
+    .style2 .tiptap {
+      padding-block: calc(0.25rem * 7);
+    }
+  }
+.style2 .tiptap blockquote {
+    border-left-style: var(--nm-border-style);
+    border-left-width: 2px;
+  }
+.style2 .tiptap blockquote {
+    border-color: var(--accent-500);
+  }
+.style2 .tiptap blockquote {
+    padding-left: calc(0.25rem * 4);
+  }
+.style2 .tiptap h2 {
+    margin-top: calc(0.25rem * 6);
+  }
+.style2 .tiptap h2 {
+    margin-bottom: calc(0.25rem * 3);
+  }
+.style2 .tiptap h2 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.style2 .tiptap p {
+    margin-block: calc(0.25rem * 3);
+  }

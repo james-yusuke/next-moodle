@@ -1,0 +1,90 @@
+/* Component-local styles with independent scope. */
+.plainEditorInput {
+    display: block;
+  }
+.plainEditor {
+    min-height: calc(0.25rem * 80);
+  }
+.plainEditorInput {
+    min-height: calc(0.25rem * 80);
+  }
+.plainEditorInput {
+    width: 100%;
+  }
+.plainEditorInput {
+    resize: vertical;
+  }
+.plainEditor {
+    overflow: hidden;
+  }
+.plainEditor {
+    border-radius: var(--shape-card);
+  }
+.plainEditorInput {
+    border-style: var(--nm-border-style);
+    border-width: 0px;
+  }
+.plainEditor {
+    background-color: var(--surface-elevated);
+  }
+.plainEditorInput {
+    background-color: transparent;
+  }
+.plainEditorInput {
+    padding-inline: calc(0.25rem * 5);
+  }
+.plainEditorInput {
+    padding-block: calc(0.25rem * 6);
+  }
+.plainEditorInput {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.plainEditorInput {
+    --nm-leading: calc(0.25rem * 8);
+    line-height: calc(0.25rem * 8);
+  }
+.plainEditorInput {
+    color: var(--text-primary);
+  }
+.plainEditor {
+    --nm-shadow: var(--shadow-control);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+.plainEditor {
+    transition-property: box-shadow;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.plainEditor {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.plainEditorInput {
+    --nm-outline-style: none;
+    outline-style: none;
+  }
+.plainEditor:focus-within {
+    --nm-shadow: var(--shadow-focus);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (width >= 40rem) {
+    .plainEditor {
+      min-height: 24rem;
+    }
+  }
+@media (width >= 40rem) {
+    .plainEditorInput {
+      min-height: 24rem;
+    }
+  }
+@media (width >= 40rem) {
+    .plainEditorInput {
+      padding-inline: calc(0.25rem * 8);
+    }
+  }
+@media (width >= 40rem) {
+    .plainEditorInput {
+      padding-block: calc(0.25rem * 7);
+    }
+  }

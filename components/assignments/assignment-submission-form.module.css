@@ -1,0 +1,141 @@
+/* Component-local styles with independent scope. */
+.style1 {
+    margin: 0px;
+  }
+.style6 {
+    margin: 0px;
+  }
+.style6 {
+    margin-top: 0.25rem;
+  }
+.style5 {
+    margin-right: auto;
+  }
+.assignmentFormTextHeading {
+    display: flex;
+  }
+.submitStatement {
+    display: flex;
+  }
+.assignmentForm {
+    display: grid;
+  }
+.assignmentFormText {
+    display: grid;
+  }
+.style7 {
+    width: 18px;
+    height: 18px;
+  }
+.submitStatement {
+    min-height: calc(0.25rem * 11);
+  }
+.style5 {
+    min-width: 0px;
+  }
+.style4 {
+    flex-shrink: 0;
+  }
+.submitStatement {
+    flex-basis: 100%;
+  }
+.assignmentFormTextHeading {
+    flex-wrap: wrap;
+  }
+.assignmentFormTextHeading {
+    align-items: center;
+  }
+.submitStatement {
+    align-items: center;
+  }
+.assignmentFormTextHeading {
+    justify-content: space-between;
+  }
+.assignmentFormTextHeading {
+    gap: calc(0.25rem * 3);
+  }
+.submitStatement {
+    gap: calc(0.25rem * 3);
+  }
+.assignmentFormText {
+    gap: calc(0.25rem * 4);
+  }
+.assignmentForm {
+    gap: calc(0.25rem * 6);
+  }
+.submitConfirmation {
+    background-color: var(--surface-selected);
+  }
+.assignmentFormSurface {
+    padding: 0px !important;
+  }
+.assignmentForm {
+    padding: calc(0.25rem * 4);
+  }
+.style8 {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style8 {
+    padding-bottom: calc(0.25rem * 4);
+  }
+.style1 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.submitStatement {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style2 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style3 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style6 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style1 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style4 {
+    color: var(--accent-400);
+  }
+.submitStatement {
+    color: var(--text-primary);
+  }
+.style6 {
+    color: var(--text-secondary);
+  }
+.style2 {
+    color: var(--text-tertiary);
+  }
+.style3 {
+    color: var(--text-tertiary);
+  }
+.style7 {
+    accent-color: var(--accent-500);
+  }
+.style3[data-invalid="true"] {
+    color: var(--status-error);
+  }
+@media (width >= 40rem) {
+    .assignmentForm {
+      padding: calc(0.25rem * 6);
+    }
+  }
+@media (width >= 40rem) {
+    .style8 {
+      padding-inline: calc(0.25rem * 6);
+    }
+  }
+@media (width >= 40rem) {
+    .style8 {
+      padding-bottom: calc(0.25rem * 6);
+    }
+  }
+.assignmentFormActions {}

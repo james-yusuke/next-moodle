@@ -1,6 +1,8 @@
+import styles from "./icon-button.module.css";
 import type { ReactNode } from "react";
 import { Button } from "./button";
 import type { ButtonProps } from "./button";
+import { classNames } from "./class-names";
 
 type IconButtonProps = Readonly<
   Omit<ButtonProps, "children" | "icon" | "loading" | "size"> & {
@@ -15,14 +17,14 @@ export function IconButton({
   label,
   ...buttonProps
 }: IconButtonProps) {
-  const classes = ["ui-icon-button size-11 shrink-0 p-0", className].filter(Boolean).join(" ");
+  const classes = classNames(styles.iconButton!, className);
 
   return (
     <Button {...buttonProps} aria-label={label} className={classes}>
-      <span aria-hidden className="ui-icon-button__icon grid shrink-0 place-items-center">
+      <span aria-hidden className={styles.iconButtonIcon!}>
         {icon}
       </span>
-      <span className="ui-sr-only">{label}</span>
+      <span className={styles.srOnly!}>{label}</span>
     </Button>
   );
 }

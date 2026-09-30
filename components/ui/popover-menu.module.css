@@ -1,0 +1,77 @@
+/* Component-local styles with independent scope. */
+.style1 {
+    position: absolute;
+  }
+.popoverMenu {
+    position: relative;
+  }
+.style4 {
+    top: 100%;
+  }
+.style5 {
+    top: 100%;
+  }
+.style2 {
+    right: 0px;
+  }
+.style4 {
+    right: 0px;
+  }
+.style2 {
+    bottom: 100%;
+  }
+.style3 {
+    bottom: 100%;
+  }
+.style3 {
+    left: 0px;
+  }
+.style5 {
+    left: 0px;
+  }
+.style1 {
+    z-index: 50;
+  }
+.style4 {
+    margin-top: calc(0.25rem * 2);
+  }
+.style5 {
+    margin-top: calc(0.25rem * 2);
+  }
+.style2 {
+    margin-bottom: calc(0.25rem * 2);
+  }
+.style3 {
+    margin-bottom: calc(0.25rem * 2);
+  }
+.style3 {
+    transform-origin: 0 100%;
+  }
+.style2 {
+    transform-origin: 100% 100%;
+  }
+.style5 {
+    transform-origin: 0 0;
+  }
+.style4 {
+    transform-origin: 100% 0;
+  }
+.style1 {
+    overflow-x: hidden;
+  }
+.style1 {
+    overflow-y: auto;
+  }
+.style1 {
+    border-radius: var(--shape-sheet);
+  }
+.style1 {
+    background-color: var(--surface-elevated);
+  }
+.style1 {
+    padding: calc(0.25rem * 2);
+  }
+.style1 {
+    --nm-shadow: var(--shadow-elevated);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }

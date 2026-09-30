@@ -1,3 +1,4 @@
+import styles from "./feedback-showcase.module.css";
 import {
   ArrowClockwise,
   ArrowRight,
@@ -14,7 +15,7 @@ export function FeedbackShowcase() {
       eyebrow="03 / Feedback"
       title="Surfaces and system states"
     >
-      <div className="grid gap-3 md:grid-cols-3">
+      <div className={styles.style1!}>
         <Surface eyebrow="Base" title="Course summary">
           Quiet containment for everyday information with the graphite paired-rim material.
         </Surface>
@@ -26,7 +27,7 @@ export function FeedbackShowcase() {
         </Surface>
       </div>
 
-      <div className="grid gap-3">
+      <div className={styles.style2!}>
         <Notice title="Schedule updated">Three upcoming events were refreshed from Moodle.</Notice>
         <Notice title="Submission saved" tone="success">Your online-text draft is stored safely.</Notice>
         <Notice title="Due in 2 days" tone="warning">Review the rubric before submitting your final file.</Notice>
@@ -40,18 +41,18 @@ export function FeedbackShowcase() {
         </Notice>
       </div>
 
-      <div className="grid gap-3">
+      <div className={styles.style2!}>
         <SystemState description="このアカウントでは要求された情報を表示できません。" headingLevel={2} kind="forbidden" title="アクセスは禁止されています" />
         <SystemState description="URLが正しくないか、利用できる一覧に対象がありません。" headingLevel={2} kind="not-found" title="ページが見つかりません" />
         <SystemState description="安全な状態を保ったまま処理を停止しました。" headingLevel={2} kind="error" reference="demo-reference" title="問題が発生しました" />
       </div>
 
-      <div className="grid gap-3 md:grid-cols-3">
-        <Card className="grid content-start gap-4" padding="spacious"><span className="font-mono text-xs text-[var(--text-tertiary)]">LOADING</span><h3 className="m-0 text-lg font-semibold">Fetching assignments</h3><SkeletonGroup rows={3} /></Card>
+      <div className={styles.style1!}>
+        <Card className={styles.style3!} padding="spacious"><span className={styles.style4!}>LOADING</span><h3 className={styles.style5!}>Fetching assignments</h3><SkeletonGroup rows={3} /></Card>
 
-        <Card className="grid content-start gap-4" padding="spacious"><span className="font-mono text-xs text-[var(--text-tertiary)]">EMPTY</span><h3 className="m-0 text-lg font-semibold">No upcoming work</h3><EmptyState action={<Button icon={<ArrowRight aria-hidden size={16} />} size="compact" variant="ghost">Browse courses</Button>} icon={<CalendarBlank aria-hidden size={24} weight="regular" />} title="予定はありません"><p>You are clear for the next seven days.</p></EmptyState></Card>
+        <Card className={styles.style3!} padding="spacious"><span className={styles.style4!}>EMPTY</span><h3 className={styles.style5!}>No upcoming work</h3><EmptyState action={<Button icon={<ArrowRight aria-hidden size={16} />} size="compact" variant="ghost">Browse courses</Button>} icon={<CalendarBlank aria-hidden size={24} weight="regular" />} title="予定はありません"><p>You are clear for the next seven days.</p></EmptyState></Card>
 
-        <Card className="grid content-start gap-4" padding="spacious"><span className="font-mono text-xs text-[var(--text-tertiary)]">HTML DELIVERY</span><h3 className="m-0 text-lg font-semibold">Parsed Moodle screen</h3><p className="m-0 text-sm leading-6 text-[var(--text-secondary)]">標準APIがない活動も、認証済みHTMLを型付き画面モデルへ変換してアプリ内で完結します。</p><Button icon={<ArrowRight aria-hidden size={16} />} size="compact" variant="secondary">変換画面を確認</Button></Card>
+        <Card className={styles.style3!} padding="spacious"><span className={styles.style4!}>HTML DELIVERY</span><h3 className={styles.style5!}>Parsed Moodle screen</h3><p className={styles.style6!}>標準APIがない活動も、認証済みHTMLを型付き画面モデルへ変換してアプリ内で完結します。</p><Button icon={<ArrowRight aria-hidden size={16} />} size="compact" variant="secondary">変換画面を確認</Button></Card>
       </div>
     </ShowcaseSection>
   );

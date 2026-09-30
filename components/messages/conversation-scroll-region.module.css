@@ -1,0 +1,19 @@
+/* Component-local styles with independent scope. */
+.messageThreadScroll {
+    height: 100%;
+  }
+.messageThreadScroll {
+    min-height: 0px;
+  }
+.messageThreadScroll {
+    scrollbar-gutter: stable;
+  }
+.messageThreadScroll {
+    overflow-x: hidden;
+  }
+.messageThreadScroll {
+    overflow-y: auto;
+  }
+.messageThreadScroll {
+    overscroll-behavior: contain;
+  }

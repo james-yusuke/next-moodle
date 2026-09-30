@@ -1,0 +1,21 @@
+/* Component-local styles with independent scope. */
+.systemPage {
+    display: grid;
+  }
+.systemPage {
+    min-height: 100dvh;
+  }
+.systemPage {
+    place-items: center;
+  }
+.systemPage {
+    background-color: var(--surface-canvas);
+  }
+.systemPage {
+    padding: calc(0.25rem * 5);
+  }
+@media (width >= 40rem) {
+    .systemPage {
+      padding: calc(0.25rem * 8);
+    }
+  }

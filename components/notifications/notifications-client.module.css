@@ -1,0 +1,64 @@
+/* Component-local styles with independent scope. */
+.style2 {
+    display: flex;
+  }
+.style3 {
+    display: flex;
+  }
+.style1 {
+    display: grid;
+  }
+.style4 {
+    display: inline-flex;
+  }
+.style2 {
+    min-height: calc(0.25rem * 6);
+  }
+.style1 {
+    min-width: 0px;
+  }
+.style3 {
+    flex-wrap: wrap;
+  }
+.style2 {
+    align-items: center;
+  }
+.style3 {
+    align-items: center;
+  }
+.style2 {
+    gap: calc(0.25rem * 2);
+  }
+.style3 {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 5);
+  }
+.style4 {
+    border-radius: var(--shape-control);
+  }
+.style4 {
+    background-color: var(--surface-inset);
+  }
+.style4 {
+    padding: 0.25rem;
+  }
+.style2 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style5 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style2 {
+    color: var(--text-tertiary);
+  }
+.style5 {
+    color: var(--text-tertiary);
+  }
+.style5 {
+    --nm-numeric-spacing: tabular-nums;
+    font-variant-numeric: var(--nm-ordinal,) var(--nm-slashed-zero,) var(--nm-numeric-figure,) var(--nm-numeric-spacing,) var(--nm-numeric-fraction,);
+  }

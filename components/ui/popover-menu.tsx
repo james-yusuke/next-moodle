@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./popover-menu.module.css";
 import { AnimatePresence, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
 import {
@@ -72,7 +73,7 @@ export function PopoverMenu({ align = "end", children, label, side = "bottom", t
     : trigger;
 
   return (
-    <div className="ui-popover-menu relative" ref={rootRef}>
+    <div className={styles.popoverMenu!} ref={rootRef}>
       {triggerElement}
       <AnimatePresence>
         {open ? (
@@ -80,10 +81,10 @@ export function PopoverMenu({ align = "end", children, label, side = "bottom", t
             animate={reduceMotion ? { opacity: 1 } : { opacity: 1, scale: 1, y: 0 }}
             aria-label={label}
             className={classNames(
-              "absolute z-50 max-h-[min(36rem,calc(100dvh-1rem))] w-[min(20rem,calc(100vw-2rem))] overflow-y-auto overflow-x-hidden rounded-[var(--shape-sheet)] bg-[var(--surface-elevated)] p-2 shadow-[var(--shadow-elevated)]",
+              styles.style1!,
               side === "top"
-                ? align === "end" ? "right-0 bottom-full mb-2 origin-bottom-right" : "left-0 bottom-full mb-2 origin-bottom-left"
-                : align === "end" ? "right-0 top-full mt-2 origin-top-right" : "left-0 top-full mt-2 origin-top-left",
+                ? align === "end" ? styles.style2! : styles.style3!
+                : align === "end" ? styles.style4! : styles.style5!,
             )}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99, y: -4 }}
             initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.99, y: -4 }}

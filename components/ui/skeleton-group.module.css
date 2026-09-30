@@ -1,0 +1,16 @@
+/* Component-local styles with independent scope. */
+.skeletonGroup {
+    display: grid;
+  }
+.style1 {
+    height: calc(0.25rem * 14);
+  }
+.style2 {
+    width: calc(4 / 5 * 100%);
+  }
+.style1 {
+    width: 100%;
+  }
+.skeletonGroup {
+    gap: calc(0.25rem * 3);
+  }

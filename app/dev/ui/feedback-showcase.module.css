@@ -1,0 +1,62 @@
+/* Component-local styles with independent scope. */
+.style5 {
+    margin: 0px;
+  }
+.style6 {
+    margin: 0px;
+  }
+.style1 {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style3 {
+    display: grid;
+  }
+.style3 {
+    align-content: flex-start;
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.style2 {
+    gap: calc(0.25rem * 3);
+  }
+.style3 {
+    gap: calc(0.25rem * 4);
+  }
+.style4 {
+    font-family: var(--font-geist-mono);
+  }
+.style5 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style6 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style6 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style5 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style6 {
+    color: var(--text-secondary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+@media (width >= 48rem) {
+    .style1 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }

@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./lesson-workspace.module.css";
 import { ArrowRight, CheckCircle, Play } from "@phosphor-icons/react";
 import ky from "ky";
 import { useRouter } from "next/navigation";
@@ -56,12 +57,12 @@ export function LessonWorkspace({ cmid, data }: Readonly<{
   }
 
   return (
-    <section className="ui-lesson grid gap-5 rounded-[var(--shape-card)] bg-[var(--surface-primary)] p-4 sm:p-6" aria-labelledby="lesson-title">
-      <header className="flex flex-wrap items-end justify-between gap-4"><div className="grid gap-1"><span className="ui-kicker font-mono text-xs tracking-[.08em] text-[var(--text-tertiary)]">GUIDED LEARNING</span><h2 className="m-0 text-xl font-semibold" id="lesson-title">レッスン</h2></div>{data.progress === null ? null : <span className="text-xs text-[var(--text-tertiary)]">{data.progress}%</span>}</header>
+    <section className={styles.lesson!} aria-labelledby="lesson-title">
+      <header className={styles.style1!}><div className={styles.style2!}><span className={styles.kicker!}>GUIDED LEARNING</span><h2 className={styles.style3!} id="lesson-title">レッスン</h2></div>{data.progress === null ? null : <span className={styles.style4!}>{data.progress}%</span>}</header>
       {data.progress === null ? null : <Progress label="レッスンの進捗" value={data.progress} />}
-      {completed ? <Notice title="レッスンを完了しました" tone="success"><p>学習結果はMoodleへ保存されています。</p></Notice> : data.pageId === null ? <div className="ui-feedback-launch grid justify-items-start gap-4 rounded-[var(--shape-card)] bg-[var(--surface-inset)] p-5"><p className="m-0 text-sm leading-6 text-[var(--text-secondary)]">ページを順番に進み、各設問へ回答します。</p><Button disabled={pending} loading={pending} onClick={() => void start()}><Play aria-hidden size={17} />レッスンを開始</Button></div> : <form className="grid gap-5" onSubmit={(event) => void answer(event)}><RichContent className="ui-lesson-content" document={data.content} /><StickyActionBar aria-label="レッスン操作"><span className="mr-auto text-xs text-[var(--text-tertiary)]">{pending ? "保存中" : "回答は次へ進むと保存されます"}</span><Button disabled={pending} loading={pending} type="submit">回答して次へ<ArrowRight aria-hidden size={17} /></Button></StickyActionBar></form>}
-      <span aria-live="polite" className="ui-form-error min-h-5 text-sm text-[var(--status-error)]">{error ? "レッスンを更新できませんでした。回答内容は保持されています。" : ""}</span>
-      {completed ? <CheckCircle aria-hidden className="ui-lesson-complete text-[var(--status-success)]" size={22} weight="fill" /> : null}
+      {completed ? <Notice title="レッスンを完了しました" tone="success"><p>学習結果はMoodleへ保存されています。</p></Notice> : data.pageId === null ? <div className={styles.feedbackLaunch!}><p className={styles.style5!}>ページを順番に進み、各設問へ回答します。</p><Button disabled={pending} loading={pending} onClick={() => void start()}><Play aria-hidden size={17} />レッスンを開始</Button></div> : <form className={styles.style6!} onSubmit={(event) => void answer(event)}><RichContent className={styles.lessonContent!} document={data.content} /><StickyActionBar aria-label="レッスン操作"><span className={styles.style7!}>{pending ? "保存中" : "回答は次へ進むと保存されます"}</span><Button disabled={pending} loading={pending} type="submit">回答して次へ<ArrowRight aria-hidden size={17} /></Button></StickyActionBar></form>}
+      <span aria-live="polite" className={styles.formError!}>{error ? "レッスンを更新できませんでした。回答内容は保持されています。" : ""}</span>
+      {completed ? <CheckCircle aria-hidden className={styles.lessonComplete!} size={22} weight="fill" /> : null}
     </section>
   );
 }

@@ -1,0 +1,136 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    margin: 0px;
+  }
+.style5 {
+    margin: 0px;
+  }
+.style7 {
+    margin-right: auto;
+  }
+.style1 {
+    display: flex;
+  }
+.lesson {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.feedbackLaunch {
+    display: grid;
+  }
+.style6 {
+    display: grid;
+  }
+.formError {
+    min-height: calc(0.25rem * 5);
+  }
+.style1 {
+    flex-wrap: wrap;
+  }
+.style1 {
+    align-items: flex-end;
+  }
+.style1 {
+    justify-content: space-between;
+  }
+.feedbackLaunch {
+    justify-items: start;
+  }
+.style2 {
+    gap: 0.25rem;
+  }
+.style1 {
+    gap: calc(0.25rem * 4);
+  }
+.feedbackLaunch {
+    gap: calc(0.25rem * 4);
+  }
+.lesson {
+    gap: calc(0.25rem * 5);
+  }
+.style6 {
+    gap: calc(0.25rem * 5);
+  }
+.lesson {
+    border-radius: var(--shape-card);
+  }
+.feedbackLaunch {
+    border-radius: var(--shape-card);
+  }
+.feedbackLaunch {
+    background-color: var(--surface-inset);
+  }
+.lesson {
+    background-color: var(--surface-primary);
+  }
+.lesson {
+    padding: calc(0.25rem * 4);
+  }
+.feedbackLaunch {
+    padding: calc(0.25rem * 5);
+  }
+.kicker {
+    font-family: var(--font-geist-mono);
+  }
+.style5 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.formError {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style3 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.kicker {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style7 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style5 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.kicker {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.formError {
+    color: var(--status-error);
+  }
+.lessonComplete {
+    color: var(--status-success);
+  }
+.style5 {
+    color: var(--text-secondary);
+  }
+.kicker {
+    color: var(--text-tertiary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+.style7 {
+    color: var(--text-tertiary);
+  }
+@media (width >= 40rem) {
+    .lesson {
+      padding: calc(0.25rem * 6);
+    }
+  }
+.lessonContent {}

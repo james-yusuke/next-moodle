@@ -1,3 +1,4 @@
+import styles from "./card.module.css";
 import type { ElementType, ReactNode } from "react";
 
 import { classNames } from "./class-names";
@@ -10,24 +11,25 @@ type CardProps = Readonly<{
   "aria-label"?: string;
   as?: ElementType;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
+  "data-quiz-question"?: true;
   id?: string;
   padding?: CardPadding;
   tone?: CardTone;
 }>;
 
 const toneClasses: Record<CardTone, string> = {
-  default: "bg-[var(--surface-primary)]",
-  elevated: "bg-[var(--surface-elevated)] shadow-[var(--shadow-surface)]",
-  selected: "bg-[var(--surface-selected)]",
-  inset: "bg-[var(--surface-inset)]",
+  default: styles.toneClassesdefault1!,
+  elevated: styles.toneClasseselevated2!,
+  selected: styles.toneClassesselected3!,
+  inset: styles.toneClassesinset4!,
 };
 
 const paddingClasses: Record<CardPadding, string> = {
-  none: "p-0",
-  compact: "p-3 sm:p-4",
-  standard: "p-4 sm:p-6",
-  spacious: "p-5 sm:p-8",
+  none: styles.paddingClassesnone5!,
+  compact: styles.paddingClassescompact6!,
+  standard: styles.paddingClassesstandard7!,
+  spacious: styles.paddingClassesspacious8!,
 };
 
 export function Card({
@@ -36,6 +38,7 @@ export function Card({
   as: Component = "section",
   children,
   className,
+  "data-quiz-question": dataQuizQuestion,
   id,
   padding = "standard",
   tone = "default",
@@ -43,11 +46,12 @@ export function Card({
   return (
     <Component
       className={classNames(
-        "ui-card min-w-0 rounded-[var(--shape-card)]",
+        styles.card!,
         toneClasses[tone],
         paddingClasses[padding],
         className,
       )}
+      data-quiz-question={dataQuizQuestion}
       id={id}
       aria-labelledby={ariaLabelledBy}
       aria-label={ariaLabel}

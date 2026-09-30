@@ -1,0 +1,111 @@
+/* Component-local styles with independent scope. */
+.style5 {
+    grid-column-start: 2;
+  }
+.style4 {
+    margin-top: 0.25rem;
+  }
+.style3 {
+    display: block;
+  }
+.statusPanel {
+    display: grid;
+  }
+.style1 {
+    display: grid;
+  }
+.style1 {
+    width: calc(0.25rem * 6);
+    height: calc(0.25rem * 6);
+  }
+.statusPanel {
+    min-width: 0px;
+  }
+.style2 {
+    min-width: 0px;
+  }
+.style1 {
+    flex-shrink: 0;
+  }
+.style1 {
+    place-items: center;
+  }
+.statusPanel {
+    gap: calc(0.25rem * 3);
+  }
+.statusPanel {
+    border-radius: var(--shape-card);
+  }
+.statusPanel {
+    padding: calc(0.25rem * 4);
+  }
+.style3 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style4 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style4 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style4 {
+    color: var(--text-secondary);
+  }
+.style3 {
+    color: currentcolor;
+  }
+@media (width >= 40rem) {
+    .style5 {
+      grid-column-start: 3;
+    }
+  }
+@media (width >= 40rem) {
+    .style5 {
+      align-self: center;
+    }
+  }
+html[data-theme="neon"] .statusPanel {
+  box-shadow: var(--neon-card-glow);
+  transition: box-shadow var(--motion-standard);
+}
+
+/* Component-local styles with independent scope. */
+.toneClasseserror5 {
+    background-color: var(--status-error-soft);
+  }
+.toneClassesinfo2 {
+    background-color: var(--status-info-soft);
+  }
+.toneClassessuccess3 {
+    background-color: var(--status-success-soft);
+  }
+.toneClasseswarning4 {
+    background-color: var(--status-warning-soft);
+  }
+.toneClassesneutral1 {
+    background-color: var(--surface-inset);
+  }
+.toneClasseserror5 {
+    color: var(--status-error);
+  }
+.toneClassesinfo2 {
+    color: var(--status-info);
+  }
+.toneClassessuccess3 {
+    color: var(--status-success);
+  }
+.toneClasseswarning4 {
+    color: var(--status-warning);
+  }
+.toneClassesneutral1 {
+    color: var(--text-secondary);
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.statusPanel { grid-template-columns: auto minmax(0,1fr); }
+@media (width >= 40rem) {
+  .statusPanel { grid-template-columns: auto minmax(0,1fr) auto; }
+}

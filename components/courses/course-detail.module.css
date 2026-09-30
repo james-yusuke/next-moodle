@@ -1,0 +1,553 @@
+/* Component-local styles with independent scope. */
+.style6 {
+    margin: 0px;
+  }
+.style9 {
+    margin: 0px;
+  }
+.style12 {
+    margin: 0px;
+  }
+.courseSectionEmpty {
+    margin: 0px;
+  }
+.courseActivityFiles {
+    margin: 0px;
+  }
+.courseActivityDescription {
+    margin-inline: calc(0.25rem * 2);
+  }
+.courseActivityDescription {
+    margin-top: calc(0.25rem * 2);
+  }
+.courseActivityFiles {
+    margin-top: calc(0.25rem * 2);
+  }
+.courseSectionSummary {
+    margin-top: calc(0.25rem * 3);
+  }
+.courseStream {
+    margin-top: calc(0.25rem * 3);
+  }
+.style15 {
+    display: block;
+  }
+.style4 {
+    display: flex;
+  }
+.style7 {
+    display: flex;
+  }
+.style11 {
+    display: flex;
+  }
+.style17 {
+    display: flex;
+  }
+.courseSubsection {
+    display: grid;
+  }
+.courseInspectorContent {
+    display: grid;
+  }
+.style3 {
+    display: grid;
+  }
+.style6 {
+    display: grid;
+  }
+.courseCanvas {
+    display: grid;
+  }
+.courseOverviewBand {
+    display: grid;
+  }
+.style10 {
+    display: grid;
+  }
+.courseSections {
+    display: grid;
+  }
+.courseStream {
+    display: grid;
+  }
+.courseModuleError {
+    display: grid;
+  }
+.style14 {
+    display: grid;
+  }
+.courseActivityRow {
+    display: grid;
+  }
+.courseActivityIcon {
+    display: grid;
+  }
+.courseActivityTitle {
+    display: grid;
+  }
+.courseActivityFiles {
+    display: grid;
+  }
+.courseActivityAction {
+    display: inline-flex;
+  }
+.courseActivityLocked {
+    display: inline-flex;
+  }
+.style18 {
+    display: inline-flex;
+  }
+.courseActivityIcon {
+    width: calc(0.25rem * 10);
+    height: calc(0.25rem * 10);
+  }
+.courseActivityAction {
+    min-height: calc(0.25rem * 11);
+  }
+.courseActivityLocked {
+    min-height: calc(0.25rem * 11);
+  }
+.style11 {
+    min-height: calc(0.25rem * 11);
+  }
+.style17 {
+    min-height: calc(0.25rem * 11);
+  }
+.courseSubsection {
+    min-height: calc(0.25rem * 14);
+  }
+.courseActivityRow {
+    min-height: calc(0.25rem * 14);
+  }
+.courseCanvas {
+    min-width: 0px;
+  }
+.courseActivityTitle {
+    min-width: 0px;
+  }
+.style18 {
+    min-width: 0px;
+  }
+.courseActivityAction {
+    flex-shrink: 0;
+  }
+.courseActivityComplete {
+    flex-shrink: 0;
+  }
+.style1 {
+    flex-shrink: 0;
+  }
+.style13 {
+    flex-shrink: 0;
+  }
+.courseActivityIcon {
+    flex-shrink: 0;
+  }
+.style20 {
+    flex-shrink: 0;
+  }
+.courseActivityFiles {
+    list-style-type: none;
+  }
+.courseOverviewBand {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+.courseActivityIcon {
+    place-items: center;
+  }
+.courseActivityAction {
+    align-items: center;
+  }
+.courseActivityLocked {
+    align-items: center;
+  }
+.style11 {
+    align-items: center;
+  }
+.courseActivityRow {
+    align-items: center;
+  }
+.style17 {
+    align-items: center;
+  }
+.style18 {
+    align-items: center;
+  }
+.style4 {
+    align-items: flex-end;
+  }
+.style4 {
+    justify-content: space-between;
+  }
+.style7 {
+    justify-content: space-between;
+  }
+.style11 {
+    justify-content: space-between;
+  }
+.style17 {
+    justify-content: space-between;
+  }
+.courseSubsection {
+    gap: calc(0.25rem * 0.5);
+  }
+.style10 {
+    gap: calc(0.25rem * 0.5);
+  }
+.courseActivityTitle {
+    gap: calc(0.25rem * 0.5);
+  }
+.courseActivityAction {
+    gap: 0.25rem;
+  }
+.courseActivityLocked {
+    gap: 0.25rem;
+  }
+.courseActivityFiles {
+    gap: 0.25rem;
+  }
+.style18 {
+    gap: calc(0.25rem * 2);
+  }
+.style3 {
+    gap: calc(0.25rem * 3);
+  }
+.style4 {
+    gap: calc(0.25rem * 3);
+  }
+.style11 {
+    gap: calc(0.25rem * 3);
+  }
+.courseModuleError {
+    gap: calc(0.25rem * 3);
+  }
+.courseActivityRow {
+    gap: calc(0.25rem * 3);
+  }
+.style17 {
+    gap: calc(0.25rem * 3);
+  }
+.style7 {
+    gap: calc(0.25rem * 4);
+  }
+.courseInspectorContent {
+    gap: calc(0.25rem * 5);
+  }
+.courseCanvas {
+    gap: calc(0.25rem * 6);
+  }
+.courseSections {
+    gap: calc(0.25rem * 6);
+  }
+:where(.courseOverviewBand > :not(:last-child)) {
+    --nm-divide-x-reverse: 0;
+    border-inline-style: var(--nm-border-style);
+    border-inline-start-width: calc(1px * var(--nm-divide-x-reverse));
+    border-inline-end-width: calc(1px * calc(1 - var(--nm-divide-x-reverse)));
+  }
+:where(.style6 > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.courseStream > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.style6 > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+:where(.courseOverviewBand > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+:where(.courseStream > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+.style15 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.style16 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.style19 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.style3 {
+    border-radius: var(--shape-card);
+  }
+.courseOverviewBand {
+    border-radius: var(--shape-card);
+  }
+.courseActivityAction {
+    border-radius: var(--shape-control);
+  }
+.courseSectionSummary {
+    border-radius: var(--shape-control);
+  }
+.courseActivityRow {
+    border-radius: var(--shape-control);
+  }
+.courseActivityIcon {
+    border-radius: var(--shape-control);
+  }
+.courseActivityDescription {
+    border-radius: var(--shape-control);
+  }
+.style17 {
+    border-radius: var(--shape-control);
+  }
+.courseSubsection {
+    border-left-style: var(--nm-border-style);
+    border-left-width: 2px;
+  }
+.courseSubsection {
+    border-color: var(--accent-500);
+  }
+.courseSubsection {
+    background-color: var(--surface-inset);
+  }
+.style3 {
+    background-color: var(--surface-inset);
+  }
+.courseOverviewBand {
+    background-color: var(--surface-inset);
+  }
+.courseSectionSummary {
+    background-color: var(--surface-inset);
+  }
+.courseActivityIcon {
+    background-color: var(--surface-inset);
+  }
+.courseActivityDescription {
+    background-color: var(--surface-inset);
+  }
+.courseOverviewBand {
+    padding: calc(0.25rem * 2);
+  }
+.style3 {
+    padding: calc(0.25rem * 4);
+  }
+.courseSectionSummary {
+    padding: calc(0.25rem * 4);
+  }
+.courseActivityDescription {
+    padding: calc(0.25rem * 4);
+  }
+.style10 {
+    padding-inline: calc(0.25rem * 2);
+  }
+.courseActivityRow {
+    padding-inline: calc(0.25rem * 2);
+  }
+.courseActivityFiles {
+    padding-inline: calc(0.25rem * 2);
+  }
+.courseActivityAction {
+    padding-inline: calc(0.25rem * 3);
+  }
+.style17 {
+    padding-inline: calc(0.25rem * 3);
+  }
+.courseSubsection {
+    padding-inline: calc(0.25rem * 4);
+  }
+.courseSubsection {
+    padding-block: calc(0.25rem * 3);
+  }
+.style7 {
+    padding-block: calc(0.25rem * 3);
+  }
+.courseActivity {
+    padding-block: calc(0.25rem * 3);
+  }
+.courseLabel {
+    padding-block: calc(0.25rem * 4);
+  }
+.courseModuleError {
+    padding-block: calc(0.25rem * 4);
+  }
+.courseSectionEmpty {
+    padding-block: calc(0.25rem * 5);
+  }
+.courseOverviewBand {
+    text-align: center;
+  }
+.tabular {
+    font-size: var(--text-2xl);
+    line-height: var(--nm-leading, var(--text-2xl--line-height));
+  }
+.tabular2 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style12 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style8 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style9 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.courseSectionEmpty {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style17 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.courseActivityAction {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.courseActivityLocked {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style2 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style5 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style10 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style16 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style20 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.courseActivityAction {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style2 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style12 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style2 {
+    color: var(--accent-400);
+  }
+.courseActivityComplete {
+    color: var(--status-success);
+  }
+.courseModuleError {
+    color: var(--status-warning);
+  }
+.courseActivityAction {
+    color: var(--text-primary);
+  }
+.tabular2 {
+    color: var(--text-primary);
+  }
+.style18 {
+    color: var(--text-primary);
+  }
+.style5 {
+    color: var(--text-secondary);
+  }
+.style8 {
+    color: var(--text-secondary);
+  }
+.style10 {
+    color: var(--text-secondary);
+  }
+.courseSectionEmpty {
+    color: var(--text-secondary);
+  }
+.courseActivityIcon {
+    color: var(--text-secondary);
+  }
+.courseActivityLocked {
+    color: var(--text-tertiary);
+  }
+.style1 {
+    color: var(--text-tertiary);
+  }
+.style16 {
+    color: var(--text-tertiary);
+  }
+.style20 {
+    color: var(--text-tertiary);
+  }
+.courseActivityAction {
+    text-decoration-line: none;
+  }
+.style18 {
+    text-decoration-line: none;
+  }
+.courseActivityAction {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.courseActivityRow {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.courseActivityAction {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.courseActivityRow {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+@media (hover: hover) {
+    .courseActivityRow:hover {
+      background-color: var(--surface-elevated);
+    }
+  }
+@media (hover: hover) {
+    .courseActivityAction:hover {
+      background-color: var(--surface-inset);
+    }
+  }
+@media (hover: hover) {
+    .style17:hover {
+      background-color: var(--surface-inset);
+    }
+  }
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+.tabular2 {
+  font-variant-numeric: tabular-nums;
+}
+.appActionLink {}
+.richContent {}
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.courseModuleError { grid-template-columns: auto minmax(0,1fr); }
+.courseActivityRow { grid-template-columns: auto auto minmax(0,1fr) auto auto auto; }
+@media (width < 64rem) {
+  .courseActivityRow { grid-template-columns: auto auto minmax(0,1fr) auto; }
+}

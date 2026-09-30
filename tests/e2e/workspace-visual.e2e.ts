@@ -53,7 +53,7 @@ test("captures the responsive Editorial Native workspace on real routes", async 
             const main = document.querySelector("#main-content");
             return main === null ? false : main.scrollWidth > main.clientWidth;
           })(),
-          shellHeight: document.querySelector(".ui-app-shell")?.getBoundingClientRect().height ?? 0,
+          shellHeight: document.querySelector('[data-testid="app-shell"]')?.getBoundingClientRect().height ?? 0,
           viewportHeight: window.innerHeight,
         }));
         expect(geometry.horizontalOverflow).toBe(false);

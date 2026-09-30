@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./quiz-response-editor.module.css";
 import dynamic from "next/dynamic";
 import { useEffect, useRef, useState } from "react";
 
@@ -39,7 +40,7 @@ export function QuizResponseEditor({ node, onChange }: Readonly<{
   const editorId = node.id === undefined ? undefined : `${node.id}-editor`;
 
   return (
-    <div className="ui-quiz-response-editor min-w-0" data-editor="moodle-response">
+    <div className={styles.quizResponseEditor!} data-editor="moodle-response">
       <RichTextEditor
         ariaLabel="回答エディター"
         disabled={node.disabled}
@@ -53,7 +54,7 @@ export function QuizResponseEditor({ node, onChange }: Readonly<{
       />
       <textarea
         aria-hidden="true"
-        className="ui-quiz-response-editor__wire sr-only"
+        className={styles.quizResponseEditorWire!}
         defaultValue={node.value}
         disabled={node.disabled}
         maxLength={node.maxLength}

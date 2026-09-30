@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./workshop-workspace.module.css";
 import { FloppyDisk, PencilSimple } from "@phosphor-icons/react";
 import ky from "ky";
 import { useRouter } from "next/navigation";
@@ -47,12 +48,12 @@ export function WorkshopWorkspace({ cmid, data, locale, timeZone }: Readonly<{
   const ownSubmission = data.submissions[0] ?? null;
   const editable = ownSubmission === null ? data.canCreate : data.canModify;
   return (
-    <section className="ui-workshop grid gap-5" aria-labelledby="workshop-title">
-      <header className="flex flex-wrap items-end justify-between gap-4"><div className="grid gap-1"><span className="ui-kicker font-mono text-xs tracking-[.08em] text-[var(--text-tertiary)]">PEER WORKSPACE</span><h2 className="m-0 text-xl font-semibold" id="workshop-title">ワークショップ</h2></div><Badge tone={data.phase.key === "submission" ? "accent" : "neutral"}>{data.phase.label}</Badge></header>
+    <section className={styles.workshop!} aria-labelledby="workshop-title">
+      <header className={styles.style1!}><div className={styles.style2!}><span className={styles.kicker!}>PEER WORKSPACE</span><h2 className={styles.style3!} id="workshop-title">ワークショップ</h2></div><Badge tone={data.phase.key === "submission" ? "accent" : "neutral"}>{data.phase.label}</Badge></header>
       <Card padding="spacious"><RichContent document={data.instructions} /></Card>
       {ownSubmission === null && !editable ? <Notice title="提出は現在受け付けていません" tone="info"><p>フェーズまたは前提タスクを確認してください。</p></Notice> : null}
-      {editable ? <form className="grid gap-4 rounded-[var(--shape-card)] bg-[var(--surface-primary)] p-4 sm:p-6" onSubmit={(event) => void submit(event, ownSubmission?.id ?? null)}><Field defaultValue={ownSubmission?.title ?? ""} id="workshop-title-input" label="タイトル" maxLength={255} name="title" required /><Textarea defaultValue={ownSubmission === null ? "" : moodleDocumentText(ownSubmission.content)} id="workshop-content" label="提出内容" maxLength={100_000} name="content" rows={12} /><StickyActionBar aria-label="ワークショップ提出操作"><span className="mr-auto text-xs text-[var(--text-tertiary)]">{ownSubmission === null ? "新規提出" : `更新 ${dateFormat.format(new Date(ownSubmission.timeModified * 1_000))}`}</span><Button disabled={pending} loading={pending} type="submit">{ownSubmission === null ? <FloppyDisk aria-hidden size={17} /> : <PencilSimple aria-hidden size={17} />}提出を保存</Button></StickyActionBar></form> : null}
-      <span aria-live="polite" className="ui-form-error min-h-5 text-sm text-[var(--status-error)]">{error}</span>
+      {editable ? <form className={styles.style4!} onSubmit={(event) => void submit(event, ownSubmission?.id ?? null)}><Field defaultValue={ownSubmission?.title ?? ""} id="workshop-title-input" label="タイトル" maxLength={255} name="title" required /><Textarea defaultValue={ownSubmission === null ? "" : moodleDocumentText(ownSubmission.content)} id="workshop-content" label="提出内容" maxLength={100_000} name="content" rows={12} /><StickyActionBar aria-label="ワークショップ提出操作"><span className={styles.style5!}>{ownSubmission === null ? "新規提出" : `更新 ${dateFormat.format(new Date(ownSubmission.timeModified * 1_000))}`}</span><Button disabled={pending} loading={pending} type="submit">{ownSubmission === null ? <FloppyDisk aria-hidden size={17} /> : <PencilSimple aria-hidden size={17} />}提出を保存</Button></StickyActionBar></form> : null}
+      <span aria-live="polite" className={styles.formError!}>{error}</span>
     </section>
   );
 }

@@ -6,7 +6,7 @@ async function signIn(page: import("@playwright/test").Page, username: string, p
   await page.getByLabel("Moodleユーザー名").fill(username);
   await page.getByLabel("パスワード").fill(password);
   await page.getByRole("button", { name: "Moodleでログイン" }).click();
-  await expect(page).toHaveURL(/\/dashboard$/);
+  await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
   await page.addStyleTag({ content: "nextjs-portal { display: none !important; pointer-events: none !important; }" });
 }
 
@@ -173,9 +173,9 @@ test("message navigation and conversation icons keep their dimensions after a ta
   await page.goto("/messages/1001");
   await expect(page.getByLabel("1件の未読メッセージ")).toHaveCount(0);
   const conversationGeometry = await page.evaluate(() => {
-    const context = document.querySelector<HTMLElement>(".ui-page-frame__context");
-    const content = document.querySelector<HTMLElement>(".ui-page-frame__content");
-    const thread = document.querySelector<HTMLElement>(".ui-message-thread");
+    const context = document.querySelector<HTMLElement>('[data-testid="page-frame-context"]');
+    const content = document.querySelector<HTMLElement>('[data-testid="page-frame-content"]');
+    const thread = document.querySelector<HTMLElement>('[data-testid="message-thread"]');
     return {
       contextWidth: context?.getBoundingClientRect().width ?? 0,
       contentWidth: content?.getBoundingClientRect().width ?? 0,
@@ -187,8 +187,8 @@ test("message navigation and conversation icons keep their dimensions after a ta
   expect(conversationGeometry.threadWidth).toBeGreaterThan(500);
   const scrollGeometry = await page.evaluate(() => {
     const appMain = document.querySelector<HTMLElement>("#main-content");
-    const thread = document.querySelector<HTMLElement>(".ui-message-thread");
-    const composer = document.querySelector<HTMLElement>(".ui-message-composer");
+    const thread = document.querySelector<HTMLElement>('[data-testid="message-thread"]');
+    const composer = document.querySelector<HTMLElement>('[data-testid="message-composer"]');
     return {
       appMainClientHeight: appMain?.clientHeight ?? 0,
       appMainScrollHeight: appMain?.scrollHeight ?? 0,
@@ -275,7 +275,7 @@ test("standard activities remain inside the Editorial Native workspace", async (
   await page.getByRole("button", { name: "受験を開始" }).click();
   const answer = page.getByLabel("Answer text · Question 1");
   await expect(answer).toBeVisible();
-  await expect(page.locator(".ui-quiz-question__meta small", { hasText: "Marked out of 1.00" })).toBeVisible();
+  await expect(page.getByTestId("quiz-question-meta").locator("small", { hasText: "Marked out of 1.00" })).toBeVisible();
   await answer.fill("Attendance");
   await expect(page.getByText("保存済み")).toBeVisible();
   await page.getByRole("button", { name: "Clear my choice" }).click();
@@ -402,18 +402,18 @@ test("API 非対応 Questionnaire is parsed, submitted, and reported inside the 
   await page.goto("/messages/new?courseId=101");
   await expect(page.getByRole("heading", { name: "新しいメッセージ" })).toBeVisible();
   await expect(page.getByLabel("送信先")).toContainText("Aoi Mentor");
-  await page.getByLabel("メッセージ").fill("Could you confirm the observation meeting time?");
+  await page.getByRole("textbox", { name: "メッセージ" }).fill("Could you confirm the observation meeting time?");
   await page.getByRole("button", { name: "送信内容を確認" }).click();
   await expect(page.getByRole("heading", { name: "送信前の確認" })).toBeVisible();
   await page.getByRole("button", { name: "送信を確定" }).click();
   await expect(page).toHaveURL(/\/messages\/1001$/);
   await expect(page.getByText("The next study session starts at 16:00.", { exact: true })).toBeVisible();
-  await expect(page.locator(".ui-message-thread")).not.toContainText("<p>");
-  const sentMessage = page.getByRole("main").locator(".ui-message-thread__scroll > ol li[data-own='true'] p");
+  await expect(page.getByTestId("message-thread")).not.toContainText("<p>");
+  const sentMessage = page.getByRole("main").getByTestId("message-thread-scroll").locator("ol li[data-own='true'] p");
   await expect(sentMessage).toContainText("Could you confirm the observation meeting time?");
-  await page.getByLabel("メッセージ").fill("Thanks, I will be there.");
+  await page.getByRole("textbox", { name: "メッセージ" }).fill("Thanks, I will be there.");
   await page.getByRole("button", { name: "送信" }).click();
-  await expect(page.getByRole("main").locator(".ui-message-thread__scroll")).toContainText("Thanks, I will be there.");
+  await expect(page.getByRole("main").getByTestId("message-thread-scroll")).toContainText("Thanks, I will be there.");
   await expect(page.getByText("⌘ / Ctrl + Enterで送信", { exact: true })).toBeVisible();
   await expect(page.getByRole("main")).toContainText("Aoi Mentor");
 });

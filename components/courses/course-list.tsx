@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./course-list.module.css";
 import { Books, Eye, EyeSlash, MagnifyingGlass, Star } from "@phosphor-icons/react";
 import ky from "ky";
 import { useMemo, useState } from "react";
@@ -108,12 +109,12 @@ export function CourseList({ canFavorite, config, courses, preferenceScope }: Re
   }
 
   return (
-    <div className="ui-courses-browser grid min-w-0 gap-6">
+    <div className={styles.coursesBrowser!}>
       <Toolbar label="コースを検索・絞り込み">
-        <div className="ui-courses-search grid min-w-[min(100%,20rem)] flex-1 grid-cols-[auto_minmax(0,1fr)] items-end gap-2">
-          <span className="grid size-11 shrink-0 place-items-center text-[var(--text-secondary)]"><MagnifyingGlass aria-hidden size={20} weight="regular" /></span>
+        <div className={styles.coursesSearch!}>
+          <span className={styles.style1!}><MagnifyingGlass aria-hidden size={20} weight="regular" /></span>
           <Field
-            className="bg-transparent"
+            className={styles.style2!}
             id="course-search"
             label="コースを検索"
             onChange={(event) => setQuery(event.currentTarget.value)}
@@ -122,16 +123,16 @@ export function CourseList({ canFavorite, config, courses, preferenceScope }: Re
             value={query}
           />
         </div>
-        <div className="ui-courses-filters flex max-w-full flex-wrap gap-1 self-end" aria-label="コースの絞り込み" role="group">
-          <Button aria-pressed={courseFilter === "all"} className="whitespace-nowrap" onClick={() => setCourseFilter("all")} size="compact" variant={courseFilter === "all" ? "primary" : "ghost"}>すべて</Button>
+        <div className={styles.coursesFilters!} aria-label="コースの絞り込み" role="group">
+          <Button aria-pressed={courseFilter === "all"} className={styles.style3!} onClick={() => setCourseFilter("all")} size="compact" variant={courseFilter === "all" ? "primary" : "ghost"}>すべて</Button>
           {CLASSIFICATIONS.map((classification) => (
-            <Button aria-pressed={courseFilter === classification} className="whitespace-nowrap" key={classification} onClick={() => setCourseFilter(classification)} size="compact" variant={courseFilter === classification ? "primary" : "ghost"}>{CLASSIFICATION_COPY[classification].label}</Button>
+            <Button aria-pressed={courseFilter === classification} className={styles.style3!} key={classification} onClick={() => setCourseFilter(classification)} size="compact" variant={courseFilter === classification ? "primary" : "ghost"}>{CLASSIFICATION_COPY[classification].label}</Button>
           ))}
-          <Button aria-pressed={courseFilter === "hidden"} className="whitespace-nowrap" onClick={() => setCourseFilter("hidden")} size="compact" variant={courseFilter === "hidden" ? "primary" : "ghost"}><EyeSlash aria-hidden size={15} />非表示 {hiddenCourses.size}</Button>
-          {canFavorite ? <Button aria-pressed={favoriteOnly} className="whitespace-nowrap" onClick={() => setFavoriteOnly((current) => !current)} size="compact" variant={favoriteOnly ? "primary" : "ghost"}><Star aria-hidden size={15} weight={favoriteOnly ? "fill" : "regular"} />スター付き</Button> : null}
+          <Button aria-pressed={courseFilter === "hidden"} className={styles.style3!} onClick={() => setCourseFilter("hidden")} size="compact" variant={courseFilter === "hidden" ? "primary" : "ghost"}><EyeSlash aria-hidden size={15} />非表示 {hiddenCourses.size}</Button>
+          {canFavorite ? <Button aria-pressed={favoriteOnly} className={styles.style3!} onClick={() => setFavoriteOnly((current) => !current)} size="compact" variant={favoriteOnly ? "primary" : "ghost"}><Star aria-hidden size={15} weight={favoriteOnly ? "fill" : "regular"} />スター付き</Button> : null}
         </div>
       </Toolbar>
-      <p aria-live="polite" className="ui-courses-result-count m-0 text-xs text-[var(--text-tertiary)]">{filtered.length}件のコースを表示</p>
+      <p aria-live="polite" className={styles.coursesResultCount!}>{filtered.length}件のコースを表示</p>
       {favoriteError === "" ? null : <Notice title="スターを更新できませんでした" tone="error" urgent><p>{favoriteError}</p></Notice>}
       {filtered.length === 0 ? (
         <EmptyState icon={courseFilter === "hidden" ? <EyeSlash aria-hidden size={22} /> : <MagnifyingGlass aria-hidden size={22} />} title={courseFilter === "hidden" ? "非表示のコースはありません" : "検索条件に一致するコースはありません"}>
@@ -145,25 +146,25 @@ export function CourseList({ canFavorite, config, courses, preferenceScope }: Re
           }
           const copy = classification === "hidden" ? { label: "非表示済み", tone: "neutral" as const } : CLASSIFICATION_COPY[classification];
           return (
-            <Card className="ui-courses-group" key={classification} padding="standard" tone="default">
-              <header className="flex min-h-11 items-center justify-between gap-3">
-                <h2 className="m-0 text-lg font-semibold">{copy.label}</h2>
+            <Card className={styles.coursesGroup!} key={classification} padding="standard" tone="default">
+              <header className={styles.style4!}>
+                <h2 className={styles.style5!}>{copy.label}</h2>
                 <Badge tone={copy.tone}>{group.length}コース</Badge>
               </header>
-              <div className="ui-courses-list mt-2" data-testid={`course-list-${classification}`}>
-                <ul className="m-0 list-none divide-y divide-[var(--border-subtle)] p-0">
+              <div className={styles.coursesList!} data-testid={`course-list-${classification}`}>
+                <ul className={styles.style6!}>
                   {group.map((course) => (
-                    <li className="relative min-w-0" key={course.id}>
-                      <div className="ui-courses-row grid min-h-20 min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center rounded-[var(--shape-control)] transition-colors duration-[120ms] hover:bg-[var(--surface-elevated)]"><TransitionLink className="grid min-w-0 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3 px-3 py-3 text-[var(--text-primary)] no-underline max-sm:grid-cols-[auto_minmax(0,1fr)]" href={`/courses/${course.id}`} intent="drill-in">
-                        <span className="ui-courses-list__icon grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] bg-[var(--surface-inset)] text-[var(--text-secondary)]">
+                    <li className={styles.style7!} key={course.id}>
+                      <div className={styles.coursesRow!}><TransitionLink className={styles.style8!} href={`/courses/${course.id}`} intent="drill-in">
+                        <span className={styles.coursesListIcon!}>
                           <Books aria-hidden size={21} weight="regular" />
                         </span>
-                        <span className="ui-courses-list__title grid min-w-0 gap-0.5">
-                          <SharedTransition identifier={course.id} kind="course"><strong className="truncate">{course.name}</strong></SharedTransition>
-                          <small className="truncate text-xs text-[var(--text-tertiary)]">{course.shortName}</small>
+                        <span className={styles.coursesListTitle!}>
+                          <SharedTransition identifier={course.id} kind="course"><strong className={styles.style9!}>{course.name}</strong></SharedTransition>
+                          <small className={styles.style10!}>{course.shortName}</small>
                         </span>
-                        <span className="ui-courses-list__period pr-2 text-right text-xs text-[var(--text-secondary)] max-sm:col-start-2 max-sm:text-left">{coursePeriod(course, dateFormat)}</span>
-                      </TransitionLink><div className="mr-2 flex shrink-0 items-center">{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} aria-pressed={favorites.has(course.id)} className="ui-course-favourite grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-tertiary)] transition-colors duration-[120ms] hover:bg-[var(--surface-inset)] hover:text-[var(--accent-400)] aria-pressed:text-[var(--accent-400)]" disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}<button aria-label={hiddenCourses.has(course.id) ? `${course.name}を一覧へ戻す` : `${course.name}を一覧から非表示`} className="grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-tertiary)] transition-colors duration-[120ms] hover:bg-[var(--surface-inset)] hover:text-[var(--text-primary)]" onClick={() => toggleHidden(course.id)} type="button">{hiddenCourses.has(course.id) ? <Eye aria-hidden size={19} /> : <EyeSlash aria-hidden size={19} />}</button></div></div>
+                        <span className={styles.coursesListPeriod!}>{coursePeriod(course, dateFormat)}</span>
+                      </TransitionLink><div className={styles.style11!}>{canFavorite ? <button aria-label={favorites.has(course.id) ? `${course.name}のスターを解除` : `${course.name}にスターを付ける`} aria-pressed={favorites.has(course.id)} className={styles.courseFavourite!} disabled={pendingFavorite !== null} onClick={() => void toggleFavourite(course)} type="button"><Star aria-hidden size={19} weight={favorites.has(course.id) ? "fill" : "regular"} /></button> : null}<button aria-label={hiddenCourses.has(course.id) ? `${course.name}を一覧へ戻す` : `${course.name}を一覧から非表示`} className={styles.style12!} onClick={() => toggleHidden(course.id)} type="button">{hiddenCourses.has(course.id) ? <Eye aria-hidden size={19} /> : <EyeSlash aria-hidden size={19} />}</button></div></div>
                     </li>
                   ))}
                 </ul>
