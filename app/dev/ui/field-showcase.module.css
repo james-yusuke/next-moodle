@@ -1,0 +1,52 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    margin: 0px;
+  }
+.style4 {
+    display: flex;
+  }
+.style1 {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style4 {
+    flex-wrap: wrap;
+  }
+.style4 {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.style2 {
+    gap: calc(0.25rem * 3);
+  }
+.style2 {
+    border-radius: var(--shape-card);
+  }
+.style2 {
+    background-color: var(--surface-primary);
+  }
+.style2 {
+    padding: calc(0.25rem * 4);
+  }
+.style3 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+@media (width >= 40rem) {
+    .style2 {
+      padding: calc(0.25rem * 6);
+    }
+  }
+@media (width >= 48rem) {
+    .style1 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }

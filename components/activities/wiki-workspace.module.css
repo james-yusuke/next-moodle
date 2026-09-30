@@ -1,0 +1,151 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    margin: 0px;
+  }
+.style7 {
+    margin: 0px;
+  }
+.style1 {
+    display: flex;
+  }
+.knowledge {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.wikiPages {
+    display: grid;
+  }
+.style5 {
+    display: grid;
+  }
+.style6 {
+    display: grid;
+  }
+.style8 {
+    display: grid;
+  }
+.formError {
+    min-height: calc(0.25rem * 5);
+  }
+.style6 {
+    min-height: calc(0.25rem * 11);
+  }
+.style1 {
+    flex-wrap: wrap;
+  }
+.style6 {
+    align-items: center;
+  }
+.style1 {
+    align-items: flex-end;
+  }
+.style1 {
+    justify-content: space-between;
+  }
+.style2 {
+    gap: 0.25rem;
+  }
+.style6 {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 4);
+  }
+.style5 {
+    gap: calc(0.25rem * 4);
+  }
+.style8 {
+    gap: calc(0.25rem * 4);
+  }
+.knowledge {
+    gap: calc(0.25rem * 5);
+  }
+:where(.wikiPages > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.wikiPages > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+.wikiPages {
+    border-radius: var(--shape-card);
+  }
+.wikiPages {
+    background-color: var(--surface-primary);
+  }
+.wikiPages {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style5 {
+    padding-block: calc(0.25rem * 5);
+  }
+.kicker {
+    font-family: var(--font-geist-mono);
+  }
+.tabular {
+    font-family: var(--font-geist-mono);
+  }
+.style7 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.formError {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style3 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.kicker {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.tabular {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style7 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.kicker {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.formError {
+    color: var(--status-error);
+  }
+.kicker {
+    color: var(--text-tertiary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+.tabular {
+    color: var(--text-tertiary);
+  }
+@media (width >= 40rem) {
+    .wikiPages {
+      padding-inline: calc(0.25rem * 6);
+    }
+  }
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.style6 { grid-template-columns: auto minmax(0,1fr) auto; }

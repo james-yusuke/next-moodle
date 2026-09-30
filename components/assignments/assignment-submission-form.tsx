@@ -1,12 +1,12 @@
 "use client";
 
+import styles from "./assignment-submission-form.module.css";
 import { CheckCircle, FloppyDisk, PaperPlaneTilt } from "@phosphor-icons/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 
 import { Button, Notice, StickyActionBar, Surface } from "@/components/ui";
-import type { AiAvailability } from "@/lib/ai/config";
 import type { NativeSubmissionPolicy } from "@/lib/moodle/queries/assignment-policy";
 import type { AssignmentFile, AssignmentOnlineText } from "@/lib/moodle/queries/assignments";
 import { SubmissionFileQueue } from "./submission-file-queue";
@@ -25,8 +25,6 @@ const ResponseSchema = z.discriminatedUnion("ok", [
 
 type EnabledPolicy = Extract<NativeSubmissionPolicy, { readonly kind: "enabled" }>;
 type Props = Readonly<{
-  aiAvailability: AiAvailability;
-  aiConsentStorageKey: string;
   cmid: number;
   draftStorageKey: string;
   dueLabel: string;
@@ -187,24 +185,20 @@ export function AssignmentSubmissionForm(props: Props) {
   };
 
   return (
-    <Surface className="ui-assignment-form-surface !p-0" eyebrow="提出ワークスペース" title="提出内容を編集" variant="raised">
-      <form className="ui-assignment-form grid gap-6 p-4 sm:p-6" onSubmit={(event) => event.preventDefault()}>
+    <Surface className={styles.assignmentFormSurface!} eyebrow="提出ワークスペース" title="提出内容を編集" variant="raised">
+      <form className={styles.assignmentForm!} onSubmit={(event) => event.preventDefault()}>
         {props.policy.isGroupSubmission ? <Notice title="グループ提出" tone="info"><p>{props.policy.groupId === 0 ? "Moodleで割り当てられたグループの共同提出として保存します。" : `グループID ${props.policy.groupId} の共同提出として保存します。`}</p></Notice> : null}
         {allowsText(props.policy) ? (
-          <section className="ui-assignment-form__text grid gap-4">
-            <div className="ui-assignment-form__text-heading flex flex-wrap items-center justify-between gap-3"><h3 className="m-0 text-base font-semibold">オンラインテキスト</h3><span className="text-xs text-[var(--text-tertiary)]">{formatLabel}</span></div>
+          <section className={styles.assignmentFormText!}>
+            <div className={styles.assignmentFormTextHeading!}><h3 className={styles.style1!}>オンラインテキスト</h3><span className={styles.style2!}>{formatLabel}</span></div>
             <WritingWorkspace
-              aiAvailability={props.aiAvailability}
-              aiConsentStorageKey={props.aiConsentStorageKey}
-              cmid={props.cmid}
               disabled={pending}
               format={writingTextFormat(props.initialText.format)}
               maxLength={props.policy.limits.maxOnlineTextBytes}
               onChange={setText}
-              submitting={pending}
               value={text}
             />
-            <small className="text-xs text-[var(--text-tertiary)] data-[invalid=true]:text-[var(--status-error)]" data-invalid={textTooLarge}>{textBytes.toLocaleString(props.locale)} / {props.policy.limits.maxOnlineTextBytes.toLocaleString(props.locale)} bytes · 端末内へ自動保存</small>
+            <small className={styles.style3!} data-invalid={textTooLarge}>{textBytes.toLocaleString(props.locale)} / {props.policy.limits.maxOnlineTextBytes.toLocaleString(props.locale)} bytes · 端末内へ自動保存</small>
           </section>
         ) : null}
         {allowsFiles(props.policy) ? (
@@ -219,21 +213,21 @@ export function AssignmentSubmissionForm(props: Props) {
           />
         ) : null}
         {confirming ? (
-          <StickyActionBar className="ui-submit-confirmation bg-[var(--surface-selected)]" role="group" aria-label="提出確定の確認">
-            <CheckCircle aria-hidden className="shrink-0 text-[var(--accent-400)]" size={26} weight="regular" />
-            <div className="mr-auto min-w-0"><h3 className="m-0 text-base font-semibold">この内容で提出を確定しますか？</h3><p className="m-0 mt-1 text-xs text-[var(--text-secondary)]">本文 {text.trim() === "" ? "なし" : "あり"} · ファイル {activeFileCount}件 · 締切 {props.dueLabel}</p></div>
-            {props.policy.requiresStatement ? <label className="ui-submit-statement flex min-h-11 basis-full items-center gap-3 text-sm text-[var(--text-primary)]"><input className="size-[18px] accent-[var(--accent-500)]" checked={statementAccepted} onChange={(event) => setStatementAccepted(event.currentTarget.checked)} type="checkbox" /><span>この提出物が自分または所属グループの成果物であることに同意します。</span></label> : null}
+          <StickyActionBar className={styles.submitConfirmation!} role="group" aria-label="提出確定の確認">
+            <CheckCircle aria-hidden className={styles.style4!} size={26} weight="regular" />
+            <div className={styles.style5!}><h3 className={styles.style1!}>この内容で提出を確定しますか？</h3><p className={styles.style6!}>本文 {text.trim() === "" ? "なし" : "あり"} · ファイル {activeFileCount}件 · 締切 {props.dueLabel}</p></div>
+            {props.policy.requiresStatement ? <label className={styles.submitStatement!}><input className={styles.style7!} checked={statementAccepted} onChange={(event) => setStatementAccepted(event.currentTarget.checked)} type="checkbox" /><span>この提出物が自分または所属グループの成果物であることに同意します。</span></label> : null}
             <Button disabled={pending || converting} onClick={() => setConfirming(false)} type="button" variant="ghost">戻る</Button>
             <Button disabled={converting || textTooLarge || !submissionReady || (props.policy.requiresStatement && !statementAccepted)} icon={<PaperPlaneTilt aria-hidden size={18} />} loading={pending} onClick={() => void submit("finalize")} type="button" variant="primary">提出を確定</Button>
           </StickyActionBar>
         ) : (
-          <StickyActionBar className="ui-assignment-form__actions">
+          <StickyActionBar className={styles.assignmentFormActions!}>
             <Button disabled={converting || textTooLarge || !submissionReady} icon={<FloppyDisk aria-hidden size={18} />} loading={pending} onClick={() => void submit("save")} type="button" variant="secondary">下書きを保存</Button>
             {props.policy.supportsFinalize ? <Button icon={<PaperPlaneTilt aria-hidden size={18} />} disabled={pending || converting || textTooLarge || !submissionReady} onClick={() => setConfirming(true)} type="button" variant="primary">提出を確定</Button> : null}
           </StickyActionBar>
         )}
       </form>
-      {notice === null ? null : <div className="px-4 pb-4 sm:px-6 sm:pb-6"><Notice title={notice.tone === "success" ? "保存しました" : "保存できませんでした"} tone={notice.tone}><p>{notice.text}</p></Notice></div>}
+      {notice === null ? null : <div className={styles.style8!}><Notice title={notice.tone === "success" ? "保存しました" : "保存できませんでした"} tone={notice.tone}><p>{notice.text}</p></Notice></div>}
     </Surface>
   );
 }

@@ -1,0 +1,13 @@
+/* Component-local styles with independent scope. */
+.starfield {
+    pointer-events: none;
+  }
+.starfield {
+    position: fixed;
+  }
+.starfield {
+    inset: 0px;
+  }
+.starfield {
+  z-index: -1;
+}

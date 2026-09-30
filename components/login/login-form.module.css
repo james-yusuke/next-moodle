@@ -1,0 +1,51 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    margin: 0px;
+  }
+.style2 {
+    margin-top: calc(0.25rem * 0.5);
+  }
+.loginForm {
+    display: grid;
+  }
+.loginSecurity {
+    display: grid;
+  }
+.style1 {
+    width: 100%;
+  }
+.style2 {
+    flex-shrink: 0;
+  }
+.loginSecurity {
+    align-items: flex-start;
+  }
+.loginSecurity {
+    gap: calc(0.25rem * 3);
+  }
+.loginForm {
+    gap: calc(0.25rem * 4);
+  }
+.loginSecurity {
+    border-radius: var(--shape-control);
+  }
+.loginSecurity {
+    background-color: var(--surface-inset);
+  }
+.loginSecurity {
+    padding: calc(0.25rem * 3);
+  }
+.loginSecurity {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style3 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.loginSecurity {
+    color: var(--text-secondary);
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.loginSecurity { grid-template-columns: auto minmax(0,1fr); }

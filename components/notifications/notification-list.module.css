@@ -1,0 +1,203 @@
+/* Component-local styles with independent scope. */
+.style2 {
+    position: absolute;
+  }
+.style1 {
+    position: relative;
+  }
+.style2 {
+    inset-block: calc(0.25rem * 4);
+  }
+.style2 {
+    left: 0px;
+  }
+.style5 {
+    margin: 0px;
+  }
+.style7 {
+    margin: 0px;
+  }
+.style10 {
+    margin: 0px;
+  }
+.style3 {
+    display: flex;
+  }
+.style8 {
+    display: flex;
+  }
+.style1 {
+    display: grid;
+  }
+.style4 {
+    display: grid;
+  }
+.style10 {
+    display: grid;
+  }
+.style9 {
+    display: inline-flex;
+  }
+.style9 {
+    min-height: calc(0.25rem * 11);
+  }
+.style2 {
+    width: 3px;
+  }
+.style4 {
+    min-width: 0px;
+  }
+.style10 {
+    list-style-type: none;
+  }
+.style3 {
+    flex-wrap: wrap;
+  }
+.style8 {
+    flex-wrap: wrap;
+  }
+.style8 {
+    align-items: center;
+  }
+.style9 {
+    align-items: center;
+  }
+.style3 {
+    align-items: flex-start;
+  }
+.style3 {
+    justify-content: space-between;
+  }
+.style4 {
+    gap: 0.25rem;
+  }
+.style8 {
+    gap: calc(0.25rem * 2);
+  }
+.style9 {
+    gap: calc(0.25rem * 2);
+  }
+.style10 {
+    gap: calc(0.25rem * 2);
+  }
+.style3 {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 4);
+  }
+.style1 {
+    border-radius: var(--shape-card);
+  }
+.style9 {
+    border-radius: var(--shape-control);
+  }
+.style2 {
+    border-top-right-radius: 0.25rem;
+    border-bottom-right-radius: 0.25rem;
+  }
+.style2 {
+    background-color: var(--accent-500);
+  }
+.style1 {
+    background-color: var(--surface-primary);
+  }
+.style10 {
+    padding: 0px;
+  }
+.style1 {
+    padding: calc(0.25rem * 4);
+  }
+.style9 {
+    padding-inline: calc(0.25rem * 3);
+  }
+.style5 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.style7 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style6 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style9 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style7 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style5 {
+    --nm-leading: var(--leading-snug);
+    line-height: var(--leading-snug);
+  }
+.style5 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style9 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style5 {
+    text-wrap: balance;
+  }
+.style7 {
+    white-space: pre-wrap;
+  }
+.style5 {
+    color: var(--text-primary);
+  }
+.style9 {
+    color: var(--text-primary);
+  }
+.style7 {
+    color: var(--text-secondary);
+  }
+.style6 {
+    color: var(--text-tertiary);
+  }
+.style9 {
+    text-decoration-line: none;
+  }
+.style1 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.style9 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.style1 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.style9 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+@media (hover: hover) {
+    .style1:hover {
+      background-color: var(--surface-elevated);
+    }
+  }
+@media (hover: hover) {
+    .style9:hover {
+      background-color: var(--surface-inset);
+    }
+  }
+.style1[data-unread="true"] {
+    background-color: var(--surface-selected);
+  }
+@media (width >= 40rem) {
+    .style1 {
+      padding: calc(0.25rem * 5);
+    }
+  }
+.notificationsInbox {}

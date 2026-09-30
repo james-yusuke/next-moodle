@@ -1,3 +1,4 @@
+import styles from "./notice.module.css";
 import {
   CheckCircle,
   Info,
@@ -10,10 +11,10 @@ import { classNames } from "./class-names";
 export type NoticeTone = "info" | "success" | "warning" | "error";
 
 const toneClasses: Record<NoticeTone, string> = {
-  info: "bg-[var(--status-info-soft)] text-[var(--status-info)]",
-  success: "bg-[var(--status-success-soft)] text-[var(--status-success)]",
-  warning: "bg-[var(--status-warning-soft)] text-[var(--status-warning)]",
-  error: "bg-[var(--status-error-soft)] text-[var(--status-error)]",
+  info: styles.toneClassesinfo1!,
+  success: styles.toneClassessuccess2!,
+  warning: styles.toneClasseswarning3!,
+  error: styles.toneClasseserror4!,
 };
 
 type NoticeProps = Readonly<{
@@ -46,18 +47,17 @@ export function Notice({
 }: NoticeProps) {
   return (
     <div className={classNames(
-      `ui-notice ui-notice--${tone}`,
-      "grid min-w-0 grid-cols-[auto_minmax(0,1fr)] items-start gap-3 rounded-[var(--shape-card)] p-4 sm:grid-cols-[auto_minmax(0,1fr)_auto]",
+      styles.style1!,
       toneClasses[tone],
-    )} role={urgent ? "alert" : "status"}>
-      <span className="ui-notice__icon grid size-6 shrink-0 place-items-center">
+    )} data-tone={tone} role={urgent ? "alert" : "status"}>
+      <span className={styles.noticeIcon!}>
         <NoticeIcon tone={tone} />
       </span>
-      <div className="ui-notice__content grid min-w-0 gap-1">
-        <strong className="ui-notice__title text-sm leading-snug text-current">{title}</strong>
-        <div className="ui-notice__body text-sm leading-6 text-[var(--text-secondary)]">{children}</div>
+      <div className={styles.noticeContent!}>
+        <strong className={styles.noticeTitle!}>{title}</strong>
+        <div className={styles.noticeBody!}>{children}</div>
       </div>
-      {action ? <div className="ui-notice__action col-start-2 self-center sm:col-start-3">{action}</div> : null}
+      {action ? <div className={styles.noticeAction!}>{action}</div> : null}
     </div>
   );
 }

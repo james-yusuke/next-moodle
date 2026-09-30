@@ -1,0 +1,74 @@
+/* Component-local styles with independent scope. */
+.style5 {
+    margin-top: 0.25rem;
+  }
+.emptyState {
+    display: grid;
+  }
+.style1 {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style2 {
+    width: calc(0.25rem * 11);
+    height: calc(0.25rem * 11);
+  }
+.emptyState {
+    min-height: calc(0.25rem * 40);
+  }
+.style1 {
+    max-width: var(--container-md);
+  }
+.emptyState {
+    place-items: center;
+  }
+.style2 {
+    place-items: center;
+  }
+.style1 {
+    justify-items: center;
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.emptyState {
+    border-radius: var(--shape-card);
+  }
+.style2 {
+    border-radius: calc(infinity * 1px);
+  }
+.style2 {
+    background-color: var(--surface-elevated);
+  }
+.emptyState {
+    background-color: var(--surface-inset);
+  }
+.emptyState {
+    padding: calc(0.25rem * 6);
+  }
+.emptyState {
+    text-align: center;
+  }
+.style3 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.style4 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style4 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style3 {
+    color: var(--text-primary);
+  }
+.style2 {
+    color: var(--text-secondary);
+  }
+.style4 {
+    color: var(--text-secondary);
+  }

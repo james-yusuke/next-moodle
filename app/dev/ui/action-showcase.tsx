@@ -1,3 +1,4 @@
+import styles from "./action-showcase.module.css";
 import {
   ArrowRight,
   Bell,
@@ -14,17 +15,17 @@ export function ActionShowcase() {
       eyebrow="01 / Interaction"
       title="Actions and theme"
     >
-      <div className="flex flex-wrap items-center justify-between gap-4 rounded-[var(--shape-card)] bg-[var(--surface-primary)] p-4 sm:p-6">
+      <div className={styles.style1!}>
         <div>
-          <h3 className="m-0 text-lg font-semibold">Theme preference</h3>
-          <p className="m-0 mt-1 text-sm text-[var(--text-secondary)]">
+          <h3 className={styles.style2!}>Theme preference</h3>
+          <p className={styles.style3!}>
             Dark is the default; explicit light and system choices persist without a paint flash.
           </p>
         </div>
         <ThemeControl />
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+      <div className={styles.style4!}>
         <ShowcaseSample label="Default">
           <Button icon={<FloppyDisk aria-hidden size={17} weight="regular" />} variant="primary">
             Save changes

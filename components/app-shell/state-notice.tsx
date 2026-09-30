@@ -1,3 +1,4 @@
+import styles from "./state-notice.module.css";
 import { Notice } from "@/components/ui";
 import type { MoodleResponseDiagnostic } from "@/lib/moodle/errors";
 import { dispositionForMoodlePageFailure } from "@/lib/moodle/page-failure";
@@ -71,7 +72,7 @@ export function StateNotice({ diagnostic, reason, retryHref }: StateNoticeProps)
   if (reason === "outage") {
     return (
       <Notice
-        action={<Link className="ui-app-action-link" href={retryHref}>再試行</Link>}
+        action={<Link className={styles.appActionLink!} href={retryHref}>再試行</Link>}
         title="Moodleに接続できません"
         tone="warning"
       >
@@ -82,7 +83,7 @@ export function StateNotice({ diagnostic, reason, retryHref }: StateNoticeProps)
   if (reason === "invalid_response") {
     return (
       <Notice
-        action={<><Link className="ui-app-action-link" href={retryHref}>再試行</Link><Link className="ui-app-action-link" href={diagnosticHref(diagnostic)}>接続診断を確認</Link></>}
+        action={<><Link className={styles.appActionLink!} href={retryHref}>再試行</Link><Link className={styles.appActionLink!} href={diagnosticHref(diagnostic)}>接続診断を確認</Link></>}
         title="Moodleの応答を読み取れません"
         tone="warning"
       >
@@ -93,7 +94,7 @@ export function StateNotice({ diagnostic, reason, retryHref }: StateNoticeProps)
   }
   return (
     <Notice
-      action={<><Link className="ui-app-action-link" href={retryHref}>再試行</Link><Link className="ui-app-action-link" href="/diagnostics">接続診断を確認</Link></>}
+      action={<><Link className={styles.appActionLink!} href={retryHref}>再試行</Link><Link className={styles.appActionLink!} href="/diagnostics">接続診断を確認</Link></>}
       title="必要なMoodle機能を利用できません"
       tone="info"
     >

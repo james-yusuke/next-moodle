@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./notification-list.module.css";
 import { ArrowRight, Bell, Check } from "@phosphor-icons/react";
 import Link from "next/link";
 
@@ -45,13 +46,13 @@ function NotificationItem({
 }>) {
   const isPending = pendingId === notification.id;
   return (
-    <li className="relative grid gap-4 rounded-[var(--shape-card)] bg-[var(--surface-primary)] p-4 transition-colors duration-[120ms] hover:bg-[var(--surface-elevated)] data-[unread=true]:bg-[var(--surface-selected)] sm:p-5" data-unread={!notification.read}>
-      {!notification.read ? <span aria-hidden className="absolute inset-y-4 left-0 w-[3px] rounded-r bg-[var(--accent-500)]" /> : null}
-      <div className="flex flex-wrap items-start justify-between gap-3">
-        <div className="grid min-w-0 gap-1">
-          <h2 className="m-0 text-base leading-snug font-semibold text-[var(--text-primary)] text-balance">{notification.subject}</h2>
+    <li className={styles.style1!} data-unread={!notification.read}>
+      {!notification.read ? <span aria-hidden className={styles.style2!} /> : null}
+      <div className={styles.style3!}>
+        <div className={styles.style4!}>
+          <h2 className={styles.style5!}>{notification.subject}</h2>
           <time
-            className="text-xs text-[var(--text-tertiary)]"
+            className={styles.style6!}
             dateTime={new Date(notification.timeCreated * 1_000).toISOString()}
           >
             {timeFormatter.format(new Date(notification.timeCreated * 1_000))}
@@ -64,18 +65,18 @@ function NotificationItem({
           {notification.read ? "既読" : "未読"}
         </Badge>
       </div>
-      <p className="m-0 whitespace-pre-wrap text-sm leading-6 text-[var(--text-secondary)]">{notification.message}</p>
-      <div className="flex flex-wrap items-center gap-2">
+      <p className={styles.style7!}>{notification.message}</p>
+      <div className={styles.style8!}>
         {notification.href ? (
           <Link
-            className="inline-flex min-h-11 items-center gap-2 rounded-[var(--shape-control)] px-3 text-xs font-semibold text-[var(--text-primary)] no-underline transition-colors duration-[120ms] hover:bg-[var(--surface-inset)]"
+            className={styles.style9!}
             href={notification.href}
           >
             <ArrowRight aria-hidden size={18} weight="bold" />
             関連する活動を開く
           </Link>
         ) : (
-          <span className="text-xs text-[var(--text-tertiary)]">関連する活動へのリンクはありません。</span>
+          <span className={styles.style6!}>関連する活動へのリンクはありません。</span>
         )}
         {!notification.read ? (
           <Button
@@ -111,8 +112,8 @@ export function NotificationList({
     return <EmptyState filter={filter} />;
   }
   return (
-    <Card className="ui-notifications-inbox" padding="compact" tone="default">
-      <ul className="m-0 grid list-none gap-2 p-0" aria-label="Moodleの通知">
+    <Card className={styles.notificationsInbox!} padding="compact" tone="default">
+      <ul className={styles.style10!} aria-label="Moodleの通知">
         {visibleNotifications.map((notification) => (
           <NotificationItem
             key={notification.id}

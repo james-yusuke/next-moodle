@@ -1,0 +1,70 @@
+/* Component-local styles with independent scope. */
+.style2 {
+    margin: 0px;
+  }
+.style3 {
+    margin: 0px;
+  }
+.style3 {
+    margin-top: 0.25rem;
+  }
+.style1 {
+    display: flex;
+  }
+.style4 {
+    display: grid;
+  }
+.style1 {
+    flex-wrap: wrap;
+  }
+.style1 {
+    align-items: center;
+  }
+.style1 {
+    justify-content: space-between;
+  }
+.style4 {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 4);
+  }
+.style1 {
+    border-radius: var(--shape-card);
+  }
+.style1 {
+    background-color: var(--surface-primary);
+  }
+.style1 {
+    padding: calc(0.25rem * 4);
+  }
+.style2 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style3 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style2 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style3 {
+    color: var(--text-secondary);
+  }
+@media (width >= 40rem) {
+    .style4 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+@media (width >= 40rem) {
+    .style1 {
+      padding: calc(0.25rem * 6);
+    }
+  }
+@media (width >= 64rem) {
+    .style4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }

@@ -1,3 +1,4 @@
+import styles from "./empty-state.module.css";
 import type { ReactNode } from "react";
 
 import { classNames } from "./class-names";
@@ -5,7 +6,7 @@ import { classNames } from "./class-names";
 type EmptyStateProps = Readonly<{
   action?: ReactNode;
   children?: ReactNode;
-  className?: string;
+  className?: string | undefined;
   icon?: ReactNode;
   title: ReactNode;
 }>;
@@ -14,21 +15,21 @@ export function EmptyState({ action, children, className, icon, title }: EmptySt
   return (
     <div
       className={classNames(
-        "ui-empty-state grid min-h-40 place-items-center rounded-[var(--shape-card)] bg-[var(--surface-inset)] p-6 text-center",
+        styles.emptyState!,
         className,
       )}
     >
-      <div className="grid max-w-md justify-items-center gap-3">
+      <div className={styles.style1!}>
         {icon === undefined ? null : (
-          <span className="grid size-11 place-items-center rounded-full bg-[var(--surface-elevated)] text-[var(--text-secondary)]">
+          <span className={styles.style2!}>
             {icon}
           </span>
         )}
-        <strong className="text-base text-[var(--text-primary)]">{title}</strong>
+        <strong className={styles.style3!}>{title}</strong>
         {children === undefined ? null : (
-          <div className="text-sm leading-6 text-[var(--text-secondary)]">{children}</div>
+          <div className={styles.style4!}>{children}</div>
         )}
-        {action === undefined ? null : <div className="mt-1">{action}</div>}
+        {action === undefined ? null : <div className={styles.style5!}>{action}</div>}
       </div>
     </div>
   );

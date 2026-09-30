@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./notifications-client.module.css";
 import { WarningCircle } from "@phosphor-icons/react";
 import { useEffect, useRef, useState } from "react";
 
@@ -180,7 +181,7 @@ export function NotificationsClient({
 
   return (
     <PageFrame
-      content={<section className="grid min-w-0 gap-5" aria-label="通知一覧">
+      content={<section className={styles.style1!} aria-label="通知一覧">
         {pollError ? (
           <Notice tone="warning" title="自動更新を一時停止しました">
             Moodleから応答がありませんでした。現在の一覧はそのまま確認できます。
@@ -191,7 +192,7 @@ export function NotificationsClient({
             入力内容は失われていません。Moodleへ接続できる状態で、もう一度お試しください。
           </Notice>
         ) : null}
-        <div aria-live="polite" className="flex min-h-6 items-center gap-2 text-xs text-[var(--text-tertiary)]">
+        <div aria-live="polite" className={styles.style2!}>
           <WarningCircle aria-hidden size={15} weight="regular" /> この画面を表示中だけ、60秒ごとに更新します。
         </div>
         {pageState.kind === "ready" ? (
@@ -207,8 +208,8 @@ export function NotificationsClient({
         )}
       </section>}
       header={<RouteHeader
-        actions={<div className="flex flex-wrap items-center gap-3">
-          <div className="inline-flex rounded-[var(--shape-control)] bg-[var(--surface-inset)] p-1" role="group" aria-label="通知の絞り込み">
+        actions={<div className={styles.style3!}>
+          <div className={styles.style4!} role="group" aria-label="通知の絞り込み">
             <Button
               aria-pressed={filter === "unread"}
               onClick={() => setFilter("unread")}
@@ -227,7 +228,7 @@ export function NotificationsClient({
             </Button>
           </div>
           {pageState.kind === "ready" ? (
-            <span className="tabular-nums text-xs text-[var(--text-tertiary)]" aria-live="polite">
+            <span className={styles.style5!} aria-live="polite">
               未読 {pageState.data.unreadCount}件
             </span>
           ) : null}

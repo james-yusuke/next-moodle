@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./theme-provider.module.css";
 import { Desktop, Moon, Sparkle, Sun } from "@phosphor-icons/react";
 import {
   createContext,
@@ -121,20 +122,20 @@ export function ThemeControl() {
   }
 
   return (
-    <div aria-label="表示テーマ" className="ui-theme-control grid w-full min-w-0 grid-cols-4 gap-1 rounded-[var(--shape-card)] bg-[var(--surface-inset)] p-1" role="group">
+    <div aria-label="表示テーマ" className={styles.themeControl!} role="group">
       {THEME_MODES.map((themeMode) => (
         <button
           aria-pressed={context.mode === themeMode}
           className={classNames(
-            "ui-theme-control__item inline-flex min-h-11 min-w-0 items-center justify-center gap-1 whitespace-nowrap rounded-[var(--shape-control)] border-0 bg-transparent px-1.5 py-2 text-xs font-semibold text-[var(--text-secondary)] transition-[background-color,color,transform] duration-[120ms] hover:text-[var(--text-primary)] active:scale-[.98] motion-reduce:active:scale-100 focus-visible:outline-none focus-visible:shadow-[var(--shadow-focus)]",
-            context.mode === themeMode && "bg-[var(--surface-elevated)] text-[var(--text-primary)] shadow-[var(--shadow-control)]",
+            styles.themeControlItem!,
+            context.mode === themeMode && styles.style1!,
           )}
           key={themeMode}
           onClick={() => context.setMode(themeMode)}
           type="button"
         >
-          <span aria-hidden className="grid shrink-0 place-items-center"><ThemeGlyph mode={themeMode} /></span>
-          <span className="shrink-0">{THEME_LABELS[themeMode]}</span>
+          <span aria-hidden className={styles.style2!}><ThemeGlyph mode={themeMode} /></span>
+          <span className={styles.style3!}>{THEME_LABELS[themeMode]}</span>
         </button>
       ))}
     </div>

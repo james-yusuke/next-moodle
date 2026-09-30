@@ -10,7 +10,7 @@ import type {
 
 const siteOrigin = "https://moodle.synthetic.invalid"
 const day = 86_400
-const now = 1_790_000_000
+const now = Math.floor(Date.now() / 1_000)
 
 const courses: readonly FixtureCourse[] = [
   {

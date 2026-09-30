@@ -1,3 +1,4 @@
+import styles from "./field.module.css";
 import type { InputHTMLAttributes, ReactNode } from "react";
 import { classNames } from "./class-names";
 
@@ -31,24 +32,24 @@ export function Field({
   const messageId = message ? `${id}-message` : undefined;
   const describedBy = [descriptionId, messageId].filter(Boolean).join(" ");
   const inputClasses = classNames(
-    "ui-field__input min-h-11 w-full min-w-0 rounded-[var(--shape-control)] border-0 bg-transparent px-4 py-3 text-sm leading-6 text-[var(--text-primary)] outline-none placeholder:text-[var(--text-tertiary)] disabled:cursor-not-allowed disabled:text-[var(--text-disabled)]",
+    styles.fieldInput!,
     className,
   );
 
   return (
-    <div className={`ui-field ui-field--${status} grid min-w-0 gap-2`} data-demo-state={demoState}>
-      <label className="ui-field__label text-[var(--font-size-label)] font-semibold leading-snug text-[var(--text-primary)]" htmlFor={id}>
+    <div className={classNames(styles.field!)} data-demo-state={demoState} data-status={status}>
+      <label className={styles.fieldLabel!} htmlFor={id}>
         {label}
       </label>
       {description ? (
-        <span className="ui-field__description text-xs leading-5 text-[var(--text-secondary)]" id={descriptionId}>
+        <span className={styles.fieldDescription!} id={descriptionId}>
           {description}
         </span>
       ) : null}
       <span className={classNames(
-        "ui-field__shell flex min-h-11 items-center rounded-[var(--shape-control)] bg-[var(--surface-inset)] shadow-[var(--shadow-control)] transition-shadow duration-[120ms] hover:shadow-[0_0_0_1px_var(--border-strong)] focus-within:shadow-[var(--shadow-focus)]",
-        status === "error" && "shadow-[0_0_0_1px_var(--status-error)]",
-        status === "success" && "shadow-[0_0_0_1px_var(--status-success)]",
+        styles.fieldShell!,
+        status === "error" && styles.style1!,
+        status === "success" && styles.style2!,
       )}>
         <input
           {...inputProps}
@@ -60,9 +61,9 @@ export function Field({
       </span>
       {message ? (
         <span className={classNames(
-          "ui-field__message text-xs leading-5 text-[var(--text-secondary)]",
-          status === "error" && "text-[var(--status-error)]",
-          status === "success" && "text-[var(--status-success)]",
+          styles.fieldMessage!,
+          status === "error" && styles.style3!,
+          status === "success" && styles.style4!,
         )} id={messageId}>
           {message}
         </span>

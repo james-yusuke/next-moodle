@@ -1,3 +1,4 @@
+import styles from "./activity-workspace.module.css";
 import {
   ArrowLeft,
   CheckCircle,
@@ -68,33 +69,33 @@ export function ActivityWorkspace({ canUpdateCompletion, config, data, native }:
   const deliveryLabel = data.delivery === "api" ? "公式API" : "HTML変換";
   const isForumHtmlFallback = data.moduleType === "forum" && native === undefined && data.htmlScreen !== null;
   const activityDetails = (
-    <div className="ui-activity-details grid content-start gap-5">
-      <div className="ui-activity-state flex items-center gap-3 rounded-[var(--shape-card)] bg-[var(--surface-inset)] p-4">
-        <span className="grid size-10 shrink-0 place-items-center rounded-full bg-[var(--surface-elevated)] text-[var(--accent-400)]">
+    <div className={styles.activityDetails!}>
+      <div className={styles.activityState!}>
+        <span className={styles.style1!}>
           {data.completion === "complete" ? <CheckCircle aria-hidden size={22} weight="fill" /> : <LockSimple aria-hidden size={22} />}
         </span>
-        <span className="grid gap-0.5"><strong>{data.completion === "complete" ? "完了" : data.completion === "none" ? "完了条件なし" : "未完了"}</strong><small className="text-xs text-[var(--text-tertiary)]">{data.availability === "available" ? "利用可能" : "利用制限あり"}</small></span>
+        <span className={styles.style2!}><strong>{data.completion === "complete" ? "完了" : data.completion === "none" ? "完了条件なし" : "未完了"}</strong><small className={styles.style3!}>{data.availability === "available" ? "利用可能" : "利用制限あり"}</small></span>
       </div>
-      <dl className="grid gap-3">
-        <div className="grid gap-1 border-b border-[var(--border-subtle)] pb-3"><dt className="text-xs text-[var(--text-tertiary)]">コース</dt><dd className="m-0 text-sm leading-6">{data.course.name}</dd></div>
-        <div className="grid gap-1 border-b border-[var(--border-subtle)] pb-3"><dt className="text-xs text-[var(--text-tertiary)]">セクション</dt><dd className="m-0 text-sm leading-6">{data.section.name}</dd></div>
-        {data.dates.map((date) => <div className="grid gap-1 border-b border-[var(--border-subtle)] pb-3" key={`${date.label}-${date.timestamp}`}><dt className="text-xs text-[var(--text-tertiary)]">{localizedDateLabel(date.label)}</dt><dd className="m-0 text-sm leading-6">{dateFormat.format(new Date(date.timestamp * 1_000))}</dd></div>)}
+      <dl className={styles.style4!}>
+        <div className={styles.style5!}><dt className={styles.style3!}>コース</dt><dd className={styles.style6!}>{data.course.name}</dd></div>
+        <div className={styles.style5!}><dt className={styles.style3!}>セクション</dt><dd className={styles.style6!}>{data.section.name}</dd></div>
+        {data.dates.map((date) => <div className={styles.style5!} key={`${date.label}-${date.timestamp}`}><dt className={styles.style3!}>{localizedDateLabel(date.label)}</dt><dd className={styles.style6!}>{dateFormat.format(new Date(date.timestamp * 1_000))}</dd></div>)}
       </dl>
-      <div className="ui-activity-delivery-state flex items-center gap-2 text-sm text-[var(--text-secondary)]"><PuzzlePiece aria-hidden size={18} /><span>{deliveryLabel}</span></div>
+      <div className={styles.activityDeliveryState!}><PuzzlePiece aria-hidden size={18} /><span>{deliveryLabel}</span></div>
       {canUpdateCompletion && data.completion !== "none" ? <CompletionToggle cmid={data.id} complete={data.completion === "complete"} /> : null}
-      <TransitionLink className="ui-app-action-link" href={`/courses/${data.course.id}`} intent="return"><ArrowLeft aria-hidden size={15} />コース内容へ戻る</TransitionLink>
+      <TransitionLink appearance="action" className={styles.appActionLink!} href={`/courses/${data.course.id}`} intent="return"><ArrowLeft aria-hidden size={15} />コース内容へ戻る</TransitionLink>
     </div>
   );
 
   return (
     <PageFrame
       content={(
-        <div className="ui-activity-document grid gap-6 pb-12" aria-label="アクティビティ作業面">
+        <div className={styles.activityDocument!} aria-label="アクティビティ作業面">
           {data.availability !== "available" ? <Notice title="現在このアクティビティは利用できません" tone="warning"><p>公開条件または受講条件を確認してください。</p></Notice> : null}
           {isEmptyMoodleDocument(data.description) ? isForumHtmlFallback ? null : <EmptyState title="説明は登録されていません。" /> : <Card padding="spacious"><RichContent document={data.description} /></Card>}
           {native === undefined ? null : <NativePanel cmid={data.id} config={config} native={native} />}
           {data.htmlScreen === null ? null : data.moduleType === "forum" && native === undefined ? <ForumHtmlWorkspace cmid={data.id} screen={data.htmlScreen.screen} /> : <HtmlActivityWorkspace cmid={data.id} data={publicHtmlActivityScreen(data.htmlScreen)} />}
-          {data.files.length === 0 ? null : <Card aria-labelledby="activity-files-title" className="ui-activity-files" padding="standard"><h2 className="m-0 mb-2 text-lg font-semibold" id="activity-files-title">教材ファイル</h2><DataList label="教材ファイル">{data.files.map((file) => <DataListItem action={file.downloadUrl === null ? <span className="text-xs text-[var(--text-tertiary)]">取得不可</span> : <a className="inline-flex min-h-11 items-center gap-1.5 rounded-[var(--shape-control)] px-3 text-sm font-semibold text-[var(--text-primary)] no-underline hover:bg-[var(--surface-inset)]" href={file.downloadUrl}><DownloadSimple aria-hidden size={17} />ダウンロード</a>} description={`${file.mimetype} · ${formatBytes(file.filesize)}`} icon={<File aria-hidden size={19} />} key={`${file.filename}-${file.filesize}`} title={file.filename} />)}</DataList></Card>}
+          {data.files.length === 0 ? null : <Card aria-labelledby="activity-files-title" className={styles.activityFiles!} padding="standard"><h2 className={styles.style7!} id="activity-files-title">教材ファイル</h2><DataList label="教材ファイル">{data.files.map((file) => <DataListItem action={file.downloadUrl === null ? <span className={styles.style3!}>取得不可</span> : <a className={styles.style8!} href={file.downloadUrl}><DownloadSimple aria-hidden size={17} />ダウンロード</a>} description={`${file.mimetype} · ${formatBytes(file.filesize)}`} icon={<File aria-hidden size={19} />} key={`${file.filename}-${file.filesize}`} title={file.filename} />)}</DataList></Card>}
         </div>
       )}
       header={<RouteHeader actions={<InspectorSheet description="完了状態、公開日時、API接続" label={<><Info aria-hidden size={17} />活動情報</>} title="活動情報">{activityDetails}</InspectorSheet>} description={`${data.section.name} · ${typeLabel}`} eyebrow={<TransitionLink href={`/courses/${data.course.id}`} intent="return"><ArrowLeft aria-hidden size={15} />{data.course.shortName}</TransitionLink>} metadata={`CMID ${data.id}`} shared={{ identifier: data.id, kind: "activity" }} title={data.name} />}

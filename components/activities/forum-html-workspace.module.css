@@ -1,0 +1,84 @@
+/* Component-local styles with independent scope. */
+.style2 {
+    margin: 0px;
+  }
+.style3 {
+    display: flex;
+  }
+.forumHtml {
+    display: grid;
+  }
+.forumHtmlFeed {
+    display: grid;
+  }
+.style1 {
+    display: grid;
+  }
+.style3 {
+    min-height: calc(0.25rem * 14);
+  }
+.style3 {
+    cursor: pointer;
+  }
+.style3 {
+    align-items: center;
+  }
+.style1 {
+    gap: 0.25rem;
+  }
+.style3 {
+    gap: calc(0.25rem * 2);
+  }
+.forumHtmlFeed {
+    gap: calc(0.25rem * 4);
+  }
+.forumHtml {
+    gap: calc(0.25rem * 5);
+  }
+.forumHtmlSearch {
+    border-radius: var(--shape-card);
+  }
+.forumHtmlSearch {
+    background-color: var(--surface-primary);
+  }
+.style4 {
+    padding-inline: calc(0.25rem * 2);
+  }
+.style3 {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style4 {
+    padding-bottom: calc(0.25rem * 2);
+  }
+.kicker {
+    font-family: var(--font-geist-mono);
+  }
+.style2 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.kicker {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style2 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.kicker {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.kicker {
+    color: var(--text-tertiary);
+  }
+@media (width >= 40rem) {
+    .style3 {
+      padding-inline: calc(0.25rem * 6);
+    }
+  }
+.forumHtmlDocument {}

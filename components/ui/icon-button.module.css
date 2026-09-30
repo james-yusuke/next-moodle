@@ -1,0 +1,44 @@
+/* Component-local styles with independent scope. */
+.iconButtonIcon {
+    display: grid;
+  }
+.iconButtonIcon {
+    flex-shrink: 0;
+  }
+.iconButtonIcon {
+    place-items: center;
+  }
+.srOnly {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Component-local styles with independent scope. */
+.iconButton {
+    width: calc(0.25rem * 11);
+    height: calc(0.25rem * 11);
+  }
+.iconButton {
+    flex-shrink: 0;
+  }
+.iconButton {
+    padding: 0px;
+  }
+html[data-theme="neon"] .iconButton {
+  box-shadow: var(--neon-control-glow);
+  transition: box-shadow var(--motion-standard), background-color var(--duration-feedback), color var(--duration-feedback), transform var(--duration-instant);
+}
+html[data-theme="neon"] .iconButton:hover:not(:disabled) {
+  box-shadow: var(--neon-hover-glow);
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="neon"] .iconButton {
+    transition: none;
+  }
+}

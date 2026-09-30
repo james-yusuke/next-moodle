@@ -1,0 +1,158 @@
+/* Component-local styles with independent scope. */
+.style3 {
+    margin: 0px;
+  }
+.contextPanelHeader {
+    display: flex;
+  }
+.contextPanelHeading {
+    display: flex;
+  }
+.contextPanel {
+    display: grid;
+  }
+.style5 {
+    display: grid;
+  }
+.style2 {
+    display: none;
+  }
+.style5 {
+    width: calc(0.25rem * 11);
+    height: calc(0.25rem * 11);
+  }
+.contextPanel {
+    height: 100%;
+  }
+.contextPanel {
+    min-height: 0px;
+  }
+.contextPanelBody {
+    min-height: 0px;
+  }
+.contextPanelHeader {
+    min-height: calc(0.25rem * 14);
+  }
+.contextPanel {
+    width: 100%;
+  }
+.contextPanelBody {
+    width: 100%;
+  }
+.contextPanel {
+    min-width: 0px;
+  }
+.contextPanelHeading {
+    min-width: 0px;
+  }
+.contextPanelBody {
+    min-width: 0px;
+  }
+.style5 {
+    flex-shrink: 0;
+  }
+.style7 {
+    rotate: 180deg;
+  }
+.style5 {
+    place-items: center;
+  }
+.contextPanelHeading {
+    align-items: baseline;
+  }
+.contextPanelHeader {
+    align-items: center;
+  }
+.contextPanelHeader {
+    justify-content: space-between;
+  }
+.style1 {
+    justify-content: center;
+  }
+.contextPanelHeading {
+    gap: calc(0.25rem * 2);
+  }
+.contextPanelHeader {
+    gap: calc(0.25rem * 3);
+  }
+.style3 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.contextPanelBody {
+    overflow-y: auto;
+  }
+.style5 {
+    border-radius: var(--shape-control);
+  }
+.style5 {
+    border-style: var(--nm-border-style);
+    border-width: 0px;
+  }
+.style5 {
+    background-color: transparent;
+  }
+.style1 {
+    padding-inline: calc(0.25rem * 2);
+  }
+.contextPanelHeader {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style4 {
+    font-family: var(--font-geist-mono);
+  }
+.style3 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.style4 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style3 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style5 {
+    color: var(--text-secondary);
+  }
+.style4 {
+    color: var(--text-tertiary);
+  }
+.style5 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.style6 {
+    transition-property: transform, translate, scale, rotate;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.style5 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.style6 {
+    --nm-duration: 180ms;
+    transition-duration: 180ms;
+  }
+@media (hover: hover) {
+    .style5:hover {
+      background-color: var(--surface-elevated);
+    }
+  }
+@media (hover: hover) {
+    .style5:hover {
+      color: var(--text-primary);
+    }
+  }
+@media (prefers-reduced-motion: reduce) {
+    .style6 {
+      transition-property: none;
+    }
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.contextPanel { grid-template-rows: auto minmax(0,1fr); }

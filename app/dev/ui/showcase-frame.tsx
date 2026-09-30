@@ -1,4 +1,6 @@
+import styles from "./showcase-frame.module.css";
 import type { ReactNode } from "react";
+import { classNames } from "@/components/ui/class-names";
 
 export function ShowcaseSection({
   children,
@@ -14,12 +16,12 @@ export function ShowcaseSection({
   title: string;
 }>) {
   return (
-    <section className="grid gap-6 py-10" id={id}>
-      <header className="grid gap-3 sm:grid-cols-[9rem_minmax(0,1fr)] sm:gap-8">
-        <span className="font-mono text-xs font-semibold tracking-[.08em] text-[var(--text-tertiary)]">{eyebrow}</span>
-        <div className="grid gap-2">
-          <h2 className="m-0 text-2xl font-semibold tracking-[-.035em]">{title}</h2>
-          <p className="m-0 max-w-3xl text-sm leading-6 text-[var(--text-secondary)]">{description}</p>
+    <section className={styles.style1!} id={id}>
+      <header className={styles.style2!}>
+        <span className={styles.style3!}>{eyebrow}</span>
+        <div className={styles.style4!}>
+          <h2 className={styles.style5!}>{title}</h2>
+          <p className={styles.style6!}>{description}</p>
         </div>
       </header>
       {children}
@@ -33,9 +35,9 @@ export function ShowcaseSample({
   wide = false,
 }: Readonly<{ children: ReactNode; label: string; wide?: boolean }>) {
   return (
-    <div className={`grid min-w-0 gap-3 rounded-[var(--shape-card)] bg-[var(--surface-primary)] p-4 ${wide ? "md:col-span-2" : ""}`} data-wide={wide}>
-      <span className="font-mono text-xs tracking-[.04em] text-[var(--text-tertiary)]">{label}</span>
-      <div className="min-w-0">{children}</div>
+    <div className={classNames(styles.style12!, wide && styles.style22!)} data-wide={wide}>
+      <span className={styles.style7!}>{label}</span>
+      <div className={styles.style8!}>{children}</div>
     </div>
   );
 }

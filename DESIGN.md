@@ -51,7 +51,7 @@ Workspace modes remain fixed:
 - Dashboard: asymmetric “today” composition with the next deadline as a focused paper, seven-day flow as the primary reading path, course progress as rows, and unread/tools as compact utilities.
 - Course list: searchable study index with classification, progress, next deadline, and last access visible without opening a course.
 - Course detail: collapsible section index, maximum 960px reading canvas, inline labels, activity rows, and a compact course folio. Progress and teacher actions live in an inspector sheet.
-- Activity and assignment: maximum 880px reading/editing canvas, sticky action dock, and an optional utility sheet for AI assistance, files, submission state, or attempt status.
+- Activity and assignment: maximum 880px reading/editing canvas, sticky action dock, and an optional utility sheet for files, submission state, or attempt status.
 - Messages: conversation index plus thread. Speech bubbles are used only for real conversation messages. Participant information is an inspector sheet.
 - Teacher contact: desktop recipient step plus 680–760px compose canvas; mobile course → recipient → review progression. A preflight summary names the recipient, course, subject, excerpt, and server revalidation behavior.
 - Calendar, notifications, grades, people, files, profile, badges, plans, diagnostics, shortcuts, and PDF tools reuse the same route header, data-row, timeline, action-dock, empty, loading, and error grammar.
@@ -85,12 +85,12 @@ Every primitive exposes default, hover, pressed, focus-visible, selected, disabl
 - `prefers-reduced-motion` removes spatial movement, morphing, and stagger. State changes may retain a crossfade of at most 100ms.
 - Unsupported View Transition browsers receive the same behavior without animation.
 - `Cmd/Ctrl+K` searches screens, courses, activities, messages, and settings. `?` opens shortcut help outside editors.
-- Keyboard focus is always visible. Japanese IME composition never triggers submit, message send, or AI completion.
+- Keyboard focus is always visible. Japanese IME composition never triggers submit or message send.
 - Every touch target is at least 44px. Dense rows keep a 44px interaction box even when their visible height is smaller.
 
 ## 7. Moodle replacement contract
 
-The redesign does not change Moodle DTOs, server sessions, BFF routes, submission APIs, AI APIs, or the teacher-message API. Server Components continue to load Moodle data directly, while interactive leaves remain Client Components.
+The redesign does not change Moodle DTOs, server sessions, BFF routes, submission APIs, or the teacher-message API. Server Components continue to load Moodle data directly, while interactive leaves remain Client Components.
 
 `MoodleCapabilityManifestV5`, typed Moodle screen/document models, authenticated file proxying, and the fixed-origin HTML conversion boundary remain binding. Malformed activities stay isolated to their own rows.
 

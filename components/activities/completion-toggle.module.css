@@ -1,0 +1,17 @@
+/* Component-local styles with independent scope. */
+.completionToggle {
+    display: grid;
+  }
+.style1 {
+    min-height: calc(0.25rem * 5);
+  }
+.completionToggle {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style1 {
+    color: var(--status-error);
+  }

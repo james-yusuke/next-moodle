@@ -1,4 +1,3 @@
-import type { Metadata } from "next";
 import Script from "next/script";
 import type { ReactNode } from "react";
 import { GeistMono } from "geist/font/mono";
@@ -7,8 +6,6 @@ import { AppMotionProvider, Starfield, ThemeProvider } from "@/components/ui";
 import { readAppRuntimeConfig } from "@/lib/app-config";
 import { THEME_BOOTSTRAP_SCRIPT } from "@/lib/theme";
 import "./globals.css";
-
-// ...generateMetadata unchanged...
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   const config = readAppRuntimeConfig();

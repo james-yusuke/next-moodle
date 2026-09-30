@@ -1,0 +1,10 @@
+/* Component-local styles with independent scope. */
+.writingWorkspace {
+    display: grid;
+  }
+.writingWorkspace {
+    align-items: flex-start;
+  }
+.writingWorkspace {
+    gap: calc(0.25rem * 4);
+  }

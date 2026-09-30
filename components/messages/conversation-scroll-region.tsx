@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./conversation-scroll-region.module.css";
 import { useEffect, useLayoutEffect, useRef, type ReactNode } from "react";
 
 type ConversationScrollRegionProps = Readonly<{
@@ -53,7 +54,8 @@ export function ConversationScrollRegion({ children, messageCount }: Conversatio
 
   return (
     <div
-      className="ui-message-thread__scroll h-full min-h-0 overflow-x-hidden overflow-y-auto overscroll-contain [scrollbar-gutter:stable]"
+      className={styles.messageThreadScroll!}
+      data-testid="message-thread-scroll"
       onScroll={(event) => {
         const viewport = event.currentTarget;
         shouldStickToBottomRef.current = viewport.scrollHeight - viewport.scrollTop - viewport.clientHeight <= BOTTOM_THRESHOLD;

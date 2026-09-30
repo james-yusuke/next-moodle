@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./app-shell.module.css";
 import {
   ChartBar,
   File,
@@ -57,26 +58,26 @@ function resolveWorkspaceMode(pathname: string): WorkspaceMode {
   return "overview";
 }
 
-const accountLinkClass = "flex min-h-11 items-center gap-3 rounded-[var(--shape-control)] px-3 text-sm font-semibold text-[var(--text-secondary)] no-underline transition-colors duration-[120ms] hover:bg-[var(--surface-inset)] hover:text-[var(--text-primary)]";
+const accountLinkClass = styles.accountLinkClass1!;
 
 function AccountMenuContent({ appName, siteName }: Readonly<{ appName: string; siteName: string }>) {
   return (
-    <div className="grid gap-3">
-      <div className="px-2 pt-1">
-        <strong className="block truncate text-sm text-[var(--text-primary)]">{appName}</strong>
-        <p className="ui-app-site m-0 mt-0.5 truncate text-xs text-[var(--text-tertiary)]" title={siteName}>{siteName}</p>
+    <div className={styles.style1!}>
+      <div className={styles.style2!}>
+        <strong className={styles.style3!}>{appName}</strong>
+        <p className={styles.appSite!} title={siteName}>{siteName}</p>
       </div>
-      <div className="grid grid-cols-2 gap-1" role="group" aria-label="補助機能">
-        <TransitionLink className={accountLinkClass} href="/profile" intent="switch"><UserCircle aria-hidden className="shrink-0" size={18} />プロフィール</TransitionLink>
-        <TransitionLink className={accountLinkClass} href="/grades" intent="switch"><ChartBar aria-hidden className="shrink-0" size={18} />成績</TransitionLink>
-        <TransitionLink className={accountLinkClass} href="/files" intent="switch"><File aria-hidden className="shrink-0" size={18} />ファイル</TransitionLink>
-        <TransitionLink className={accountLinkClass} href="/tools/pdf" intent="switch"><FilePdf aria-hidden className="shrink-0" size={18} />PDF</TransitionLink>
-        <TransitionLink className={accountLinkClass} href="/shortcuts" intent="switch"><Lightning aria-hidden className="shrink-0" size={18} />操作一覧</TransitionLink>
-        <TransitionLink className={accountLinkClass} href="/diagnostics" intent="switch"><Lifebuoy aria-hidden className="shrink-0" size={18} />接続診断</TransitionLink>
-        <TransitionLink className={accountLinkClass} href="/timetable" intent="switch"><Table aria-hidden className="shrink-0" size={18} />時間割</TransitionLink>
-        <TransitionLink className={classNames(accountLinkClass, "col-span-2")} href="/people" intent="switch"><IdentificationCard aria-hidden className="shrink-0" size={18} />参加者</TransitionLink>
+      <div className={styles.style4!} role="group" aria-label="補助機能">
+        <TransitionLink className={accountLinkClass} href="/profile" intent="switch"><UserCircle aria-hidden className={styles.style5!} size={18} />プロフィール</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/grades" intent="switch"><ChartBar aria-hidden className={styles.style5!} size={18} />成績</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/files" intent="switch"><File aria-hidden className={styles.style5!} size={18} />ファイル</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/tools/pdf" intent="switch"><FilePdf aria-hidden className={styles.style5!} size={18} />PDF</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/shortcuts" intent="switch"><Lightning aria-hidden className={styles.style5!} size={18} />操作一覧</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/diagnostics" intent="switch"><Lifebuoy aria-hidden className={styles.style5!} size={18} />接続診断</TransitionLink>
+        <TransitionLink className={accountLinkClass} href="/timetable" intent="switch"><Table aria-hidden className={styles.style5!} size={18} />時間割</TransitionLink>
+        <TransitionLink className={classNames(accountLinkClass, styles.style6!)} href="/people" intent="switch"><IdentificationCard aria-hidden className={styles.style5!} size={18} />参加者</TransitionLink>
       </div>
-      <div className="border-t border-[var(--border-subtle)] pt-3"><ThemeControl /></div>
+      <div className={styles.style7!}><ThemeControl /></div>
       <LogoutButton />
     </div>
   );
@@ -101,52 +102,52 @@ export function AppShell({
   ];
 
   return (
-    <div className="ui-app-shell grid h-dvh min-h-dvh grid-rows-[var(--app-topbar-height)_minmax(0,1fr)_auto] overflow-hidden bg-[var(--surface-canvas)] md:grid-cols-[var(--app-list-width)_minmax(0,1fr)] md:grid-rows-[var(--app-topbar-height)_minmax(0,1fr)] xl:grid-cols-[var(--app-sidebar-width)_minmax(0,1fr)]" data-workspace-mode={workspaceMode}>
-      <a className="ui-app-skip fixed top-2 left-2 z-[120] -translate-y-[calc(100%+1rem)] rounded-[var(--shape-control)] bg-[var(--accent-500)] px-4 py-3 font-semibold text-[var(--accent-contrast)] transition-transform duration-[120ms] focus:translate-y-0" href="#main-content">本文へ移動</a>
-      <aside aria-label="主要ナビゲーション" className="ui-app-focus-rail hidden min-h-0 border-r border-[var(--border-subtle)] bg-[var(--surface-primary)] p-2 md:col-start-1 md:row-span-2 md:grid md:grid-rows-[auto_minmax(0,1fr)_auto] xl:p-3">
-        <TransitionLink className="ui-app-brand inline-flex min-h-11 min-w-0 items-center justify-center gap-3 rounded-[var(--shape-control)] text-sm font-bold text-[var(--text-primary)] no-underline xl:justify-start xl:px-2" href="/dashboard" intent="switch" title={appName}>
-          <span className="ui-app-brand__mark grid size-10 shrink-0 place-items-center rounded-[var(--shape-control)] bg-[var(--accent-500)] text-[var(--accent-contrast)]"><GraduationCap aria-hidden size={22} weight="regular" /></span>
-          <span className="hidden min-w-0 truncate xl:block">{appName}</span>
+    <div className={styles.appShell!} data-testid="app-shell" data-workspace-mode={workspaceMode}>
+      <a className={styles.appSkip!} href="#main-content">本文へ移動</a>
+      <aside aria-label="主要ナビゲーション" className={styles.appFocusRail!}>
+        <TransitionLink className={styles.appBrand!} href="/dashboard" intent="switch" title={appName}>
+          <span className={styles.appBrandMark!}><GraduationCap aria-hidden size={22} weight="regular" /></span>
+          <span className={styles.style8!}>{appName}</span>
         </TransitionLink>
-        <div className="self-center"><AppNavigation /></div>
-        <footer className="ui-app-focus-rail__footer grid gap-1">
+        <div className={styles.style9!}><AppNavigation /></div>
+        <footer className={styles.appFocusRailFooter!}>
           <PopoverMenu
             align="start"
             label="表示とアカウント設定"
             side="top"
-            trigger={<button aria-label="表示とアカウント設定" className="grid min-h-11 w-full place-items-center rounded-[var(--shape-control)] border-0 bg-transparent text-[var(--text-secondary)] transition-colors duration-[120ms] hover:bg-[var(--surface-elevated)] hover:text-[var(--text-primary)] xl:flex xl:gap-3 xl:px-3" type="button"><GearSix aria-hidden className="shrink-0" size={21} /><span className="hidden text-xs font-semibold xl:block">アカウント</span></button>}
+            trigger={<button aria-label="表示とアカウント設定" className={styles.style10!} type="button"><GearSix aria-hidden className={styles.style5!} size={21} /><span className={styles.style11!}>アカウント</span></button>}
           >
             <AccountMenuContent appName={appName} siteName={siteName} />
           </PopoverMenu>
         </footer>
       </aside>
-      <header className="ui-app-topbar flex min-h-[var(--app-topbar-height)] min-w-0 items-center gap-3 border-b border-[var(--border-subtle)] bg-[color-mix(in_srgb,var(--surface-primary)_94%,transparent)] px-3 backdrop-blur-xl md:col-start-2 md:row-start-1 md:justify-between md:px-5">
-        <TransitionLink className="ui-app-brand ui-app-brand--mobile mr-auto inline-flex min-h-11 min-w-0 items-center gap-2 text-sm font-bold text-[var(--text-primary)] no-underline md:hidden" href="/dashboard" intent="switch" title={appName}>
-          <span className="ui-app-brand__mark grid size-9 shrink-0 place-items-center rounded-[var(--shape-control)] bg-[var(--accent-500)] text-[var(--accent-contrast)]"><GraduationCap aria-hidden size={20} weight="regular" /></span>
-          <span className="max-w-40 truncate">{appName}</span>
+      <header className={styles.appTopbar!}>
+        <TransitionLink className={styles.appBrand2!} href="/dashboard" intent="switch" title={appName}>
+          <span className={styles.appBrandMark2!}><GraduationCap aria-hidden size={20} weight="regular" /></span>
+          <span className={styles.style12!}>{appName}</span>
         </TransitionLink>
-        <div className="ui-app-topbar__identity hidden min-w-0 md:grid">
-          <strong className="truncate text-xs text-[var(--text-primary)]">{appName}</strong>
-          <span className="truncate text-xs text-[var(--text-tertiary)]" title={siteName}>{siteName}</span>
+        <div className={styles.appTopbarIdentity!}>
+          <strong className={styles.style13!}>{appName}</strong>
+          <span className={styles.style14!} title={siteName}>{siteName}</span>
         </div>
-        <div className="ui-app-context-actions flex min-w-0 items-center gap-2">
+        <div className={styles.appContextActions!}>
           <CommandPalette commands={commands} />
         </div>
-        <div className="md:hidden">
+        <div className={styles.style15!}>
           <PopoverMenu
             label="表示とアカウント設定"
-            trigger={<button aria-label="表示とアカウント設定" className="grid size-11 shrink-0 place-items-center rounded-[var(--shape-control)] border-0 bg-[var(--surface-elevated)] text-[var(--text-secondary)] shadow-[var(--shadow-control)]" type="button"><GearSix aria-hidden size={21} /></button>}
+            trigger={<button aria-label="表示とアカウント設定" className={styles.style16!} type="button"><GearSix aria-hidden size={21} /></button>}
           >
             <AccountMenuContent appName={appName} siteName={siteName} />
           </PopoverMenu>
         </div>
       </header>
-      <main className="ui-app-main min-h-0 min-w-0 overflow-x-clip overflow-y-auto overscroll-contain bg-[var(--surface-canvas)] [scrollbar-gutter:stable] md:col-start-2 md:row-start-2" id="main-content" tabIndex={-1}>
+      <main className={styles.appMain!} id="main-content" tabIndex={-1}>
         <div className={classNames(
-          "ui-app-content mx-auto min-h-full min-w-0 w-full max-w-none p-0",
-          workspaceMode === "conversation" && "h-full",
+          styles.appContent!,
+          workspaceMode === "conversation" && styles.style17!,
         )}>
-          <div className={classNames("min-w-0", workspaceMode === "conversation" && "h-full min-h-0")}>
+          <div className={classNames(styles.style18!, workspaceMode === "conversation" && styles.style19!)}>
             <WorkspaceTransition>{children}</WorkspaceTransition>
           </div>
         </div>

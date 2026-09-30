@@ -1,0 +1,106 @@
+/* Component-local styles with independent scope. */
+.noticeAction {
+    grid-column-start: 2;
+  }
+.style1 {
+    display: grid;
+  }
+.noticeIcon {
+    display: grid;
+  }
+.noticeContent {
+    display: grid;
+  }
+.noticeIcon {
+    width: calc(0.25rem * 6);
+    height: calc(0.25rem * 6);
+  }
+.style1 {
+    min-width: 0px;
+  }
+.noticeContent {
+    min-width: 0px;
+  }
+.noticeIcon {
+    flex-shrink: 0;
+  }
+.noticeIcon {
+    place-items: center;
+  }
+.style1 {
+    align-items: flex-start;
+  }
+.noticeContent {
+    gap: 0.25rem;
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.noticeAction {
+    align-self: center;
+  }
+.style1 {
+    border-radius: var(--shape-card);
+  }
+.style1 {
+    padding: calc(0.25rem * 4);
+  }
+.noticeTitle {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.noticeBody {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.noticeBody {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.noticeTitle {
+    --nm-leading: var(--leading-snug);
+    line-height: var(--leading-snug);
+  }
+.noticeBody {
+    color: var(--text-secondary);
+  }
+.noticeTitle {
+    color: currentcolor;
+  }
+@media (width >= 40rem) {
+    .noticeAction {
+      grid-column-start: 3;
+    }
+  }
+
+/* Component-local styles with independent scope. */
+.toneClasseserror4 {
+    background-color: var(--status-error-soft);
+  }
+.toneClassesinfo1 {
+    background-color: var(--status-info-soft);
+  }
+.toneClassessuccess2 {
+    background-color: var(--status-success-soft);
+  }
+.toneClasseswarning3 {
+    background-color: var(--status-warning-soft);
+  }
+.toneClasseserror4 {
+    color: var(--status-error);
+  }
+.toneClassesinfo1 {
+    color: var(--status-info);
+  }
+.toneClassessuccess2 {
+    color: var(--status-success);
+  }
+.toneClasseswarning3 {
+    color: var(--status-warning);
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.style1 { grid-template-columns: auto minmax(0,1fr); }
+@media (width >= 40rem) {
+  .style1 { grid-template-columns: auto minmax(0,1fr) auto; }
+}

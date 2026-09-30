@@ -1,0 +1,24 @@
+/* Component-local styles with independent scope. */
+.style2 {
+    display: flex;
+  }
+.style1 {
+    display: grid;
+  }
+.style2 {
+    justify-content: flex-end;
+  }
+.style2 {
+    gap: calc(0.25rem * 2);
+  }
+.style1 {
+    gap: calc(0.25rem * 5);
+  }
+.style3 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style3 {
+    color: var(--status-error);
+  }
+.calendarDelete {}

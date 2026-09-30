@@ -1,3 +1,4 @@
+import styles from "./badge.module.css";
 import type { ReactNode } from "react";
 import { classNames } from "./class-names";
 
@@ -16,23 +17,22 @@ type BadgeProps = Readonly<{
 }>;
 
 const toneClasses: Record<BadgeTone, string> = {
-  neutral: "bg-[var(--surface-inset)] text-[var(--text-secondary)]",
-  accent: "bg-[var(--accent-soft)] text-[var(--accent-400)]",
-  success: "bg-[var(--status-success-soft)] text-[var(--status-success)]",
-  warning: "bg-[var(--status-warning-soft)] text-[var(--status-warning)]",
-  error: "bg-[var(--status-error-soft)] text-[var(--status-error)]",
-  info: "bg-[var(--status-info-soft)] text-[var(--status-info)]",
+  neutral: styles.toneClassesneutral1!,
+  accent: styles.toneClassesaccent2!,
+  success: styles.toneClassessuccess3!,
+  warning: styles.toneClasseswarning4!,
+  error: styles.toneClasseserror5!,
+  info: styles.toneClassesinfo6!,
 };
 
 export function Badge({ children, icon, tone = "neutral" }: BadgeProps) {
   return (
     <span className={classNames(
-      `ui-badge ui-badge--${tone}`,
-      "inline-flex min-h-7 max-w-full items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold leading-tight whitespace-nowrap",
+      styles.style1!,
       toneClasses[tone],
-    )}>
+    )} data-tone={tone}>
       {icon ? (
-        <span aria-hidden className="ui-badge__icon grid shrink-0 place-items-center">
+        <span aria-hidden className={styles.badgeIcon!}>
           {icon}
         </span>
       ) : null}

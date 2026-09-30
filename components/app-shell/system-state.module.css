@@ -1,0 +1,270 @@
+/* Component-local styles with independent scope. */
+.style1 {
+    margin: 0px;
+  }
+.style2 {
+    margin: 0px;
+  }
+.systemStateReference {
+    margin: 0px;
+  }
+.systemStateActions {
+    margin-top: calc(0.25rem * 3);
+  }
+.systemStateActions {
+    display: flex;
+  }
+.systemState {
+    display: grid;
+  }
+.systemStateBody {
+    display: grid;
+  }
+.systemStateLink {
+    display: inline-flex;
+  }
+.systemStateLink2 {
+    display: inline-flex;
+  }
+.systemStateLink {
+    min-height: calc(0.25rem * 11);
+  }
+.systemStateLink2 {
+    min-height: calc(0.25rem * 11);
+  }
+.systemState {
+    width: 100%;
+  }
+.systemState {
+    max-width: var(--container-3xl);
+  }
+.style1 {
+    max-width: 18ch;
+  }
+.style2 {
+    max-width: 56ch;
+  }
+.systemStateBody {
+    min-width: 0px;
+  }
+.systemStateActions {
+    flex-wrap: wrap;
+  }
+.systemStateLink {
+    align-items: center;
+  }
+.systemStateLink2 {
+    align-items: center;
+  }
+.systemState {
+    align-items: flex-start;
+  }
+.systemStateLink {
+    justify-content: center;
+  }
+.systemStateLink2 {
+    justify-content: center;
+  }
+.systemStateActions {
+    gap: calc(0.25rem * 2);
+  }
+.systemStateLink {
+    gap: calc(0.25rem * 2);
+  }
+.systemStateLink2 {
+    gap: calc(0.25rem * 2);
+  }
+.systemStateBody {
+    gap: calc(0.25rem * 3);
+  }
+.systemState {
+    gap: calc(0.25rem * 6);
+  }
+.systemStateLink {
+    border-radius: var(--shape-control);
+  }
+.systemStateLink2 {
+    border-radius: var(--shape-control);
+  }
+.systemState {
+    border-radius: var(--shape-sheet);
+  }
+.systemStateLink {
+    background-color: var(--accent-500);
+  }
+.systemStateLink2 {
+    background-color: var(--surface-elevated);
+  }
+.systemState {
+    background-color: var(--surface-primary);
+  }
+.systemState {
+    padding: calc(0.25rem * 5);
+  }
+.systemStateLink {
+    padding-inline: calc(0.25rem * 4);
+  }
+.systemStateLink2 {
+    padding-inline: calc(0.25rem * 4);
+  }
+.style2 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.systemStateLink {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.systemStateLink2 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.systemStateReference {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style2 {
+    --nm-leading: calc(0.25rem * 7);
+    line-height: calc(0.25rem * 7);
+  }
+.style1 {
+    --nm-leading: 1.05;
+    line-height: 1.05;
+  }
+.style1 {
+    --nm-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+.systemStateLink {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.systemStateLink2 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style1 {
+    --nm-tracking: -.045em;
+    letter-spacing: -.045em;
+  }
+.style1 {
+    text-wrap: balance;
+  }
+.systemStateLink {
+    color: var(--accent-contrast);
+  }
+.systemStateLink2 {
+    color: var(--text-primary);
+  }
+.style2 {
+    color: var(--text-secondary);
+  }
+.systemStateReference {
+    color: var(--text-tertiary);
+  }
+.systemStateLink {
+    text-decoration-line: none;
+  }
+.systemStateLink2 {
+    text-decoration-line: none;
+  }
+.systemStateLink {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.systemStateLink2 {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.systemStateLink {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+.systemStateLink2 {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+@media (hover: hover) {
+    .systemStateLink:hover {
+      background-color: var(--accent-600);
+    }
+  }
+@media (hover: hover) {
+    .systemStateLink2:hover {
+      background-color: var(--surface-selected);
+    }
+  }
+@media (width >= 40rem) {
+    .systemState {
+      gap: calc(0.25rem * 8);
+    }
+  }
+@media (width >= 40rem) {
+    .systemState {
+      padding: calc(0.25rem * 8);
+    }
+  }
+
+/* Component-local styles with independent scope. */
+.systemStateEyebrow {
+    display: flex;
+  }
+.systemStateEyebrow {
+    align-items: center;
+  }
+.systemStateEyebrow {
+    gap: calc(0.25rem * 2);
+  }
+.systemStateCode {
+    font-family: var(--font-geist-mono);
+  }
+.systemStateEyebrow {
+    font-family: var(--font-geist-mono);
+  }
+.systemStateCode {
+    font-size: var(--text-5xl);
+    line-height: var(--nm-leading, var(--text-5xl--line-height));
+  }
+.systemStateEyebrow {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.systemStateCode {
+    --nm-leading: 1;
+    line-height: 1;
+  }
+.systemStateEyebrow {
+    --nm-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+.systemStateCode {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.systemStateCode {
+    --nm-tracking: -.08em;
+    letter-spacing: -.08em;
+  }
+.systemStateEyebrow {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.toneClasseserror1 {
+    color: var(--status-error);
+  }
+.toneClassesinfo3 {
+    color: var(--status-info);
+  }
+.toneClasseswarning2 {
+    color: var(--status-warning);
+  }
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+@media (width >= 40rem) {
+  .systemState { grid-template-columns: minmax(5rem,8rem) minmax(0,1fr); }
+}
+
+/* Complex arbitrary values migrated from the former utility markup. */
+.style1 { font-size: clamp(1.75rem,4vw,2.75rem); }

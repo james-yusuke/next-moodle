@@ -1,0 +1,73 @@
+/* Component-local styles with independent scope. */
+.toolbar {
+    display: flex;
+  }
+.style1 {
+    display: flex;
+  }
+.style2 {
+    display: flex;
+  }
+.toolbar {
+    min-height: calc(0.25rem * 14);
+  }
+.toolbar {
+    min-width: 0px;
+  }
+.style1 {
+    min-width: 0px;
+  }
+.style1 {
+    flex: 1;
+  }
+.style2 {
+    flex-shrink: 0;
+  }
+.toolbar {
+    flex-wrap: wrap;
+  }
+.style1 {
+    flex-wrap: wrap;
+  }
+.style2 {
+    flex-wrap: wrap;
+  }
+.toolbar {
+    align-items: center;
+  }
+.style1 {
+    align-items: center;
+  }
+.style2 {
+    align-items: center;
+  }
+.style2 {
+    gap: calc(0.25rem * 2);
+  }
+.toolbar {
+    gap: calc(0.25rem * 3);
+  }
+.style1 {
+    gap: calc(0.25rem * 3);
+  }
+.toolbar {
+    border-radius: var(--shape-card);
+  }
+.toolbar {
+    background-color: var(--surface-elevated);
+  }
+.toolbar {
+    padding-inline: calc(0.25rem * 3);
+  }
+.toolbar {
+    padding-block: calc(0.25rem * 2);
+  }
+.toolbar {
+    --nm-shadow: var(--shadow-surface);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (width >= 40rem) {
+    .toolbar {
+      padding-inline: calc(0.25rem * 4);
+    }
+  }

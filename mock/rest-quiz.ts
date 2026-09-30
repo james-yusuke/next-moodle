@@ -2,6 +2,8 @@ import { firstField, numberField } from "./params";
 import type { RestContext } from "./rest-context";
 import type { FixtureUser, MoodleFunction } from "./types";
 
+const now = Math.floor(Date.now() / 1_000);
+
 const attemptKey = (user: FixtureUser, quizId: number): string => `${user.key}:${quizId}`;
 
 const wireAttempt = (context: RestContext, quizId: number): Record<string, unknown>[] => {
@@ -100,7 +102,7 @@ const attemptData = (context: RestContext): Record<string, unknown> => {
 
 export function quizPayload(functionName: MoodleFunction, context: RestContext): unknown | undefined {
   if (functionName === "mod_quiz_get_quizzes_by_courses") return {
-    quizzes: context.user.key === "alice" ? [{ id: 505, course: 101, coursemodule: 9105, name: "Week 1 knowledge check", intro: "Check your understanding of the observation guide.", timeopen: 0, timeclose: 1_790_259_200, timelimit: 900, attempts: 2, grade: 10, hasquestions: 1 }] : [],
+    quizzes: context.user.key === "alice" ? [{ id: 505, course: 101, coursemodule: 9105, name: "Week 1 knowledge check", intro: "Check your understanding of the observation guide.", timeopen: 0, timeclose: now + 30 * 86_400, timelimit: 900, attempts: 2, grade: 10, hasquestions: 1 }] : [],
     warnings: [],
   };
   if (functionName === "mod_quiz_get_user_attempts") return { attempts: wireAttempt(context, numberField(context.input, "quizid") ?? 505), warnings: [] };

@@ -1,0 +1,56 @@
+/* Component-local styles with independent scope. */
+.style1 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border-width: 0;
+  }
+.pageStack {
+    display: grid;
+  }
+.pageGrid {
+    display: grid;
+  }
+.pageLoadingHeading {
+    display: grid;
+  }
+.pageLoadingCopy {
+    height: calc(0.25rem * 4);
+  }
+.pageLoadingTitle {
+    height: calc(0.25rem * 9);
+  }
+.pageLoadingPanel {
+    height: calc(0.25rem * 56);
+  }
+.pageLoadingTitle {
+    width: calc(3 / 5 * 100%);
+  }
+.pageLoadingCopy {
+    width: calc(4 / 5 * 100%);
+  }
+.pageLoadingPanel {
+    width: 100%;
+  }
+.pageLoadingHeading {
+    max-width: var(--container-xl);
+  }
+.pageLoadingHeading {
+    gap: calc(0.25rem * 3);
+  }
+.pageGrid {
+    gap: calc(0.25rem * 4);
+  }
+.pageStack {
+    gap: calc(0.25rem * 5);
+  }
+@media (width >= 48rem) {
+    .pageGrid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }

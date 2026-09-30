@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./wiki-workspace.module.css";
 import { FloppyDisk, PencilSimple } from "@phosphor-icons/react";
 import ky from "ky";
 import { useRouter } from "next/navigation";
@@ -63,14 +64,14 @@ export function WikiWorkspace({ cmid, data }: Readonly<{
   }
 
   return (
-    <section className="ui-knowledge grid gap-5" aria-labelledby="wiki-title">
-      <header className="flex flex-wrap items-end justify-between gap-4"><div className="grid gap-1"><span className="ui-kicker font-mono text-xs tracking-[.08em] text-[var(--text-tertiary)]">COLLABORATIVE DOCUMENT</span><h2 className="m-0 text-xl font-semibold" id="wiki-title">Wiki</h2></div><span className="text-xs text-[var(--text-tertiary)]">{data.pages.length}ページ</span></header>
+    <section className={styles.knowledge!} aria-labelledby="wiki-title">
+      <header className={styles.style1!}><div className={styles.style2!}><span className={styles.kicker!}>COLLABORATIVE DOCUMENT</span><h2 className={styles.style3!} id="wiki-title">Wiki</h2></div><span className={styles.style4!}>{data.pages.length}ページ</span></header>
       {data.pages.length === 0 ? <EmptyState title="Wikiページはありません。"><p>最初のページが作成されると、ここへ表示されます。</p></EmptyState> : (
-        <div className="ui-wiki-pages grid divide-y divide-[var(--border-subtle)] rounded-[var(--shape-card)] bg-[var(--surface-primary)] px-4 sm:px-6">
-          {data.pages.map((page, index) => <article className="grid gap-4 py-5" key={page.id}><header className="grid min-h-11 grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3"><span className="ui-tabular font-mono text-xs text-[var(--text-tertiary)]">{String(index + 1).padStart(2, "0")}</span><h3 className="m-0 text-lg font-semibold">{page.title}</h3>{page.canEdit ? <Button disabled={pending} onClick={() => void beginEdit(page.id)} size="compact" type="button" variant="ghost"><PencilSimple aria-hidden size={16} />編集</Button> : null}</header>{editing?.pageId === page.id ? <form className="grid gap-4" onSubmit={(event) => void save(event)}><Textarea defaultValue={editing.content} id={`wiki-content-${page.id}`} label={`${page.title}の本文`} maxLength={100_000} name="content" required rows={14} /><StickyActionBar aria-label="Wiki編集操作"><Button onClick={() => setEditing(null)} type="button" variant="secondary">キャンセル</Button><Button disabled={pending} loading={pending} type="submit"><FloppyDisk aria-hidden size={17} />保存</Button></StickyActionBar></form> : <RichContent document={page.content} />}</article>)}
+        <div className={styles.wikiPages!}>
+          {data.pages.map((page, index) => <article className={styles.style5!} key={page.id}><header className={styles.style6!}><span className={styles.tabular!}>{String(index + 1).padStart(2, "0")}</span><h3 className={styles.style7!}>{page.title}</h3>{page.canEdit ? <Button disabled={pending} onClick={() => void beginEdit(page.id)} size="compact" type="button" variant="ghost"><PencilSimple aria-hidden size={16} />編集</Button> : null}</header>{editing?.pageId === page.id ? <form className={styles.style8!} onSubmit={(event) => void save(event)}><Textarea defaultValue={editing.content} id={`wiki-content-${page.id}`} label={`${page.title}の本文`} maxLength={100_000} name="content" required rows={14} /><StickyActionBar aria-label="Wiki編集操作"><Button onClick={() => setEditing(null)} type="button" variant="secondary">キャンセル</Button><Button disabled={pending} loading={pending} type="submit"><FloppyDisk aria-hidden size={17} />保存</Button></StickyActionBar></form> : <RichContent document={page.content} />}</article>)}
         </div>
       )}
-      <span aria-live="polite" className="ui-form-error min-h-5 text-sm text-[var(--status-error)]">{error ? "Wikiを更新できませんでした。編集内容は保持されています。" : ""}</span>
+      <span aria-live="polite" className={styles.formError!}>{error ? "Wikiを更新できませんでした。編集内容は保持されています。" : ""}</span>
     </section>
   );
 }

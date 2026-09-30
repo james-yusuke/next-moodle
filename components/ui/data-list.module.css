@@ -1,0 +1,131 @@
+/* Component-local styles with independent scope. */
+.style4 {
+    grid-column-start: 1;
+  }
+.style6 {
+    margin-top: calc(0.25rem * 0.5);
+  }
+.style7 {
+    margin-top: 0.25rem;
+  }
+.style5 {
+    display: block;
+  }
+.style6 {
+    display: block;
+  }
+.style7 {
+    display: block;
+  }
+.style8 {
+    display: flex;
+  }
+.dataListItem {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style2 {
+    width: calc(0.25rem * 11);
+    height: calc(0.25rem * 11);
+  }
+.dataListItem {
+    min-height: calc(0.25rem * 14);
+  }
+.dataList {
+    min-width: 0px;
+  }
+.dataListItem {
+    min-width: 0px;
+  }
+.style3 {
+    min-width: 0px;
+  }
+.style2 {
+    flex-shrink: 0;
+  }
+.style8 {
+    flex-shrink: 0;
+  }
+.style2 {
+    place-items: center;
+  }
+.dataListItem {
+    align-items: center;
+  }
+.style8 {
+    align-items: center;
+  }
+.style8 {
+    gap: calc(0.25rem * 2);
+  }
+.dataListItem {
+    gap: calc(0.25rem * 3);
+  }
+:where(.dataList > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.dataList > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+.style5 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+.style2 {
+    border-radius: var(--shape-control);
+  }
+.style2 {
+    background-color: var(--surface-inset);
+  }
+.dataListItem {
+    padding-block: calc(0.25rem * 3);
+  }
+.style6 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style7 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style6 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style5 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style5 {
+    color: var(--text-primary);
+  }
+.style2 {
+    color: var(--text-secondary);
+  }
+.style6 {
+    color: var(--text-secondary);
+  }
+.style7 {
+    color: var(--text-tertiary);
+  }
+.dataListItem {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --nm-gradient-from, --nm-gradient-via, --nm-gradient-to;
+    transition-timing-function: var(--nm-ease, var(--default-transition-timing-function));
+    transition-duration: var(--nm-duration, var(--default-transition-duration));
+  }
+.dataListItem {
+    --nm-duration: 120ms;
+    transition-duration: 120ms;
+  }
+@media (hover: hover) {
+    .style1:hover {
+      background-color: var(--surface-elevated);
+    }
+  }

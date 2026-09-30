@@ -1,3 +1,4 @@
+import styles from "./page.module.css";
 import type { Metadata } from "next";
 
 import { resolveMoodlePageFailure, StateNotice } from "@/components/app-shell/state-notice";
@@ -19,5 +20,5 @@ export default async function ProfilePage() {
   if (result.kind === "failure" && shouldUseHtmlDelivery(result.reason)) return <StudentHtmlScreen description="アカウントと学習情報を確認します。" session={session} surface="profile" title="プロフィール" />;
   return result.kind === "failure"
     ? <StateNotice {...(result.diagnostic === undefined ? {} : { diagnostic: result.diagnostic })} reason={resolveMoodlePageFailure(result.reason)} retryHref="/profile" siteUrl={session.site.siteUrl} />
-    : <StudentAreaView actions={<Link className="ui-app-action-link" href="/profile/edit">プロフィールを編集</Link>} config={readAppRuntimeConfig()} data={result.data} description="Moodleに登録されているプロフィールを確認します。" empty="プロフィール情報はありません" title="プロフィール" />;
+    : <StudentAreaView actions={<Link className={styles.appActionLink!} href="/profile/edit">プロフィールを編集</Link>} config={readAppRuntimeConfig()} data={result.data} description="Moodleに登録されているプロフィールを確認します。" empty="プロフィール情報はありません" title="プロフィール" />;
 }

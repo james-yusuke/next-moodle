@@ -1,0 +1,174 @@
+/* Component-local styles with independent scope. */
+.style6 {
+    margin: 0px;
+  }
+.style7 {
+    margin: 0px;
+  }
+.style7 {
+    margin-bottom: calc(0.25rem * 2);
+  }
+.activityState {
+    display: flex;
+  }
+.activityDeliveryState {
+    display: flex;
+  }
+.activityDetails {
+    display: grid;
+  }
+.style1 {
+    display: grid;
+  }
+.style2 {
+    display: grid;
+  }
+.style4 {
+    display: grid;
+  }
+.style5 {
+    display: grid;
+  }
+.activityDocument {
+    display: grid;
+  }
+.style8 {
+    display: inline-flex;
+  }
+.style1 {
+    width: calc(0.25rem * 10);
+    height: calc(0.25rem * 10);
+  }
+.style8 {
+    min-height: calc(0.25rem * 11);
+  }
+.style1 {
+    flex-shrink: 0;
+  }
+.style1 {
+    place-items: center;
+  }
+.activityDetails {
+    align-content: flex-start;
+  }
+.activityState {
+    align-items: center;
+  }
+.activityDeliveryState {
+    align-items: center;
+  }
+.style8 {
+    align-items: center;
+  }
+.style2 {
+    gap: calc(0.25rem * 0.5);
+  }
+.style5 {
+    gap: 0.25rem;
+  }
+.style8 {
+    gap: calc(0.25rem * 1.5);
+  }
+.activityDeliveryState {
+    gap: calc(0.25rem * 2);
+  }
+.activityState {
+    gap: calc(0.25rem * 3);
+  }
+.style4 {
+    gap: calc(0.25rem * 3);
+  }
+.activityDetails {
+    gap: calc(0.25rem * 5);
+  }
+.activityDocument {
+    gap: calc(0.25rem * 6);
+  }
+.activityState {
+    border-radius: var(--shape-card);
+  }
+.style8 {
+    border-radius: var(--shape-control);
+  }
+.style1 {
+    border-radius: calc(infinity * 1px);
+  }
+.style5 {
+    border-bottom-style: var(--nm-border-style);
+    border-bottom-width: 1px;
+  }
+.style5 {
+    border-color: var(--border-subtle);
+  }
+.style1 {
+    background-color: var(--surface-elevated);
+  }
+.activityState {
+    background-color: var(--surface-inset);
+  }
+.activityState {
+    padding: calc(0.25rem * 4);
+  }
+.style8 {
+    padding-inline: calc(0.25rem * 3);
+  }
+.style5 {
+    padding-bottom: calc(0.25rem * 3);
+  }
+.activityDocument {
+    padding-bottom: calc(0.25rem * 12);
+  }
+.style7 {
+    font-size: var(--text-lg);
+    line-height: var(--nm-leading, var(--text-lg--line-height));
+  }
+.style6 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.activityDeliveryState {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style8 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style3 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style6 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style7 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style8 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style1 {
+    color: var(--accent-400);
+  }
+.style8 {
+    color: var(--text-primary);
+  }
+.activityDeliveryState {
+    color: var(--text-secondary);
+  }
+.style3 {
+    color: var(--text-tertiary);
+  }
+.style8 {
+    text-decoration-line: none;
+  }
+@media (hover: hover) {
+    .style8:hover {
+      background-color: var(--surface-inset);
+    }
+  }
+.appActionLink {}
+.activityFiles {}

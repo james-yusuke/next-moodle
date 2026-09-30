@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./inspector-sheet.module.css";
 import { useRef, useState } from "react";
 import type { ReactNode } from "react";
 
@@ -19,7 +20,7 @@ export function InspectorSheet({ children, description, label, title }: Inspecto
   return (
     <>
       <Button
-        className="ui-inspector-sheet__trigger"
+        className={styles.inspectorSheetTrigger!}
         onClick={() => setOpen(true)}
         ref={triggerRef}
         variant="secondary"

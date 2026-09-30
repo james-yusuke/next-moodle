@@ -1,0 +1,108 @@
+/* Component-local styles with independent scope. */
+.surfaceTitle {
+    margin: 0px;
+  }
+.surfaceHeader {
+    margin-bottom: calc(0.25rem * 4);
+  }
+.surfaceHeader {
+    display: flex;
+  }
+.surfaceHeading {
+    display: grid;
+  }
+.surfaceHeading {
+    min-width: 0px;
+  }
+.surfaceActions {
+    flex-shrink: 0;
+  }
+.surfaceHeader {
+    align-items: flex-start;
+  }
+.surfaceHeader {
+    justify-content: space-between;
+  }
+.surfaceHeading {
+    gap: 0.25rem;
+  }
+.surfaceHeader {
+    gap: calc(0.25rem * 4);
+  }
+.surfaceTitle {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.surfaceBody {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.surfaceEyebrow {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.surfaceBody {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.surfaceTitle {
+    --nm-leading: var(--leading-snug);
+    line-height: var(--leading-snug);
+  }
+.surfaceEyebrow {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.surfaceTitle {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.surfaceTitle {
+    color: var(--text-primary);
+  }
+.surfaceBody {
+    color: var(--text-secondary);
+  }
+.surfaceEyebrow {
+    color: var(--text-tertiary);
+  }
+@media (width < 40rem) {
+    .surfaceHeader {
+      flex-direction: column;
+    }
+  }
+
+/* Component-local styles with independent scope. */
+.surface {
+    position: relative;
+  }
+.surface {
+    min-width: 0px;
+  }
+.surface {
+    overflow: visible;
+  }
+.surface {
+    border-radius: var(--shape-card);
+  }
+.variantClassesraised2 {
+    background-color: var(--surface-elevated);
+  }
+.variantClassesinset3 {
+    background-color: var(--surface-inset);
+  }
+.variantClassesbase1 {
+    background-color: var(--surface-primary);
+  }
+.surface {
+    padding: calc(0.25rem * 4);
+  }
+.variantClassesraised2 {
+    --nm-shadow: var(--shadow-surface);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (width >= 40rem) {
+    .surface {
+      padding: calc(0.25rem * 5);
+    }
+  }

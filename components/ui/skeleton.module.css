@@ -1,0 +1,26 @@
+/* Component-local styles with independent scope. */
+.skeleton {
+    display: block;
+  }
+.skeleton {
+    min-height: calc(0.25rem * 4);
+  }
+.skeleton {
+    animation: var(--animate-pulse);
+  }
+.skeleton {
+    border-radius: var(--shape-control);
+  }
+.skeleton {
+    background-color: var(--surface-inset);
+  }
+@media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      animation: none;
+    }
+  }
+@media (prefers-reduced-motion: reduce) {
+    .skeleton {
+      opacity: 70%;
+    }
+  }

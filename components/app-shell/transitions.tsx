@@ -1,3 +1,4 @@
+import styles from "./transitions.module.css";
 import Link from "next/link";
 import { ViewTransition } from "react";
 import type { ComponentProps, ReactNode } from "react";
@@ -19,17 +20,17 @@ const ROUTE_TRANSITION_CLASSES = {
 type NavigationMotionIntent = Exclude<MotionIntent, "reveal">;
 
 type TransitionLinkProps = Omit<ComponentProps<typeof Link>, "transitionTypes"> & Readonly<{
+  appearance?: "action";
   intent: NavigationMotionIntent;
 }>;
 
-export function TransitionLink({ intent, ...props }: TransitionLinkProps) {
-  const actionLink = typeof props.className === "string" && props.className.includes("ui-app-action-link");
+export function TransitionLink({ appearance, intent, ...props }: TransitionLinkProps) {
   return (
     <Link
       {...props}
       className={classNames(
         props.className,
-        actionLink && "inline-flex min-h-11 max-w-full min-w-0 items-center justify-center gap-2 rounded-[var(--shape-control)] bg-[var(--surface-elevated)] px-3 py-2 text-center text-xs font-semibold text-[var(--text-primary)] no-underline shadow-[var(--shadow-control)] transition-colors duration-[120ms] hover:bg-[var(--surface-selected)] focus-visible:outline-none focus-visible:shadow-[var(--shadow-focus)]",
+        appearance === "action" && styles.style1!,
       )}
       transitionTypes={motionIntentToTransitionTypes(intent)}
     />

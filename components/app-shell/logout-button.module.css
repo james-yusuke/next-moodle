@@ -1,0 +1,17 @@
+/* Component-local styles with independent scope. */
+.appLogout {
+    display: grid;
+  }
+.appLogoutStatus {
+    min-height: calc(0.25rem * 4);
+  }
+.appLogout {
+    gap: calc(0.25rem * 1.5);
+  }
+.appLogoutStatus {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.appLogoutStatus {
+    color: var(--status-error);
+  }

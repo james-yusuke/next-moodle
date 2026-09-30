@@ -1,0 +1,320 @@
+/* Component-local styles with independent scope. */
+.loginKicker {
+    margin: 0px;
+  }
+.style2 {
+    margin: 0px;
+  }
+.style3 {
+    margin: 0px;
+  }
+.loginLedger {
+    margin: 0px;
+  }
+.style6 {
+    margin: 0px;
+  }
+.style7 {
+    margin: 0px;
+  }
+.style8 {
+    margin: 0px;
+  }
+.style9 {
+    margin: 0px;
+  }
+.loginPanelInner {
+    margin-inline: auto;
+  }
+.loginBrand {
+    display: flex;
+  }
+.loginPage {
+    display: grid;
+  }
+.loginWorkspace {
+    display: grid;
+  }
+.loginStory {
+    display: grid;
+  }
+.loginCopy {
+    display: grid;
+  }
+.loginLedger {
+    display: grid;
+  }
+.style4 {
+    display: grid;
+  }
+.loginPanel {
+    display: grid;
+  }
+.loginPanelInner {
+    display: grid;
+  }
+.loginPanelHeader {
+    display: grid;
+  }
+.loginBrand {
+    min-height: calc(0.25rem * 11);
+  }
+.loginPage {
+    min-height: 100dvh;
+  }
+.loginWorkspace {
+    width: 100%;
+  }
+.loginPanelInner {
+    width: 100%;
+  }
+.loginWorkspace {
+    max-width: var(--container-5xl);
+  }
+.style2 {
+    max-width: 18ch;
+  }
+.loginCopy {
+    max-width: var(--container-lg);
+  }
+.loginPanelInner {
+    max-width: var(--container-sm);
+  }
+.loginWorkspace {
+    min-width: 0px;
+  }
+.loginStory {
+    min-width: 0px;
+  }
+.loginPanel {
+    min-width: 0px;
+  }
+.loginPage {
+    place-items: center;
+  }
+.loginStory {
+    align-content: space-between;
+  }
+.loginBrand {
+    align-items: center;
+  }
+.loginPanel {
+    align-items: center;
+  }
+.loginBrand {
+    gap: calc(0.25rem * 2);
+  }
+.loginPanelHeader {
+    gap: calc(0.25rem * 2);
+  }
+.loginCopy {
+    gap: calc(0.25rem * 3);
+  }
+.style4 {
+    gap: calc(0.25rem * 3);
+  }
+.loginPanelInner {
+    gap: calc(0.25rem * 6);
+  }
+.loginStory {
+    gap: calc(0.25rem * 8);
+  }
+:where(.loginLedger > :not(:last-child)) {
+    --nm-divide-y-reverse: 0;
+    border-bottom-style: var(--nm-border-style);
+    border-top-style: var(--nm-border-style);
+    border-top-width: calc(1px * var(--nm-divide-y-reverse));
+    border-bottom-width: calc(1px * calc(1 - var(--nm-divide-y-reverse)));
+  }
+:where(.loginLedger > :not(:last-child)) {
+    border-color: var(--border-subtle);
+  }
+.loginTheme {
+    justify-self: flex-end;
+  }
+.loginWorkspace {
+    overflow: hidden;
+  }
+.loginWorkspace {
+    border-radius: var(--shape-sheet);
+  }
+.loginPage {
+    background-color: var(--surface-canvas);
+  }
+.loginWorkspace {
+    background-color: var(--surface-primary);
+  }
+.loginStory {
+    background-color: var(--surface-secondary);
+  }
+.loginPage {
+    padding: calc(0.25rem * 3);
+  }
+.loginStory {
+    padding: calc(0.25rem * 5);
+  }
+.loginPanel {
+    padding: calc(0.25rem * 5);
+  }
+.style4 {
+    padding-block: calc(0.25rem * 3);
+  }
+.loginKicker {
+    font-family: var(--font-geist-mono);
+  }
+.style5 {
+    font-family: var(--font-geist-mono);
+  }
+.style3 {
+    font-size: var(--text-base);
+    line-height: var(--nm-leading, var(--text-base--line-height));
+  }
+.style6 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style7 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style9 {
+    font-size: var(--text-sm);
+    line-height: var(--nm-leading, var(--text-sm--line-height));
+  }
+.style8 {
+    font-size: var(--text-xl);
+    line-height: var(--nm-leading, var(--text-xl--line-height));
+  }
+.loginKicker {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style5 {
+    font-size: var(--text-xs);
+    line-height: var(--nm-leading, var(--text-xs--line-height));
+  }
+.style9 {
+    --nm-leading: calc(0.25rem * 6);
+    line-height: calc(0.25rem * 6);
+  }
+.style3 {
+    --nm-leading: calc(0.25rem * 7);
+    line-height: calc(0.25rem * 7);
+  }
+.style2 {
+    --nm-leading: 1.03;
+    line-height: 1.03;
+  }
+.style2 {
+    --nm-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+.loginBrand {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.loginKicker {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style8 {
+    --nm-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
+  }
+.style2 {
+    --nm-tracking: -.045em;
+    letter-spacing: -.045em;
+  }
+.loginKicker {
+    --nm-tracking: .08em;
+    letter-spacing: .08em;
+  }
+.style2 {
+    text-wrap: balance;
+  }
+.style6 {
+    overflow-wrap: break-word;
+  }
+.style1 {
+    color: var(--accent-500);
+  }
+.loginBrand {
+    color: var(--text-primary);
+  }
+.style3 {
+    color: var(--text-secondary);
+  }
+.style6 {
+    color: var(--text-secondary);
+  }
+.style7 {
+    color: var(--text-secondary);
+  }
+.style9 {
+    color: var(--text-secondary);
+  }
+.loginKicker {
+    color: var(--text-tertiary);
+  }
+.style5 {
+    color: var(--text-tertiary);
+  }
+.loginWorkspace {
+    --nm-shadow: var(--shadow-elevated);
+    box-shadow: var(--nm-inset-shadow), var(--nm-inset-ring-shadow), var(--nm-ring-offset-shadow), var(--nm-ring-shadow), var(--nm-shadow);
+  }
+@media (width >= 40rem) {
+    .loginPage {
+      padding: calc(0.25rem * 5);
+    }
+  }
+@media (width >= 40rem) {
+    .loginStory {
+      padding: calc(0.25rem * 8);
+    }
+  }
+@media (width >= 40rem) {
+    .loginPanel {
+      padding: calc(0.25rem * 8);
+    }
+  }
+@media (width >= 48rem) {
+    .loginWorkspace {
+      min-height: 38rem;
+    }
+  }
+@media (width >= 64rem) {
+    .loginPage {
+      padding: calc(0.25rem * 8);
+    }
+  }
+html[data-theme="neon"] .loginWorkspace {
+  box-shadow: var(--neon-card-glow);
+  transition: box-shadow var(--motion-standard);
+}
+
+html[data-theme="neon"] .style2 {
+  color: var(--neon-core);
+  text-shadow:
+    0 0 1px rgb(255 255 255 / 90%),
+    0 0 3px var(--neon-core),
+    0 0 9px var(--neon-purple),
+    0 0 18px var(--neon-blue),
+    0 0 34px color-mix(in srgb, var(--neon-cyan) 55%, transparent);
+  animation: ui-neon-flicker 3s ease-in-out -1.7s infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-theme="neon"] .style2 {
+    animation: none;
+  }
+}
+
+/* Arbitrary grid templates migrated from the former utility markup. */
+.style4 { grid-template-columns: 6.5rem minmax(0,1fr); }
+@media (width >= 48rem) {
+  .loginWorkspace { grid-template-columns: minmax(0,.9fr) minmax(24rem,1.1fr); }
+}
+
+/* Complex arbitrary values migrated from the former utility markup. */
+.style2 { font-size: clamp(1.75rem,4vw,2.5rem); }

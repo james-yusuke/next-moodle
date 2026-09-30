@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./logout-button.module.css";
 import { SignOut } from "@phosphor-icons/react";
 import ky, { isKyError } from "ky";
 import { useRouter } from "next/navigation";
@@ -51,7 +52,7 @@ function SessionEndButton({
   };
 
   return (
-    <div className="ui-app-logout grid gap-1.5">
+    <div className={styles.appLogout!}>
       <Button
         icon={<SignOut aria-hidden size={18} weight="regular" />}
         loading={pending}
@@ -60,7 +61,7 @@ function SessionEndButton({
       >
         {label}
       </Button>
-      <span aria-live="polite" className="ui-app-logout__status min-h-4 text-xs text-[var(--status-error)]">
+      <span aria-live="polite" className={styles.appLogoutStatus!}>
         {failed ? errorMessage : ""}
       </span>
     </div>

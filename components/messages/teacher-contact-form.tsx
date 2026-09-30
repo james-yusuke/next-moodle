@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./teacher-contact-form.module.css";
 import { ArrowLeft, ChalkboardTeacher, CheckCircle, PaperPlaneRight, ShieldCheck, UsersThree } from "@phosphor-icons/react";
 import ky, { isKyError } from "ky";
 import { useRouter } from "next/navigation";
@@ -165,10 +166,10 @@ export function TeacherContactForm({ courses, initialCourseId = null }: Readonly
 
   const recipientLabel = recipientKind === "teacher" ? "先生" : "学生";
   const command = (
-    <StickyActionBar className="ui-teacher-compose__command rounded-none shadow-none">
-      <span className="mr-auto text-xs text-[var(--text-tertiary)]">{status === "sending" ? "Moodleへ送信中…" : "送信前に宛先とメッセージを確認できます"}</span>
+    <StickyActionBar className={styles.teacherComposeCommand!}>
+      <span className={styles.style1!}>{status === "sending" ? "Moodleへ送信中…" : "送信前に宛先とメッセージを確認できます"}</span>
       {reviewing ? (
-        <div className="flex flex-wrap gap-2"><Button onClick={() => dispatch({ type: "review_changed", value: false })} type="button" variant="secondary">修正する</Button><Button disabled={status === "sending"} onClick={submit} type="button" variant="primary"><PaperPlaneRight aria-hidden size={18} />{status === "sending" ? "送信中" : "送信を確定"}</Button></div>
+        <div className={styles.style2!}><Button onClick={() => dispatch({ type: "review_changed", value: false })} type="button" variant="secondary">修正する</Button><Button disabled={status === "sending"} onClick={submit} type="button" variant="primary"><PaperPlaneRight aria-hidden size={18} />{status === "sending" ? "送信中" : "送信を確定"}</Button></div>
       ) : (
         <Button disabled={recipientKey === "" || body.trim() === "" || status === "sending"} onClick={() => dispatch({ type: "review_changed", value: true })} type="button" variant="primary">送信内容を確認</Button>
       )}
@@ -178,53 +179,53 @@ export function TeacherContactForm({ courses, initialCourseId = null }: Readonly
   return (
     <PageFrame
       actions={command}
-      className="ui-teacher-contact"
-      content={<div className="grid min-w-0 gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]">
-        <aside className="grid content-start gap-5">
-          <Card className="ui-teacher-courses" padding="compact" tone="inset">
-            <header className="flex min-h-11 items-center justify-between gap-3 px-2"><h2 className="m-0 text-base font-semibold">1. コース</h2><span className="text-xs text-[var(--text-tertiary)]">{courses.length}</span></header>
+      className={styles.teacherContact!}
+      content={<div className={styles.style3!}>
+        <aside className={styles.style4!}>
+          <Card className={styles.teacherCourses!} padding="compact" tone="inset">
+            <header className={styles.style5!}><h2 className={styles.style6!}>1. コース</h2><span className={styles.style7!}>{courses.length}</span></header>
             {courses.length === 0 ? <EmptyState title="受講コースがありません">コースへ参加すると、担当教員や受講生を選択できます。</EmptyState> : (
-              <nav aria-label="メッセージを送るコース" className="grid max-h-64 overflow-y-auto">
+              <nav aria-label="メッセージを送るコース" className={styles.style8!}>
                 {courses.map((course) => (
-                  <button aria-pressed={course.id === courseId} className="grid min-h-14 grid-cols-[2.5rem_minmax(0,1fr)] items-center gap-3 rounded-[var(--shape-control)] border-0 bg-transparent px-2 text-left text-[var(--text-primary)] transition-colors duration-[120ms] hover:bg-[var(--surface-elevated)] aria-pressed:bg-[var(--surface-selected)]" key={course.id} onClick={() => selectCourse(course.id)} type="button">
-                    <span className="grid size-10 place-items-center rounded-full bg-[var(--accent-500)] font-bold text-[var(--accent-contrast)]">{course.shortName.slice(0, 1)}</span><span className="grid min-w-0"><strong className="truncate">{course.name}</strong><small className="truncate text-xs text-[var(--text-tertiary)]">{course.shortName}</small></span>
+                  <button aria-pressed={course.id === courseId} className={styles.style9!} key={course.id} onClick={() => selectCourse(course.id)} type="button">
+                    <span className={styles.style10!}>{course.shortName.slice(0, 1)}</span><span className={styles.style11!}><strong className={styles.style12!}>{course.name}</strong><small className={styles.style13!}>{course.shortName}</small></span>
                   </button>
                 ))}
               </nav>
             )}
           </Card>
-          <Card className="ui-teacher-recipient grid gap-4" padding="standard" tone="inset">
-            <header className="flex items-center justify-between gap-3"><h2 className="m-0 text-base font-semibold">2. 相手を選ぶ</h2><span className="text-xs text-[var(--text-tertiary)]">{loadingRecipients ? "確認中" : `${recipients.length}人`}</span></header>
-            <div aria-label="宛先の種類" className="grid grid-cols-2 gap-1 rounded-[var(--shape-control)] bg-[var(--surface-inset)] p-1" role="tablist">
-              {(["teacher", "student"] as const).map((kind) => <button aria-selected={recipientKind === kind} className="min-h-10 rounded-[calc(var(--shape-control)-.25rem)] border-0 bg-transparent px-3 text-sm font-semibold text-[var(--text-secondary)] transition-colors aria-selected:bg-[var(--surface-elevated)] aria-selected:text-[var(--text-primary)]" key={kind} onClick={() => dispatch({ type: "recipient_kind_changed", value: kind })} role="tab" type="button">{kind === "teacher" ? "先生" : "学生"}</button>)}
+          <Card className={styles.teacherRecipient!} padding="standard" tone="inset">
+            <header className={styles.style14!}><h2 className={styles.style6!}>2. 相手を選ぶ</h2><span className={styles.style7!}>{loadingRecipients ? "確認中" : `${recipients.length}人`}</span></header>
+            <div aria-label="宛先の種類" className={styles.style15!} role="tablist">
+              {(["teacher", "student"] as const).map((kind) => <button aria-selected={recipientKind === kind} className={styles.style16!} key={kind} onClick={() => dispatch({ type: "recipient_kind_changed", value: kind })} role="tab" type="button">{kind === "teacher" ? "先生" : "学生"}</button>)}
             </div>
             {recipientKind === "student" ? <Field autoComplete="off" id="message-recipient-search" label="学生を検索" onChange={(event) => dispatch({ type: "recipient_query_changed", value: event.currentTarget.value })} placeholder="名前で絞り込む" value={recipientQuery} /> : null}
-            <label className="ui-teacher-select grid gap-2 text-xs font-semibold">
+            <label className={styles.teacherSelect!}>
               <span>送信先</span>
-              <select aria-label="送信先" className="min-h-11 w-full rounded-[var(--shape-control)] border-0 bg-[var(--surface-elevated)] px-3 shadow-[var(--shadow-control)]" disabled={loadingRecipients || visibleRecipients.length === 0} onChange={(event) => dispatch({ type: "recipient_selected", value: event.currentTarget.value })} value={recipientKey}>
+              <select aria-label="送信先" className={styles.style17!} disabled={loadingRecipients || visibleRecipients.length === 0} onChange={(event) => dispatch({ type: "recipient_selected", value: event.currentTarget.value })} value={recipientKey}>
                 <option value="">{loadingRecipients ? "確認中…" : `${recipientLabel}を選択`}</option>
                 {visibleRecipients.map((recipient) => <option disabled={!recipient.canMessage} key={recipient.recipientKey} value={recipient.recipientKey}>{recipient.displayName} — {recipient.roles.join(" / ")}</option>)}
               </select>
             </label>
-            <div className="ui-teacher-person grid grid-cols-[auto_minmax(0,1fr)] items-center gap-3"><span className="grid size-10 place-items-center rounded-full bg-[var(--accent-500)] font-bold text-[var(--accent-contrast)]">{selectedRecipient?.displayName.slice(0, 1) ?? "?"}</span><div className="grid min-w-0"><strong className="truncate">{selectedRecipient?.displayName ?? "未選択"}</strong><small className="truncate text-xs text-[var(--text-tertiary)]">{selectedRecipient?.roles.join(" / ") ?? `${recipientLabel}を選択`}</small></div></div>
-            <div className="ui-teacher-safety grid grid-cols-[auto_minmax(0,1fr)] gap-2 text-[var(--accent-400)]"><ShieldCheck aria-hidden size={20} /><p className="m-0 text-xs leading-5 text-[var(--text-secondary)]">送信直前にコース参加状況と受信可否を再確認します。</p></div>
+            <div className={styles.teacherPerson!}><span className={styles.style10!}>{selectedRecipient?.displayName.slice(0, 1) ?? "?"}</span><div className={styles.style11!}><strong className={styles.style12!}>{selectedRecipient?.displayName ?? "未選択"}</strong><small className={styles.style13!}>{selectedRecipient?.roles.join(" / ") ?? `${recipientLabel}を選択`}</small></div></div>
+            <div className={styles.teacherSafety!}><ShieldCheck aria-hidden size={20} /><p className={styles.style18!}>送信直前にコース参加状況と受信可否を再確認します。</p></div>
           </Card>
         </aside>
-        <Card as="section" className="ui-teacher-compose" padding="spacious" tone="default">
-          <header className="mb-6 flex items-start justify-between gap-4"><div><h2 className="m-0 text-lg font-semibold">3. メッセージ</h2><p className="m-0 mt-1 text-sm text-[var(--text-secondary)]">{selectedRecipient?.displayName ?? "相手を選択"} · {selectedCourse?.name ?? "コースを選択"}</p></div>{recipientKind === "teacher" ? <ChalkboardTeacher aria-hidden className="text-[var(--accent-400)]" size={22} /> : <UsersThree aria-hidden className="text-[var(--accent-400)]" size={22} />}</header>
-          <div className="ui-teacher-compose__body grid gap-5">
+        <Card as="section" className={styles.teacherCompose!} padding="spacious" tone="default">
+          <header className={styles.style19!}><div><h2 className={styles.style20!}>3. メッセージ</h2><p className={styles.style21!}>{selectedRecipient?.displayName ?? "相手を選択"} · {selectedCourse?.name ?? "コースを選択"}</p></div>{recipientKind === "teacher" ? <ChalkboardTeacher aria-hidden className={styles.style22!} size={22} /> : <UsersThree aria-hidden className={styles.style22!} size={22} />}</header>
+          <div className={styles.teacherComposeBody!}>
             <Textarea label="メッセージ" maxLength={10_000} onChange={(event) => dispatch({ type: "body_changed", value: event.currentTarget.value })} placeholder="用件や確認したいことを入力してください" rows={12} value={body} />
             {reviewing ? (
-              <Card as="section" className="ui-teacher-review" padding="standard" tone="selected">
-                <header className="flex gap-3 text-[var(--accent-400)]"><CheckCircle aria-hidden className="shrink-0" size={20} /><div><h3 className="m-0 text-base text-[var(--text-primary)]" id="teacher-review-title">送信前の確認</h3><p className="m-0 mt-1 text-xs text-[var(--text-secondary)]">Moodleの会話として送信します。件名はありません。</p></div></header>
-                <dl className="m-0 mt-4 grid divide-y divide-[var(--border-subtle)]">{[["宛先", selectedRecipient?.displayName ?? "未選択"], ["種類", recipientLabel], ["コース", selectedCourse?.name ?? "未選択"], ["本文冒頭", `${body.trim().slice(0, 120)}${body.trim().length > 120 ? "…" : ""}`], ["再検証", "コース参加状況 / 受信可否"]].map(([label, value]) => <div className="grid min-h-11 grid-cols-[6rem_minmax(0,1fr)] items-center gap-3 py-2 text-sm max-sm:grid-cols-1 max-sm:gap-1" key={label}><dt className="text-xs text-[var(--text-tertiary)]">{label}</dt><dd className="m-0 break-words">{value}</dd></div>)}</dl>
+              <Card as="section" className={styles.teacherReview!} padding="standard" tone="selected">
+                <header className={styles.style23!}><CheckCircle aria-hidden className={styles.style24!} size={20} /><div><h3 className={styles.style25!} id="teacher-review-title">送信前の確認</h3><p className={styles.style26!}>Moodleの会話として送信します。件名はありません。</p></div></header>
+                <dl className={styles.style27!}>{[["宛先", selectedRecipient?.displayName ?? "未選択"], ["種類", recipientLabel], ["コース", selectedCourse?.name ?? "未選択"], ["本文冒頭", `${body.trim().slice(0, 120)}${body.trim().length > 120 ? "…" : ""}`], ["再検証", "コース参加状況 / 受信可否"]].map(([label, value]) => <div className={styles.style28!} key={label}><dt className={styles.style7!}>{label}</dt><dd className={styles.style29!}>{value}</dd></div>)}</dl>
               </Card>
             ) : null}
             {message === "" ? null : <Notice title="送信を完了できませんでした" tone="error" urgent>{message}</Notice>}
           </div>
         </Card>
       </div>}
-      header={<RouteHeader actions={<TransitionLink className="ui-app-action-link" href="/messages" intent="return"><ArrowLeft aria-hidden size={18} />会話へ戻る</TransitionLink>} description="受講コースの先生や学生と、Moodleの会話を始めます。" eyebrow="新規メッセージ" title="新しいメッセージ" />}
+      header={<RouteHeader actions={<TransitionLink appearance="action" className={styles.appActionLink!} href="/messages" intent="return"><ArrowLeft aria-hidden size={18} />会話へ戻る</TransitionLink>} description="受講コースの先生や学生と、Moodleの会話を始めます。" eyebrow="新規メッセージ" title="新しいメッセージ" />}
       mode="focus"
       state={step}
       width="wide"

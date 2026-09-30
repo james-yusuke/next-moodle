@@ -1,3 +1,4 @@
+import styles from "./status-panel.module.css";
 import {
   CheckCircle,
   Info,
@@ -13,17 +14,17 @@ type StatusTone = "neutral" | "info" | "success" | "warning" | "error";
 type StatusPanelProps = Readonly<{
   action?: ReactNode;
   children: ReactNode;
-  className?: string;
+  className?: string | undefined;
   title: ReactNode;
   tone?: StatusTone;
 }>;
 
 const toneClasses: Record<StatusTone, string> = {
-  neutral: "bg-[var(--surface-inset)] text-[var(--text-secondary)]",
-  info: "bg-[var(--status-info-soft)] text-[var(--status-info)]",
-  success: "bg-[var(--status-success-soft)] text-[var(--status-success)]",
-  warning: "bg-[var(--status-warning-soft)] text-[var(--status-warning)]",
-  error: "bg-[var(--status-error-soft)] text-[var(--status-error)]",
+  neutral: styles.toneClassesneutral1!,
+  info: styles.toneClassesinfo2!,
+  success: styles.toneClassessuccess3!,
+  warning: styles.toneClasseswarning4!,
+  error: styles.toneClasseserror5!,
 };
 
 function StatusIcon({ tone }: Readonly<{ tone: StatusTone }>) {
@@ -43,17 +44,17 @@ export function StatusPanel({
   return (
     <section
       className={classNames(
-        "ui-status-panel grid min-w-0 grid-cols-[auto_minmax(0,1fr)] gap-3 rounded-[var(--shape-card)] p-4 sm:grid-cols-[auto_minmax(0,1fr)_auto]",
+        styles.statusPanel!,
         toneClasses[tone],
         className,
       )}
     >
-      <span className="grid size-6 shrink-0 place-items-center"><StatusIcon tone={tone} /></span>
-      <div className="min-w-0">
-        <strong className="block text-sm text-current">{title}</strong>
-        <div className="mt-1 text-sm leading-6 text-[var(--text-secondary)]">{children}</div>
+      <span className={styles.style1!}><StatusIcon tone={tone} /></span>
+      <div className={styles.style2!}>
+        <strong className={styles.style3!}>{title}</strong>
+        <div className={styles.style4!}>{children}</div>
       </div>
-      {action === undefined ? null : <div className="col-start-2 sm:col-start-3 sm:self-center">{action}</div>}
+      {action === undefined ? null : <div className={styles.style5!}>{action}</div>}
     </section>
   );
 }

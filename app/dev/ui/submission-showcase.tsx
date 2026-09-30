@@ -1,5 +1,6 @@
 "use client";
 
+import styles from "./submission-showcase.module.css";
 import { useEffect, useState } from "react";
 import { PDFDocument } from "pdf-lib";
 
@@ -30,20 +31,16 @@ export function SubmissionShowcase() {
       eyebrow="04 / Submission"
       title="Submission primitives"
     >
-      <div className="grid gap-3 md:grid-cols-2">
+      <div className={styles.style1!}>
         <ShowcaseSample label="Textarea">
           <Textarea defaultValue="Markdownやプレーンテキストを形式のまま編集します。" label="本文" />
         </ShowcaseSample>
         <ShowcaseSample label="Rich text" wide>
           <WritingWorkspace
-            aiAvailability={{ enabled: true, provider: "OpenAI compatible" }}
-            aiConsentStorageKey="next-moodle:ai-consent:showcase"
-            cmid={9101}
             disabled={false}
             format={1}
             maxLength={100_000}
             onChange={setText}
-            submitting={false}
             value={text}
           />
         </ShowcaseSample>
@@ -55,9 +52,9 @@ export function SubmissionShowcase() {
         onImagesToPdf={() => undefined} onMove={() => undefined}
         onRemoveExisting={() => undefined} onRemoveNew={(index) => setFiles((current) => current.filter((_, itemIndex) => itemIndex !== index))}
       />
-      <div className="grid gap-3 md:grid-cols-3">
-        <ShowcaseSample label="Progress"><progress className="w-full accent-[var(--accent-500)]" max={100} value={64}>64%</progress></ShowcaseSample>
-        <ShowcaseSample label="Confirmation"><p className="m-0 mb-3 text-sm leading-6 text-[var(--text-secondary)]">本文あり · ファイル1件。この内容で提出を確定しますか？</p><Button variant="primary">提出を確定</Button></ShowcaseSample>
+      <div className={styles.style2!}>
+        <ShowcaseSample label="Progress"><progress className={styles.style3!} max={100} value={64}>64%</progress></ShowcaseSample>
+        <ShowcaseSample label="Confirmation"><p className={styles.style4!}>本文あり · ファイル1件。この内容で提出を確定しますか？</p><Button variant="primary">提出を確定</Button></ShowcaseSample>
         <ShowcaseSample label="PDF thumbnail">{preview === null ? "生成中…" : <PdfThumbnail bytes={preview} pageIndex={0} />}</ShowcaseSample>
       </div>
     </ShowcaseSection>
