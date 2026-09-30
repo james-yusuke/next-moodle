@@ -105,6 +105,28 @@ test("changes theme and exposes a visible keyboard focus treatment", async ({ pa
   });
 });
 
+test("keeps every theme name on one line in a narrow control", async ({ page }) => {
+  await page.setViewportSize({ height: 900, width: 375 });
+  await page.goto("/dev/ui");
+  await hideDevelopmentChrome(page);
+
+  const buttons = page.getByLabel("表示テーマ").first().getByRole("button");
+  await expect(buttons).toHaveCount(4);
+  const measurements = await buttons.evaluateAll((items) => items.map((item) => {
+    const label = item.querySelector("span:last-child");
+    const itemStyle = getComputedStyle(item);
+    return {
+      height: item.getBoundingClientRect().height,
+      labelFits: label === null || label.scrollHeight <= label.clientHeight && label.scrollWidth <= label.clientWidth,
+      whiteSpace: itemStyle.whiteSpace,
+      width: item.getBoundingClientRect().width,
+    };
+  }));
+
+  expect(measurements.every((item) => item.height >= 44 && item.width >= 44)).toBe(true);
+  expect(measurements.every((item) => item.labelFits && item.whiteSpace === "nowrap")).toBe(true);
+});
+
 test.describe("reduced motion", () => {
   test.use({ contextOptions: { reducedMotion: "reduce" } });
 
