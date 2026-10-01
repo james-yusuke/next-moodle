@@ -25,6 +25,18 @@ test("student cockpit reads the mock Moodle core routes without exposing a token
   expect(commandGeometry.left).toBeGreaterThanOrEqual(0);
   expect(commandGeometry.right).toBeLessThanOrEqual(1280);
   expect(commandGeometry.bottom).toBeLessThanOrEqual(900);
+  const commandOptionGeometry = await commandDialog.getByRole("option").first().evaluate((element) => {
+    const rect = element.getBoundingClientRect();
+    return { height: rect.height, width: rect.width };
+  });
+  expect(commandOptionGeometry.height).toBeLessThanOrEqual(64);
+  expect(commandOptionGeometry.width).toBeGreaterThan(300);
+  const focusRingClearance = await commandDialog.getByTestId("command-search").evaluate((element) => {
+    const scrollContainer = element.parentElement?.parentElement;
+    if (scrollContainer === undefined || scrollContainer === null) return 0;
+    return element.getBoundingClientRect().top - scrollContainer.getBoundingClientRect().top;
+  });
+  expect(focusRingClearance).toBeGreaterThanOrEqual(3.5);
   await commandDialog.getByLabel("検索語").fill("knowledge check");
   await expect(page.getByRole("option").filter({ hasText: "Week 1 knowledge check" })).toBeVisible();
   await page.getByRole("option").filter({ hasText: "Week 1 knowledge check" }).click();
@@ -68,6 +80,41 @@ test("Windows uses Ctrl for commands and exposes an installable app manifest", a
   const manifestResponse = await request.get("/manifest.webmanifest");
   expect(manifestResponse.ok()).toBe(true);
   await expect.poll(async () => (await manifestResponse.json() as { display?: string }).display).toBe("standalone");
+});
+
+test("a hidden-document View Transition falls back without a recoverable error", async ({ page }) => {
+  const pageErrors: string[] = [];
+  page.on("pageerror", (error) => pageErrors.push(error.message));
+  await page.addInitScript(() => {
+    Object.defineProperty(Document.prototype, "startViewTransition", {
+      configurable: true,
+      value() {
+        const ready = Promise.reject(
+          new DOMException(
+            "Transition was aborted because of invalid state. Document hidden",
+            "InvalidStateError",
+          ),
+        );
+        return {
+          finished: new Promise<void>((resolve) => window.setTimeout(resolve, 0)),
+          ready,
+          skipTransition() {},
+          types: new Set<string>(),
+          updateCallbackDone: ready.catch(() => undefined),
+        };
+      },
+      writable: true,
+    });
+  });
+
+  await signIn(page, "alice", "alice-password");
+  await page.getByRole("navigation", { name: "主要ナビゲーション" })
+    .getByRole("link", { name: "コース", exact: true })
+    .click();
+  await expect(page).toHaveURL(/\/courses$/);
+  expect(pageErrors).not.toContainEqual(
+    expect.stringContaining("Document hidden"),
+  );
 });
 
 test("courses, Moodle events, and a local timetable can be organized without losing data", async ({ page }) => {
@@ -120,12 +167,18 @@ test("context panels persist locally and inspector sheets restore keyboard focus
   await expect(accountMenu).toBeVisible();
   const accountGeometry = await accountMenu.evaluate((element) => {
     const rect = element.getBoundingClientRect();
-    return { bottom: rect.bottom, left: rect.left, right: rect.right, top: rect.top };
+    return { bottom: rect.bottom, left: rect.left, right: rect.right, top: rect.top, width: rect.width };
   });
   expect(accountGeometry.top).toBeGreaterThanOrEqual(0);
   expect(accountGeometry.left).toBeGreaterThanOrEqual(0);
   expect(accountGeometry.right).toBeLessThanOrEqual(1280);
   expect(accountGeometry.bottom).toBeLessThanOrEqual(900);
+  expect(accountGeometry.width).toBeGreaterThanOrEqual(300);
+  for (const themeName of ["自動", "ライト", "ダーク", "ネオン"]) {
+    const themeButton = accountMenu.getByRole("button", { name: themeName });
+    await expect(themeButton).toBeVisible();
+    expect(await themeButton.evaluate((element) => element.scrollWidth <= element.clientWidth)).toBe(true);
+  }
   await page.keyboard.press("Escape");
 
   const inspectorTrigger = page.getByRole("button", { name: "コース情報" });

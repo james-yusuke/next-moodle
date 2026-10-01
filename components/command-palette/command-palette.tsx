@@ -176,7 +176,7 @@ export function CommandPalette({ commands }: CommandPaletteProps) {
       >
         <div className={styles.commandPanel!}>
           <h2 className={styles.srOnly!} id={titleId}>画面とコースを検索</h2>
-          <div className={styles.commandSearch!}>
+          <div className={styles.commandSearch!} data-testid="command-search">
             <MagnifyingGlass aria-hidden className={styles.style3!} size={20} weight="regular" />
             <label className={styles.srOnly!} htmlFor={`${listId}-input`}>検索語</label>
             <input
