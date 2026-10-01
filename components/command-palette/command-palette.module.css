@@ -45,6 +45,9 @@
 .commandPanel {
     min-height: 0px;
   }
+.commandPanel {
+    padding-top: 4px;
+  }
 .commandResults {
     min-height: 0px;
   }
@@ -299,6 +302,11 @@
 /* Arbitrary grid templates migrated from the former utility markup. */
 .commandPanel { grid-template-rows: auto minmax(0,1fr) auto; }
 .commandSearch { grid-template-columns: auto minmax(0,1fr) auto; }
+.commandOption { grid-template-columns: auto minmax(0,1fr) auto auto; }
+
+@media (width < 40rem) {
+  .commandOption { grid-template-columns: auto minmax(0,1fr) auto; }
+}
 
 /* Complex arbitrary values migrated from the former utility markup. */
 .commandPanel { max-height: min(34rem,calc(100dvh-12rem)); }
