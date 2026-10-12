@@ -46,7 +46,7 @@
     "@types/sanitize-html": "^2.16.1",
     "eslint": "9.39.5",
     "eslint-config-next": "16.2.12",
-    "lighthouse": "^13.4.1",
+    "lighthouse": "^13.5.0",
     "react-doctor": "^0.9.12",
     "react-grab": "^0.2.0",
     "react-scan": "^0.5.7",
