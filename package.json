@@ -22,7 +22,7 @@
     "@tiptap/starter-kit": "^3.30.3",
     "entities": "^8.1.0",
     "file-type": "^22.2.0",
-    "geist": "^1.7.2",
+    "geist": "^1.8.2",
     "htmlparser2": "^12.0.0",
     "iron-session": "^9.0.1",
     "ky": "^2.2.0",
