@@ -19,7 +19,7 @@
     "@tiptap/core": "^3.30.3",
     "@tiptap/pm": "^3.32.0",
     "@tiptap/react": "^3.32.0",
-    "@tiptap/starter-kit": "^3.30.3",
+    "@tiptap/starter-kit": "^3.32.0",
     "entities": "^8.1.0",
     "file-type": "^22.2.0",
     "geist": "^1.8.2",
